@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
+		<PackageReference Include="coverlet.collector" Version="6.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CommonMethodsForTests\CommonMethodsForTests.csproj" />
+		<ProjectReference Include="..\PreparePicturesAndHtmlAndUploadToWebsite\PreparePicturesAndHtmlAndUploadToWebsite.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\webApi\CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi\html\blog\css\index.css">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Link>html\blog\css\index.css</Link>
+		</None>
+		<None Include="..\..\webApi\CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi\html\blog\lib\jquery-3.6.4.js">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Link>html\blog\css\index.css</Link>
+		</None>
+		<None Include="..\..\webApi\CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi\html\blog\script\map.js">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Link>html\blog\lib\jquery-3.6.4.js</Link>
+		</None>
+		<None Include="..\..\webApi\CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi\html\blog\script\namespaces.js">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Link>html\blog\script\namespaces.js</Link>
+		</None>
+		<None Include="..\..\webApi\CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi\html\blog\index.html">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Link>html\blog\index.html</Link>
+		</None>
+		<None Include="jsconfigForTests.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="test.kml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="album1\test.kml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="excalibur.jpg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="IMG_20230325_114038.jpg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>

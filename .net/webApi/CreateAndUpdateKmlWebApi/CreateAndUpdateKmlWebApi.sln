@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateAndUpdateKmlWebApi", "CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi.csproj", "{FBD3631F-955D-4530-B192-6259430B36C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\..\lib\Common\Common.csproj", "{2B654504-F209-4BBA-A52F-45FF131EF5EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateAndUpdateKmlLib", "..\..\lib\CreateAndUpdateKmlLIb\CreateAndUpdateKmlLib.csproj", "{24814018-AAB7-4057-B9D6-8ADC106E9889}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KmlCoordinatesHandling", "..\..\lib\KmlCoordinatesHandling\KmlCoordinatesHandling.csproj", "{FC5A0DD9-9904-4663-880A-D8705CC40D85}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KmlSerializer", "..\..\lib\KmlSerializer\KmlSerializer.csproj", "{4725D9DA-0951-47E6-94E7-15C58FDFFC73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateAndUpdateKmlWeb.Api.Test", "CreateAndUpdateKmlWeb.Api.Test\CreateAndUpdateKmlWeb.Api.Test.csproj", "{685F8F0C-BD4C-4A01-A62A-6C8D696545C7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreparePicturesAndHtmlAndUploadToWebsite", "..\..\lib\PreparePicturesAndHtmlAndUploadToWebsite\PreparePicturesAndHtmlAndUploadToWebsite.csproj", "{5842FB89-53CB-467B-AA1E-D1F774EA531E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FBD3631F-955D-4530-B192-6259430B36C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBD3631F-955D-4530-B192-6259430B36C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBD3631F-955D-4530-B192-6259430B36C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBD3631F-955D-4530-B192-6259430B36C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B654504-F209-4BBA-A52F-45FF131EF5EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B654504-F209-4BBA-A52F-45FF131EF5EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B654504-F209-4BBA-A52F-45FF131EF5EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B654504-F209-4BBA-A52F-45FF131EF5EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24814018-AAB7-4057-B9D6-8ADC106E9889}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24814018-AAB7-4057-B9D6-8ADC106E9889}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24814018-AAB7-4057-B9D6-8ADC106E9889}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24814018-AAB7-4057-B9D6-8ADC106E9889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC5A0DD9-9904-4663-880A-D8705CC40D85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC5A0DD9-9904-4663-880A-D8705CC40D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC5A0DD9-9904-4663-880A-D8705CC40D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC5A0DD9-9904-4663-880A-D8705CC40D85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4725D9DA-0951-47E6-94E7-15C58FDFFC73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4725D9DA-0951-47E6-94E7-15C58FDFFC73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4725D9DA-0951-47E6-94E7-15C58FDFFC73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4725D9DA-0951-47E6-94E7-15C58FDFFC73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{685F8F0C-BD4C-4A01-A62A-6C8D696545C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{685F8F0C-BD4C-4A01-A62A-6C8D696545C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{685F8F0C-BD4C-4A01-A62A-6C8D696545C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{685F8F0C-BD4C-4A01-A62A-6C8D696545C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5842FB89-53CB-467B-AA1E-D1F774EA531E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5842FB89-53CB-467B-AA1E-D1F774EA531E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5842FB89-53CB-467B-AA1E-D1F774EA531E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5842FB89-53CB-467B-AA1E-D1F774EA531E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0CD4AB2-2EBA-46F8-8E97-22932C423D67}
+	EndGlobalSection
+EndGlobal

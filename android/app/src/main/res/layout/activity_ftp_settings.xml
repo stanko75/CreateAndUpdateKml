@@ -1,0 +1,113 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="ftpSettingsActivityViewModel"
+            type="com.example.android.ftpsettingsactivity.FtpSettingsActivityViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ftpsettingsactivity.FtpSettingsActivity">
+
+        <EditText
+            android:id="@+id/editTextHost"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="108dp"
+            android:layout_marginEnd="40dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/defaultFileName"
+            android:textColorHint="#757575"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/textViewHost"
+            app:layout_constraintTop_toTopOf="parent"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/textViewHost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:text="@string/host"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextHost"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextHost"
+            app:layout_constraintVertical_bias="0.448" />
+
+        <EditText
+            android:id="@+id/editTextUser"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="56dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/defaultHost"
+            android:textColorHint="#757575"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextPass"
+            app:layout_constraintEnd_toEndOf="@+id/editTextHost"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/editTextHost"
+            app:layout_constraintTop_toBottomOf="@+id/editTextHost"
+            app:layout_constraintVertical_bias="0.0"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/textViewUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextUser"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHost"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextUser"
+            app:layout_constraintVertical_bias="0.482" />
+
+        <EditText
+            android:id="@+id/editTextPass"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="56dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/pass"
+            android:textColorHint="#757575"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/editTextUser"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/editTextUser"
+            app:layout_constraintTop_toBottomOf="@+id/editTextUser"
+            app:layout_constraintVertical_bias="0.0"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/textViewPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pass"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextPass"
+            app:layout_constraintEnd_toEndOf="@+id/textViewUser"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextPass"
+            app:layout_constraintVertical_bias="0.482" />
+
+        <Button
+            android:id="@+id/btnSaveSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="96dp"
+            android:text="@string/saveSettings"
+            app:layout_constraintEnd_toEndOf="@+id/editTextPass"
+            app:layout_constraintHorizontal_bias="0.598"
+            app:layout_constraintStart_toStartOf="@+id/textViewPass"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPass" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">android</string>
+    <string name="start">Start</string>
+    <string name="_30">30</string>
+    <string name="stop">Stop</string>
+    <string name="openFtpSettings">Open Ftp settings</string>
+    <string name="uploadToBlog">Upload to blog</string>
+    <string name="uploadPics">Upload pics</string>
+    <string name="how_often_to_update_location_in_seconds">How often to update location in seconds:</string>
+    <string name="liveLink"><![CDATA[<a href="https://milosevtracking.azurewebsites.net/html/live/index.html">Live</a>]]></string>
+    <string name="number_of_ticks">Number of ticks</string>
+    <string name="open_battery_optimization">Open battery optimization</string>
+    <string name="log">Log</string>
+    <string name="defaultFileName">default.kml</string>
+    <string name="defaultFolder">default</string>
+    <string name="settings">Open settings</string>
+    <string name="fileName">File name:</string>
+    <string name="folderName">Folder name:</string>
+    <string name="saveSettings">Save settings</string>
+    <string name="title_activity_ftp_settings">FtpSettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="host">Host</string>
+    <string name="defaultHost">ftp.host.com</string>
+    <string name="user">User</string>
+    <string name="pass">Pass</string>
+</resources>

@@ -28,3 +28,15 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+*.suo
+*.user
+_ReSharper.*
+bin/
+obj/
+packages/
+.vs/
+.net/lib/PreparePicturesAndHtmlAndUploadToWebsite.Tests/jsconfigForTests.json
+.net/lib/PreparePicturesAndHtmlAndUploadToWebsite.Tests/test.kml
+android/app/src/main/res/raw/config.properties
+html/blog/index.html
