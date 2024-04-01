@@ -30,7 +30,7 @@ public class PrepareHmlFilesAndUploadTests
         string user = _configuration.GetSection("user").Value ?? string.Empty;
         string pass = _configuration.GetSection("pass").Value ?? string.Empty;
 
-        PrepareHmlFilesAndUpload prepareHmlFilesAndUpload = new PrepareHmlFilesAndUpload(
+        PrepareHtmlFilesAndUpload prepareHmlFilesAndUpload = new PrepareHtmlFilesAndUpload(
             new PrepareHtmlFiles()
             , new MirrorDirAndFileStructureOnFtp(
                 new FtpUpload(host, user, pass)

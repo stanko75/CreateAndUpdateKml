@@ -40,3 +40,10 @@ packages/
 .net/lib/PreparePicturesAndHtmlAndUploadToWebsite.Tests/test.kml
 android/app/src/main/res/raw/config.properties
 html/blog/index.html
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/Properties/PublishProfiles/milosevtracking - FTP.pubxml
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/Properties/PublishProfiles/milosevtracking - ReadOnly - FTP.pubxml
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/Properties/PublishProfiles/milosevtracking - Web Deploy.pubxml
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/Properties/PublishProfiles/milosevtracking - Zip Deploy.pubxml
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/test.json
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/default/default.kml
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/config.json

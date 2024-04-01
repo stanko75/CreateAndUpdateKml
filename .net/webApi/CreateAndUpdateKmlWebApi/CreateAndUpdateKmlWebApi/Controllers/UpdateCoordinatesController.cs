@@ -111,7 +111,7 @@ public class UpdateCoordinatesController : ControllerBase
 
             string remoteRootFolder = "/allWithPics/travelBuddies";
 
-            PrepareHmlFilesAndUpload prepareHmlFilesAndUpload = new PrepareHmlFilesAndUpload(new PrepareHtmlFiles()
+            PrepareHtmlFilesAndUpload prepareHmlFilesAndUpload = new PrepareHtmlFilesAndUpload(new PrepareHtmlFiles()
                 , new MirrorDirAndFileStructureOnFtp(new FtpUpload(host, user, pass))
                 , new WriteConfigurationToJsonFile());
             prepareHmlFilesAndUpload.Execute(@"html\blog"

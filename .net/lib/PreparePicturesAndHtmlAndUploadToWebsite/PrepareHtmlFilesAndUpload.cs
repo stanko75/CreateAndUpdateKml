@@ -1,12 +1,12 @@
 ﻿namespace PreparePicturesAndHtmlAndUploadToWebsite;
 
-public class PrepareHmlFilesAndUpload
+public class PrepareHtmlFilesAndUpload
 {
     private readonly IPrepareHtmlFiles _prepareHtmlFiles;
     private readonly IMirrorDirAndFileStructureOnFtp _mirrorDirAndFileStructureOnFtp;
     private readonly IWriteConfigurationToJsonFile _writeConfigurationToJsonFile;
 
-    public PrepareHmlFilesAndUpload(IPrepareHtmlFiles prepareHtmlFiles
+    public PrepareHtmlFilesAndUpload(IPrepareHtmlFiles prepareHtmlFiles
         , IMirrorDirAndFileStructureOnFtp mirrorDirAndFileStructureOnFtp
         , IWriteConfigurationToJsonFile writeConfigurationToJsonFile)
     {
