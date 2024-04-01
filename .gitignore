@@ -47,3 +47,4 @@ html/blog/index.html
 .net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/test.json
 .net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/default/default.kml
 .net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/config.json
+.net/lib/PreparePicturesAndHtmlAndUploadToWebsite.Tests/album1/test.kml

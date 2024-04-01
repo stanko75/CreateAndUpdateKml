@@ -8,9 +8,9 @@ public class PrepareHtmlFilesTests
     {
         PrepareHtmlFiles prepareHtmlFiles = new PrepareHtmlFiles();
         DirectoryNotFoundException directoryNotFoundException = Assert.ThrowsException<DirectoryNotFoundException>(() =>
-            prepareHtmlFiles.CopyHtmlTemplateForBlog(@"html\blog", "prepareForUpload", "nameOfAlbum", "test.kml"));
+            prepareHtmlFiles.CopyHtmlTemplateForBlog(@"html\blog1", "prepareForUpload", "nameOfAlbum", "test.kml"));
         Assert.AreEqual(directoryNotFoundException.Message,
-            "The folder C:\\projects\\.net\\console\\CreateAndUpdateKmlConsoleDemo\\.net\\lib\\PreparePicturesAndHtmlAndUploadToWebsite.Tests\\bin\\Debug\\net7.0\\html\\blog does not exist!");
+            @"The folder C:\projects\CreateAndUpdateKml\.net\lib\PreparePicturesAndHtmlAndUploadToWebsite.Tests\bin\Debug\net8.0\html\blog1 does not exist!");
     }
 
     [TestMethod]
@@ -27,7 +27,7 @@ public class PrepareHtmlFilesTests
             prepareHtmlFiles.CopyHtmlTemplateForBlog(@"..\..\..\..\..\..\html\blog", "prepareForUpload", "nameOfAlbum",
                 fileName));
         Assert.AreEqual(fileNotFoundException.Message,
-            "The file test.kml does not exist. Absolute path: C:\\projects\\.net\\console\\CreateAndUpdateKmlConsoleDemo\\.net\\lib\\PreparePicturesAndHtmlAndUploadToWebsite.Tests\\bin\\Debug\\net7.0\\test.kml");
+            "The file test.kml does not exist. Absolute path: C:\\projects\\CreateAndUpdateKml\\.net\\lib\\PreparePicturesAndHtmlAndUploadToWebsite.Tests\\bin\\Debug\\net8.0\\test.kml");
     }
 
     [TestMethod]
@@ -44,7 +44,7 @@ public class PrepareHtmlFilesTests
             , "prepareForUpload"
             , folder
             , fileName);
-        string pathToKmlShouldBe = Path.Join(Path.Join("prepareForUpload", folder), Path.GetDirectoryName(fileName));
-        Assert.IsTrue(File.Exists(pathToKmlShouldBe), $"File: {pathToKmlShouldBe} not exists.");
+        string pathToKmlShouldBe = Path.Join("prepareForUpload", Path.GetDirectoryName(fileName));
+        Assert.IsTrue(Directory.Exists(pathToKmlShouldBe), $"File: {Path.GetFullPath(pathToKmlShouldBe)} not exists.");
     }
 }
