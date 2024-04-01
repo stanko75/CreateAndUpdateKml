@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Net;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PreparePicturesAndHtmlAndUploadToWebsite.Tests;
 
@@ -69,11 +68,11 @@ public class MirrorDirAndFileStructureOnFtpTests
             Task<string> ftpDeleteFileTask = FtpDeleteFileTask($"{_remoteRootFolder}/{pathWithoutRoot}");
             ftpDeleteFileTask.Wait();
             string? folderName = Path.GetDirectoryName(pathWithoutRoot);
+            Directory.CreateDirectory(Path.Join(_localRootFolder, folderName));
+            File.WriteAllText(fileAndFolder, fileAndFolder);
             if (string.IsNullOrWhiteSpace(folderName)) continue;
             Task<string> ftpDeleteDirectoryTask = FtpDeleteDirectoryTask($"{_remoteRootFolder}/{folderName}");
             ftpDeleteDirectoryTask.Wait();
-            Directory.CreateDirectory(folderName);
-            File.WriteAllText(fileAndFolder, fileAndFolder);
         }
     }
 
