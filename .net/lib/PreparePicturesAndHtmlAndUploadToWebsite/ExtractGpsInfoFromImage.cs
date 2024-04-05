@@ -3,18 +3,20 @@ using MetadataExtractor.Formats.Exif;
 
 namespace PreparePicturesAndHtmlAndUploadToWebsite;
 
-public class ExtractGpsInfoFromImage
+public class ExtractGpsInfoFromImage : IExtractGpsInfoFromImage
 {
-    public LatLngFileNameModel? Execute(string fileName)
+    public LatLngFileNameModel? Execute(string imageFileNameToReadGpsFrom, string nameOfFileForJson)
     {
-        IReadOnlyList<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(fileName);
+        IReadOnlyList<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(imageFileNameToReadGpsFrom);
         GpsDirectory? gps = directories.OfType<GpsDirectory>().FirstOrDefault();
         GeoLocation? location = gps?.GetGeoLocation();
         if (location is not null)
         {
             return new LatLngFileNameModel
             {
-                fileName = fileName, lat = location.Latitude, lng = location.Longitude
+                fileName = nameOfFileForJson,
+                lat = location.Latitude,
+                lng = location.Longitude
             };
         }
 

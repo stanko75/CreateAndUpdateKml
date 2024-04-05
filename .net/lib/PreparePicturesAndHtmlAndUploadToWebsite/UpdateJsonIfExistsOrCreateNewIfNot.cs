@@ -2,7 +2,7 @@
 
 namespace PreparePicturesAndHtmlAndUploadToWebsite;
 
-public class UpdateJsonIfExistsOrCreateNewIfNot
+public class UpdateJsonIfExistsOrCreateNewIfNot : IUpdateJsonIfExistsOrCreateNewIfNot
 {
     public void Execute(string jsonFileName, LatLngFileNameModel latLngFileNameModel)
     {

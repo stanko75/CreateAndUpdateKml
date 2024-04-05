@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 
 namespace PreparePicturesAndHtmlAndUploadToWebsite;
 [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-public class ResizeImage
+public class ResizeImage: IResizeImage
 {
     public void Execute(string originalFilename
         , string saveTo
