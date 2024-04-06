@@ -18,5 +18,9 @@ public class CreateJsonAryFromImageGpsInfo: ICreateJsonAryFromImageGpsInfo
         {
             _updateJsonIfExistsOrCreateNewIfNot.Execute(jsonFileName, latLngFileNameModel);
         }
+        else
+        {
+            throw new Exception("Cannot extract GPS info from image!");
+        }
     }
 }

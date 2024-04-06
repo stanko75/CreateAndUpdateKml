@@ -47,10 +47,10 @@ class UploadImages(
     @RequiresApi(Build.VERSION_CODES.O)
     fun convertImageToBase64(context: Context, imgUri: Uri): String {
         val inputStream = context.contentResolver.openInputStream(imgUri)
-        val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val imageBytes: ByteArray = baos.toByteArray()
+        val imageBytes = inputStream.use { input ->
+            input?.readBytes()
+        } ?: return "" // Handle null input stream or read failure
+
         return Base64.getEncoder().encodeToString(imageBytes)
     }
 }
