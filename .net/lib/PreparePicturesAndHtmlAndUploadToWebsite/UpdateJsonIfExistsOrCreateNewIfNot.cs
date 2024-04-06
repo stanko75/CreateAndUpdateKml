@@ -8,10 +8,11 @@ public class UpdateJsonIfExistsOrCreateNewIfNot : IUpdateJsonIfExistsOrCreateNew
     {
         string latLngFileName;
 
+        List<LatLngFileNameModel>? latLngFileNameModels = new List<LatLngFileNameModel>();
+
         if (File.Exists(jsonFileName))
         {
             string jsonString = File.ReadAllText(jsonFileName);
-            List<LatLngFileNameModel>? latLngFileNameModels = new List<LatLngFileNameModel>();
             try
             {
                 latLngFileNameModels =
@@ -30,7 +31,8 @@ public class UpdateJsonIfExistsOrCreateNewIfNot : IUpdateJsonIfExistsOrCreateNew
         }
         else
         {
-            latLngFileName = JsonSerializer.Serialize(latLngFileNameModel);
+            latLngFileNameModels?.Add(latLngFileNameModel);
+            latLngFileName = JsonSerializer.Serialize(latLngFileNameModels);
         }
 
         if (!string.IsNullOrEmpty(latLngFileName))
