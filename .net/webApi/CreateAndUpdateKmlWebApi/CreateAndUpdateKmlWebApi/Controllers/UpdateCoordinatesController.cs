@@ -140,12 +140,41 @@ public class UpdateCoordinatesController : ControllerBase
             return BadRequest(new {message = "Error: No image." });
         }
 
-        byte[] imageBytes = Convert.FromBase64String(base64Image);
-        string folderName = data["folderName"]?.ToString() ?? "default";
-        Directory.CreateDirectory(folderName);
-        string imagePath = $"{folderName}\\{data["fileName"]}";
-        await System.IO.File.WriteAllBytesAsync(imagePath, imageBytes);
+        string rootFolderName = GetValue(data, "folderName");
+        rootFolderName = string.IsNullOrWhiteSpace(rootFolderName) ? "default" : rootFolderName;
 
-        return Ok(new {message = "Image uploaded successfully." });
+        string imageOriginalFolderName = Path.Join(rootFolderName, "pics");
+        Directory.CreateDirectory(imageOriginalFolderName);
+
+        string imageThumbsFolderName = Path.Join(rootFolderName, "thumbs");
+        Directory.CreateDirectory(imageThumbsFolderName);
+
+        string jsonFileName = GetValue(data, "fileName");
+        jsonFileName = string.IsNullOrWhiteSpace(jsonFileName) ? "default" : jsonFileName;
+        jsonFileName = Path.GetFileNameWithoutExtension(jsonFileName);
+        jsonFileName = Path.Join(rootFolderName, $"{jsonFileName}Thumbs.json");
+
+        string imageOriginalFileName = Path.Join(imageOriginalFolderName, data["fileName"]?.ToString());
+        byte[] imageBytes = Convert.FromBase64String(base64Image);
+        await System.IO.File.WriteAllBytesAsync(imageOriginalFileName, imageBytes);
+
+        string imageThumbsFileName = $"{imageThumbsFolderName}\\{data["fileName"]}";
+        string nameOfFileForJson = $"../thumbs/{data["fileName"]}";
+
+        ICreateJsonAryFromImageGpsInfo createJsonAryFromImageGpsInfo =
+            new CreateJsonAryFromImageGpsInfo(new ExtractGpsInfoFromImage(), new UpdateJsonIfExistsOrCreateNewIfNot());
+        IResizeImage resizeImage = new ResizeImage();
+
+        ResizeImageAndCreateJsonAryFromImageGpsInfo resizeImageAndCreateJsonAryFromImageGpsInfo =
+            new ResizeImageAndCreateJsonAryFromImageGpsInfo(resizeImage, createJsonAryFromImageGpsInfo);
+
+        resizeImageAndCreateJsonAryFromImageGpsInfo.Execute(imageOriginalFileName
+            , imageThumbsFileName
+            , 25
+            , 25
+            , nameOfFileForJson
+            , jsonFileName);
+
+        return Ok(new {message = $"Image uploaded to {Path.GetFullPath(imageOriginalFileName)}, json file saved in {Path.GetFullPath(jsonFileName)}" });
     }
 }
