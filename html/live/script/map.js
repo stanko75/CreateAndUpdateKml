@@ -6,7 +6,7 @@
         marker;
 
     function initMap() {
-        loadJSONConfig(function(config) {
+        loadJsonConfig(function(config) {
             try {
                 map = new google.maps.Map(document.getElementById('map-canvas'),
                     {
@@ -32,7 +32,7 @@
                 google.maps.event.addListener(kmlLayer,
                     'status_changed',
                     function() {
-                        if (kmlLayer.getStatus() == google.maps.KmlLayerStatus.OK) {
+                        if (kmlLayer.getStatus() === google.maps.KmlLayerStatus.OK) {
                             map.setCenter(gpsLatLng);
                         } else {
                             // Failure
@@ -100,7 +100,7 @@
         });
     }
 
-    function loadJSONConfig(callback) {
+    function loadJsonConfig(callback) {
         $.getJSON("config.json",
             function(data) {
                 callback(data);

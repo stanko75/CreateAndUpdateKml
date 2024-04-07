@@ -6,38 +6,40 @@
 		marker;
 		
     function initMap() {
-		loadJSONConfig(function (config) {
-			try {
-				map = new google.maps.Map(document.getElementById('map-canvas'), {
-					scrollwheel: true,
-					zoom: 20
-				});
-				
-				var kmlLayer = new google.maps.KmlLayer({
-					url: config.kmlUrl, 
-					map: map					
-				});			
-				
-				ns.map = map;
-			}
-			catch (e) {
-				console.log(e);
-				setTimeout(function () {
-					if (typeof google !== 'object') {
-						location.reload();
-					}
-				}, 1000);
-			}			
-		})
-	}
+        loadJSONConfig(function(config) {
+            try {
+                map = new google.maps.Map(document.getElementById('map-canvas'),
+                    {
+                        scrollwheel: true,
+                        zoom: 20
+                    });
+
+                var kmlLayer = new google.maps.KmlLayer({
+                    url: config.kmlUrl,
+                    map: map
+                });
+
+                ns.map = map;
+            } catch (e) {
+                console.log(e);
+                setTimeout(function() {
+                        if (typeof google !== 'object') {
+                            location.reload();
+                        }
+                    },
+                    1000);
+            }
+        });
+    }
 	
-	function loadJSONConfig(callback) {	
-		$.getJSON("config.json", function (data) {
-			callback(data);
-		}).fail(function(xhr, status, error) {
-			alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
-		})
-	}
+	function loadJSONConfig(callback) {
+        $.getJSON("config.json",
+            function(data) {
+                callback(data);
+            }).fail(function(xhr, status, error) {
+            alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
+        });
+    }
 
     ns.initMap = initMap;
 
