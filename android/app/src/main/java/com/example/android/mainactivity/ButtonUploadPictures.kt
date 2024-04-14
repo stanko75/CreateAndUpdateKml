@@ -19,6 +19,7 @@ class ButtonUploadPictures(
             context.getSharedPreferences("settings", Context.MODE_PRIVATE)
 
         val folderName: String = fileAndFolderNameSharedPreferences.getString("folderName", "").toString()
+        val kmlFileName: String = fileAndFolderNameSharedPreferences.getString("folderName", "").toString()
 
         for (image in images) {
             val cursor = context.contentResolver.query(image, null, null, null, null)
@@ -26,7 +27,7 @@ class ButtonUploadPictures(
                 val nameIndex = innerCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                 innerCursor.moveToFirst()
                 val imageName = innerCursor.getString(nameIndex)
-                uploadImages.uploadImage(image, imageName, folderName, context)
+                uploadImages.uploadImage(image, imageName, folderName, kmlFileName, context)
             }
         }
     }

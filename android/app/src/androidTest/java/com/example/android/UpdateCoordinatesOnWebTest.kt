@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.android.mainactivity.MainActivity
+import com.example.android.retrofit.IConverterType
 import com.example.android.retrofit.coordinates.IUpdateCoordinatesApiService
 import com.example.android.retrofit.coordinates.IUpdateCoordinatesOnWebCallbacks
 import com.example.android.retrofit.coordinates.UpdateCoordinatesOnWeb
@@ -131,8 +132,7 @@ class UpdateCoordinatesOnWebTest {
 }
 
 class CreateRetrofitBuilderWithoutCertificateTest: ICreateRetrofitBuilder {
-
-    override fun createRetrofitBuilder(baseUrl: String): Retrofit {
+    override fun createRetrofitBuilder(baseUrl: String, converterType: IConverterType): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(ScalarsConverterFactory.create())
@@ -141,7 +141,7 @@ class CreateRetrofitBuilderWithoutCertificateTest: ICreateRetrofitBuilder {
 }
 
 class CreateRetrofitBuilderWithCertificateTest: ICreateRetrofitBuilder {
-    override fun createRetrofitBuilder(baseUrl: String): Retrofit {
+    override fun createRetrofitBuilder(baseUrl: String, converterType: IConverterType): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(trustAllCertificates())
