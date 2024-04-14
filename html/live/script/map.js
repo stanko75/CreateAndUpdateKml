@@ -101,7 +101,7 @@
     }
 
     function loadJsonConfig(callback) {
-        $.getJSON("config.json",
+        $.getJSON(ns.configJson,
             function(data) {
                 callback(data);
             });

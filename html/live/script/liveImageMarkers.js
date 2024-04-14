@@ -1,41 +1,58 @@
 (function (ns) {
     /*globals google, map, $*/
     "use strict";
-    var map,
-        google,
-        lookup = [],
-        $;
+    var map;
 
-    window.setInterval(function() {
-        $.getJSON("../json/liveImageMarkers.json",
-            function(data) {
-                data.forEach(function(liveImageMarkersNodes) {
-
-                    var search = [liveImageMarkersNodes.lat, liveImageMarkersNodes.lng];
-                    if (!isLocationFree(search)) {
-                        lookup.push(search);
-                    }
-
-                    var gpsLatLng = new google.maps.LatLng(liveImageMarkersNodes.lat, liveImageMarkersNodes.lng);
-
-                    var marker = new google.maps.Marker({
-                        position: gpsLatLng,
-                        map: map,
-                        icon: liveImageMarkersNodes.fileName
-                    });
-                });
-            });
-    }, 5000);
-
-    function isLocationFree(search) {
-        for (var i = 0, l = lookup.length; i < l; i++) {
-            if (lookup[i][0] === search[0] && lookup[i][1] === search[1]) {
-                return false;
+    function markerExists(markerPosition) {
+        for (var i = 0; i < ns.markers.length; i++) {
+            if (ns.markers[i].getPosition().lat() === markerPosition.lat &&
+                ns.markers[i].getPosition().lng() === markerPosition.lng) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    isLocationFree(search);
+    function displayAndPushLiveImageMarker(markers) {
+        loadJsonConfig(function(config) {
+            window.setInterval(function() {
+                $.getJSON(config.liveImageMarkersJsonUrl,
+                        function(data) {
+                            data.forEach(function(liveImageMarkersNodes) {
+
+                                var search = { lat: liveImageMarkersNodes.lat, lng: liveImageMarkersNodes.lng };
+                                if (!markerExists(search)) {
+
+                                    var gpsLatLng =
+                                        new google.maps.LatLng(liveImageMarkersNodes.lat, liveImageMarkersNodes.lng);
+
+                                    var marker = new google.maps.Marker({
+                                        position: gpsLatLng,
+                                        map: map,
+                                        icon: liveImageMarkersNodes.fileName
+                                    });
+
+                                    markers.push(marker);
+                                }
+
+                            });
+                        });
+                },
+                5000);
+        });
+    };
+
+    ns.displayAndPushLiveImageMarker = displayAndPushLiveImageMarker;
+    ns.markers = [];
+    function loadJsonConfig(callback) {
+        $.getJSON(ns.configJson,
+            function (data) {
+                callback(data);
+            });
+    }
 
 })(window.milosev);
+
+window.onload = function () {
+    window.milosev.displayAndPushLiveImageMarker(window.milosev.markers);
+};
