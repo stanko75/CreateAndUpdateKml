@@ -14,13 +14,13 @@ public class CreateJsonAryFromImageGpsInfo: ICreateJsonAryFromImageGpsInfo
     public void Execute(string imageFileNameToReadGpsFrom, string nameOfFileForJson, string jsonFileName)
     {
         LatLngFileNameModel? latLngFileNameModel = _extractGpsInfoFromImage.Execute(imageFileNameToReadGpsFrom, nameOfFileForJson);
-        if (latLngFileNameModel is not null)
+        if (latLngFileNameModel is null || latLngFileNameModel.lat == 0 || latLngFileNameModel.lng == 0)
         {
-            _updateJsonIfExistsOrCreateNewIfNot.Execute(jsonFileName, latLngFileNameModel);
+            throw new Exception("Cannot extract GPS info from image!");
         }
         else
         {
-            throw new Exception("Cannot extract GPS info from image!");
+            _updateJsonIfExistsOrCreateNewIfNot.Execute(jsonFileName, latLngFileNameModel);
         }
     }
 }
