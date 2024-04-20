@@ -52,3 +52,7 @@ html/blog/index.html
 /.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/default/thumbs
 /.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/default
 web.config
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/test.kml
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWeb.Api.Test/config.json
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWeb.Api.Test/jsconfigForTests.json
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/default.json

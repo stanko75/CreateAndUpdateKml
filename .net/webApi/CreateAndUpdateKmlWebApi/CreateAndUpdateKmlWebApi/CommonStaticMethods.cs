@@ -1,5 +1,9 @@
-﻿using System.Globalization;
+﻿using CreateAndUpdateKmlWebApi.Models;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Globalization;
 using System.Text.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace CreateAndUpdateKmlWebApi;
 
@@ -25,6 +29,56 @@ public static class CommonStaticMethods
         }
 
         return fileName;
+    }
+
+    public static void WriteConfigurationToJsonFile(string folderName
+        , string kmlFileName
+        , string currentLocation
+        , string configFileName
+        , string rootUrl)
+    {
+        LiveConfigModel liveExistingConfigModel;
+        if (!rootUrl.EndsWith("/"))
+        {
+            rootUrl += "/";
+        }
+        //if (File.Exists(configFileName))
+        {
+            string strExistingConfig = File.ReadAllText(configFileName);
+            JObject jsonObjectExistingConfig = JObject.Parse(strExistingConfig);
+            liveExistingConfigModel = jsonObjectExistingConfig.ToObject<LiveConfigModel>() ??
+                                                      throw new InvalidOperationException();
+
+            if (!string.IsNullOrWhiteSpace(folderName))
+            {
+                folderName =
+                    ConvertRelativeWindowsPathToUri(rootUrl, folderName).AbsoluteUri;
+                folderName += "/";
+
+                if (!string.IsNullOrWhiteSpace(kmlFileName))
+                {
+                    liveExistingConfigModel.LiveImageMarkersJsonUrl =
+                        ConvertRelativeWindowsPathToUri($"{folderName}",
+                                $"{Path.GetFileNameWithoutExtension(kmlFileName)}Thumbs.json")
+                            .AbsoluteUri;
+
+                    liveExistingConfigModel.KmlFileName =
+                        ConvertRelativeWindowsPathToUri(folderName, kmlFileName)
+                            .AbsoluteUri;
+                }
+
+            }
+
+            if (!string.IsNullOrWhiteSpace(currentLocation))
+            {
+                liveExistingConfigModel.CurrentLocation = ConvertRelativeWindowsPathToUri(rootUrl,
+                        currentLocation)
+                    .AbsoluteUri;
+            }
+        }
+
+        string liveConfigJson = JsonConvert.SerializeObject(liveExistingConfigModel, Formatting.Indented);
+        File.WriteAllText(configFileName, liveConfigJson);
     }
 
     public static void WriteFileNameAndCoordinatesToJsonFile(string coordinates, string fileName)
@@ -114,5 +168,10 @@ public static class CommonStaticMethods
         {
             File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
         }
+    }
+
+    public static string GetValue(JObject data, string value)
+    {
+        return (data[value] ?? string.Empty).Value<string>() ?? string.Empty;
     }
 }

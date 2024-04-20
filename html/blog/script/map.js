@@ -15,7 +15,7 @@
                     });
 
                 var kmlLayer = new google.maps.KmlLayer({
-                    url: config.kmlUrl,
+                    url: config.KmlFileName,
                     map: map
                 });
 

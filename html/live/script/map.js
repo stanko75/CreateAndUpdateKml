@@ -6,7 +6,7 @@
         marker;
 
     function initMap() {
-        loadJsonConfig(function(config) {
+        loadJsonConfig(function (config) {
             try {
                 map = new google.maps.Map(document.getElementById('map-canvas'),
                     {
@@ -16,7 +16,7 @@
                     });
 
                 var kmlLayer = new google.maps.KmlLayer({
-                    url: config.kmlUrl + "?dummy=" + (new Date()).getTime(),
+                    url: config.KmlFileName + "?dummy=" + (new Date()).getTime(),
                     map: map,
                     preserveViewport: true
 
@@ -24,14 +24,14 @@
 
                 google.maps.event.addListener(kmlLayer,
                     "metadata_changed",
-                    function() {
+                    function () {
                         console.log("metadata_changed");
                         map.setCenter(gpsLatLng);
                     });
 
                 google.maps.event.addListener(kmlLayer,
                     'status_changed',
-                    function() {
+                    function () {
                         if (kmlLayer.getStatus() === google.maps.KmlLayerStatus.OK) {
                             map.setCenter(gpsLatLng);
                         } else {
@@ -39,8 +39,8 @@
                         }
                     });
 
-                $.getJSON(config.currentLocation,
-                    function(data) {
+                $.getJSON(config.CurrentLocation,
+                    function (data) {
                         gpsLatLng = new google.maps.LatLng(data.lat, data.lng);
 
                         marker = new google.maps.Marker({
@@ -49,52 +49,51 @@
                         });
 
                         map.setCenter(gpsLatLng);
-                    }).done(function() {
-                    console.log("second success");
-                }).fail(function(xhr, status, error) {
-                    alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
-                }).always(function() {
-                    console.log("finished");
-                });
+                    }).done(function () {
+                        console.log("second success");
+                    }).fail(function (xhr, status, error) {
+                        alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
+                    }).always(function () {
+                        console.log("finished");
+                    });
 
-                window.setInterval(function() {
-                        google.maps.event.trigger(map, 'resize');
-                        kmlLayer = new google.maps.KmlLayer({
-                            url: config.kmlUrl + "?dummy=" + (new Date()).getTime(),
-                            map: map,
-                            preserveViewport: true
-                        });
+                window.setInterval(function () {
+                    google.maps.event.trigger(map, 'resize');
+                    kmlLayer = new google.maps.KmlLayer({
+                        url: config.KmlFileName + "?dummy=" + (new Date()).getTime(),
+                        map: map,
+                        preserveViewport: true
+                    });
 
-                        $.getJSON(config.currentLocation,
-                            function(data) {
-                                gpsLatLng = new google.maps.LatLng(data.lat, data.lng);
+                    $.getJSON(config.CurrentLocation,
+                        function (data) {
+                            gpsLatLng = new google.maps.LatLng(data.lat, data.lng);
 
-                                marker.setPosition(gpsLatLng);
+                            marker.setPosition(gpsLatLng);
 
-                                map.setCenter(gpsLatLng);
-                            }).done(function() {
+                            map.setCenter(gpsLatLng);
+                        }).done(function () {
                             console.log("second success");
-                        }).fail(function(xhr, status, error) {
+                        }).fail(function (xhr, status, error) {
                             alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
-                        }).always(function() {
+                        }).always(function () {
                             console.log("finished");
                         });
 
-                        /*
-                        map.setCenter(map.getCenter());
-                        map.setZoom(map.getZoom());
-                        */
-                    },
-                    5000);
+                    /*
+                    map.setCenter(map.getCenter());
+                    map.setZoom(map.getZoom());
+                    */
+                }, 5000);
 
                 ns.map = map;
             } catch (e) {
                 console.log(e);
-                setTimeout(function() {
-                        if (typeof google !== 'object') {
-                            location.reload();
-                        }
-                    },
+                setTimeout(function () {
+                    if (typeof google !== 'object') {
+                        location.reload();
+                    }
+                },
                     1000);
             }
         });
@@ -102,7 +101,7 @@
 
     function loadJsonConfig(callback) {
         $.getJSON(ns.configJson,
-            function(data) {
+            function (data) {
                 callback(data);
             });
     }

@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using CreateAndUpdateKmlWebApi;
+using CreateAndUpdateKmlWebApi.Models;
+using Newtonsoft.Json.Linq;
 
 namespace CreateAndUpdateKmlWeb.Api.Test;
 
@@ -34,5 +36,43 @@ public class StaticMethodsTests
         CommonStaticMethods.WriteConfigurationToJsonFile(strAbsolutePath, kmlFileName, "config.json");
         Assert.IsTrue(File.Exists(configFileName));
 
+    }
+
+    [TestMethod]
+    public void WriteConfigurationModelToJsonLoadFileInTestAndCompareResults()
+    {
+        string testConfigFileName = "config.json";
+        string configFileNameUnderTest = "configUnderTest.json";
+
+        string strExistingConfig = File.ReadAllText(testConfigFileName);
+        JObject jsonObjectExistingConfig = JObject.Parse(strExistingConfig);
+        LiveConfigModel existingConfigModel = jsonObjectExistingConfig.ToObject<LiveConfigModel>() ??
+                                              throw new InvalidOperationException();
+
+        LiveConfigModel configModelUnderTest = new()
+        {
+            CurrentLocation = "test.json"
+            , KmlFileName = "default.kml"
+            , LiveImageMarkersJsonUrl = "defaultThumbs.json"
+        };
+
+        string folderName = "default";
+        string rootUrl =
+            "http://livetracking.milosev.com:100/.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi";
+
+        CommonStaticMethods.WriteConfigurationToJsonFile(folderName
+            , "default.kml"
+            , "test.json"
+            , configFileNameUnderTest
+            , rootUrl);
+
+        string strConfigFileNameUnderTest = File.ReadAllText(configFileNameUnderTest);
+        JObject jsonObjectConfigFileNameUnderTest = JObject.Parse(strConfigFileNameUnderTest);
+        configModelUnderTest = jsonObjectConfigFileNameUnderTest.ToObject<LiveConfigModel>() ??
+                               throw new InvalidOperationException();
+
+        Assert.AreEqual(existingConfigModel.CurrentLocation, configModelUnderTest.CurrentLocation);
+        Assert.AreEqual(existingConfigModel.KmlFileName, configModelUnderTest.KmlFileName);
+        Assert.AreEqual(existingConfigModel.LiveImageMarkersJsonUrl, configModelUnderTest.LiveImageMarkersJsonUrl);
     }
 }

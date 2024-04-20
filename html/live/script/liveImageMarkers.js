@@ -1,7 +1,6 @@
 (function (ns) {
-    /*globals google, map, $*/
+    /*globals google, $*/
     "use strict";
-    var map;
 
     function markerExists(markerPosition) {
         for (var i = 0; i < ns.markers.length; i++) {
@@ -14,31 +13,38 @@
     }
 
     function displayAndPushLiveImageMarker(markers) {
-        loadJsonConfig(function(config) {
-            window.setInterval(function() {
-                $.getJSON(config.liveImageMarkersJsonUrl,
-                        function(data) {
-                            data.forEach(function(liveImageMarkersNodes) {
+        loadJsonConfig(function (config) {
+            window.setInterval(function () {
+                $.getJSON(config.LiveImageMarkersJsonUrl,
+                    function (data) {
+                        data.forEach(function (liveImageMarkersNodes) {
 
-                                var search = { lat: liveImageMarkersNodes.lat, lng: liveImageMarkersNodes.lng };
-                                if (!markerExists(search)) {
+                            var search = { lat: liveImageMarkersNodes.lat, lng: liveImageMarkersNodes.lng };
+                            if (!markerExists(search)) {
 
-                                    var gpsLatLng =
-                                        new google.maps.LatLng(liveImageMarkersNodes.lat, liveImageMarkersNodes.lng);
+                                var gpsLatLng =
+                                    new google.maps.LatLng(liveImageMarkersNodes.lat, liveImageMarkersNodes.lng);
 
-                                    var marker = new google.maps.Marker({
-                                        position: gpsLatLng,
-                                        map: map,
-                                        icon: liveImageMarkersNodes.fileName
-                                    });
+                                var marker = new google.maps.Marker({
+                                    position: gpsLatLng,
+                                    map: ns.map,
+                                    icon: liveImageMarkersNodes.fileName
+                                });
 
-                                    markers.push(marker);
-                                }
+                                ns.map.setCenter(gpsLatLng);
 
-                            });
+                                markers.push(marker);
+                            }
                         });
-                },
-                5000);
+                    }).done(function () {
+                        console.log("success");
+                    }).fail(function (xhr, status, error) {
+                        //alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
+                        console.log("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
+                    }).always(function () {
+                        console.log("finished");
+                    });;
+            }, 5000);
         });
     };
 

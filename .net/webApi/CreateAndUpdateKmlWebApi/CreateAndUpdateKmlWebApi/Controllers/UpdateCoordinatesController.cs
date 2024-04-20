@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Newtonsoft.Json.Linq;
 using PreparePicturesAndHtmlAndUploadToWebsite;
+using CreateAndUpdateKmlWebApi.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +15,13 @@ namespace CreateAndUpdateKmlWebApi.Controllers;
 public class UpdateCoordinatesController : ControllerBase
 {
     private readonly IUpdateKmlIfExistsOrCreateNewIfNot _updateKmlIfExistsOrCreateNewIfNot;
+    private const string ConfigFileName = "config.json";
+
+    private const string CurrentLocation = "test.json";
+
+    //private const string RootUrl = "https://milosevtracking.azurewebsites.net";
+    private const string RootUrl =
+        "http://livetracking.milosev.com:100/.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi";
 
     public UpdateCoordinatesController(IUpdateKmlIfExistsOrCreateNewIfNot updateKmlIfExistsOrCreateNewIfNot)
     {
@@ -39,15 +47,16 @@ public class UpdateCoordinatesController : ControllerBase
     [Route("PostFileFolder")]
     public void PostFileFolder([FromBody] JObject data)
     {
-        string folder = GetValue(data, "folderName");
-        folder = string.IsNullOrWhiteSpace(folder) ? "default" : folder;
-
-        string fileName = GetValue(data, "fileName");
-        fileName = string.IsNullOrWhiteSpace(fileName) ? "default" : fileName;
-
         string extension = ".kml";
 
-        fileName = CommonStaticMethods.CreateFolderIfNotExistAndChangeFileExtenstion(folder, fileName, extension);
+        KmlFileFolderModel kmlFileFolderModel = new KmlFileFolderModel(data);
+        CommonStaticMethods.WriteConfigurationToJsonFile(kmlFileFolderModel.FolderName
+            , kmlFileFolderModel.KmlFileName
+            , CurrentLocation
+            , ConfigFileName
+            , RootUrl);
+
+        kmlFileFolderModel.KmlFileName = CommonStaticMethods.CreateFolderIfNotExistAndChangeFileExtenstion(kmlFileFolderModel.FolderName, kmlFileFolderModel.KmlFileName, extension);
 
         if (string.IsNullOrWhiteSpace(data["lng"]?.ToString()) && string.IsNullOrWhiteSpace(data["lat"]?.ToString()))
         {
@@ -55,18 +64,10 @@ public class UpdateCoordinatesController : ControllerBase
         }
 
         string coordinates = string.Join(',', data["lng"], data["lat"], "2357");
-        //string coordinates = GetValue(data, "coordinates");
-        CommonStaticMethods.WriteFileNameAndCoordinatesToJsonFile(coordinates, "test.json"); //ToDo: file test.json contains current location, which is defined in \html\script\config.js, if file name "test.json" gonna change, then config.js should be updated accordingly
+        CommonStaticMethods.WriteFileNameAndCoordinatesToJsonFile(coordinates,
+            CurrentLocation);
 
-        string strAbsolutePath = @"https://milosevtracking.azurewebsites.net";
-        CommonStaticMethods.WriteConfigurationToJsonFile(strAbsolutePath, fileName, "config.json");
-
-        _updateKmlIfExistsOrCreateNewIfNot.Execute(fileName, coordinates);
-    }
-
-    private string GetValue(JObject data, string value)
-    {
-        return (data[value] ?? string.Empty).Value<string>() ?? string.Empty;
+        _updateKmlIfExistsOrCreateNewIfNot.Execute(kmlFileFolderModel.KmlFileName, coordinates);
     }
 
     // POST api/<UpdateCoordinatesController>
@@ -96,15 +97,15 @@ public class UpdateCoordinatesController : ControllerBase
     {
         try
         {
-            string folder = GetValue(data, "folderName");
+            string folder = CommonStaticMethods.GetValue(data, "folderName");
             folder = string.IsNullOrWhiteSpace(folder) ? "default" : folder;
 
-            string fileName = GetValue(data, "fileName");
+            string fileName = CommonStaticMethods.GetValue(data, "fileName");
             fileName = string.IsNullOrWhiteSpace(fileName) ? "default" : fileName;
 
-            string host = GetValue(data, "host");
-            string user = GetValue(data, "user");
-            string pass = GetValue(data, "pass");
+            string host = CommonStaticMethods.GetValue(data, "host");
+            string user = CommonStaticMethods.GetValue(data, "user");
+            string pass = CommonStaticMethods.GetValue(data, "pass");
 
             string extension = ".kml";
             fileName = CommonStaticMethods.ChangeFileExtension(fileName, extension);
@@ -133,33 +134,16 @@ public class UpdateCoordinatesController : ControllerBase
 
     public async Task<IActionResult> UploadImage([FromBody] JObject data)
     {
-        string base64Image = data["image"]?.ToString() ?? string.Empty;
-
-        if (string.IsNullOrWhiteSpace(base64Image))
-        {
-            return BadRequest(new {message = "Error: No image." });
-        }
-
-        string rootFolderName = GetValue(data, "folderName");
-        rootFolderName = string.IsNullOrWhiteSpace(rootFolderName) ? "default" : rootFolderName;
-
-        string imageOriginalFolderName = Path.Join(rootFolderName, "pics");
-        Directory.CreateDirectory(imageOriginalFolderName);
-
-        string imageThumbsFolderName = Path.Join(rootFolderName, "thumbs");
-        Directory.CreateDirectory(imageThumbsFolderName);
-
-        string jsonFileName = GetValue(data, "fileName");
-        jsonFileName = string.IsNullOrWhiteSpace(jsonFileName) ? "default" : jsonFileName;
-        jsonFileName = Path.GetFileNameWithoutExtension(jsonFileName);
-        jsonFileName = Path.Join(rootFolderName, $"{jsonFileName}Thumbs.json");
-
-        string imageOriginalFileName = Path.Join(imageOriginalFolderName, data["fileName"]?.ToString());
-        byte[] imageBytes = Convert.FromBase64String(base64Image);
-        await System.IO.File.WriteAllBytesAsync(imageOriginalFileName, imageBytes);
-
-        string imageThumbsFileName = $"{imageThumbsFolderName}\\{data["fileName"]}";
-        string nameOfFileForJson = $"../thumbs/{data["fileName"]}";
+        KmlFileFolderModel kmlFileFolderModel = new KmlFileFolderModel(data);
+        CommonStaticMethods.WriteConfigurationToJsonFile(kmlFileFolderModel.FolderName
+            , kmlFileFolderModel.KmlFileName
+            , CurrentLocation
+            , ConfigFileName
+            , RootUrl);
+        ImageModel imageModel = new ImageModel(kmlFileFolderModel, data);
+        Directory.CreateDirectory(kmlFileFolderModel.FolderName);
+        
+        await System.IO.File.WriteAllBytesAsync(imageModel.ImageOriginalFileName, imageModel.ImageBytes);
 
         ICreateJsonAryFromImageGpsInfo createJsonAryFromImageGpsInfo =
             new CreateJsonAryFromImageGpsInfo(new ExtractGpsInfoFromImage(), new UpdateJsonIfExistsOrCreateNewIfNot());
@@ -167,14 +151,29 @@ public class UpdateCoordinatesController : ControllerBase
 
         ResizeImageAndCreateJsonAryFromImageGpsInfo resizeImageAndCreateJsonAryFromImageGpsInfo =
             new ResizeImageAndCreateJsonAryFromImageGpsInfo(resizeImage, createJsonAryFromImageGpsInfo);
-
-        resizeImageAndCreateJsonAryFromImageGpsInfo.Execute(imageOriginalFileName
-            , imageThumbsFileName
+        //
+        resizeImageAndCreateJsonAryFromImageGpsInfo.Execute(imageModel.ImageOriginalFileName
+            , imageModel.ImageThumbsFileName
             , 25
             , 25
-            , nameOfFileForJson
-            , jsonFileName);
+            , imageModel.NameOfFileForJson
+            , imageModel.JsonFileName);
 
-        return Ok(new {message = $"Image uploaded to {Path.GetFullPath(imageOriginalFileName)}, json file saved in {Path.GetFullPath(jsonFileName)}" });
+        return Ok(new
+        {
+            message =
+                $"Image uploaded to {Path.GetFullPath(imageModel.ImageOriginalFileName)}" +
+                $"{Environment.NewLine}" +
+                $"***" +
+                $"{Environment.NewLine}" +
+
+                $"JSON file saved in {Path.GetFullPath(imageModel.JsonFileName)}" +
+                $"{Environment.NewLine}" +
+                $"***" +
+
+                $"{Environment.NewLine}" +
+                $"ImageThumbsFileName file saved in {Path.GetFullPath(imageModel.ImageThumbsFileName)}"
+        });
+
     }
 }

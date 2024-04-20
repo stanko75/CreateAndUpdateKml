@@ -19,10 +19,10 @@ class UploadImages(
 
         val base64Image = convertImageToBase64(context, imgUri)
         val jsonValue = JsonObject().apply {
-            addProperty("Base64Image", base64Image)
-            addProperty("ImageFileName", imageFileName)
-            addProperty("FolderName", folderName)
-            addProperty("KmlFileName", kmlFileName)
+            addProperty("base64Image", base64Image)
+            addProperty("imageFileName", imageFileName)
+            addProperty("folderName", folderName)
+            addProperty("kmlFileName", kmlFileName)
         }
         val webApiRequest = uploadImagesApiService.uploadImage(jsonValue)
 

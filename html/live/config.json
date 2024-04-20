@@ -1,5 +1,5 @@
 {
-  "kmlUrl": "http://realtimetracking.milosev.com:100/html/live/test.kml",
-  "currentLocation": "http://realtimetracking.milosev.com:100/html/live/test.json",
-  "liveImageMarkers":   ""
+  "KmlFileName": "http://realtimetracking.milosev.com:100/html/live/test.kml",
+  "CurrentLocation": "http://realtimetracking.milosev.com:100/html/live/test.json",
+  "liveImageMarkers": ""
 }
