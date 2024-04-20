@@ -4,7 +4,7 @@ namespace CreateAndUpdateKmlWebApi.Models;
 
 public class ImageModel
 {
-    public ImageModel(KmlFileFolderModel kmlFileFolderModel, JObject data)
+    public ImageModel(KmlFileFolderModel kmlFileFolderModel, JObject data, string rootUrl)
     {
         string thumbsFolder = "thumbs";
 
@@ -25,7 +25,7 @@ public class ImageModel
         imageFileName ??= "default.jpg";
         ImageThumbsFileName = $"{ImageThumbsFolderName}\\{imageFileName}";
         //NameOfFileForJson = $"../{thumbsFolder}/{imageFileName}"; //ToDO
-        NameOfFileForJson = $"http://livetracking.milosev.com:100/.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/default/thumbs/{imageFileName}";
+        NameOfFileForJson = $"{rootUrl}/{ImageThumbsFolderName}/{imageFileName}";
 
         string jsonFileName = Path.GetFileNameWithoutExtension(kmlFileFolderModel.KmlFileName);
         jsonFileName = string.IsNullOrWhiteSpace(jsonFileName) ? "default" : jsonFileName;

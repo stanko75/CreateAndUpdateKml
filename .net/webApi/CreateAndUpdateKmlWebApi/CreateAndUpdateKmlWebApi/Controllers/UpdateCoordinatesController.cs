@@ -19,9 +19,9 @@ public class UpdateCoordinatesController : ControllerBase
 
     private const string CurrentLocation = "test.json";
 
-    //private const string RootUrl = "https://milosevtracking.azurewebsites.net";
-    private const string RootUrl =
-        "http://livetracking.milosev.com:100/.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi";
+    private const string RootUrl = "https://milosevtracking.azurewebsites.net";
+    //private const string RootUrl =
+    //    "http://livetracking.milosev.com:100/.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi";
 
     public UpdateCoordinatesController(IUpdateKmlIfExistsOrCreateNewIfNot updateKmlIfExistsOrCreateNewIfNot)
     {
@@ -134,46 +134,52 @@ public class UpdateCoordinatesController : ControllerBase
 
     public async Task<IActionResult> UploadImage([FromBody] JObject data)
     {
-        KmlFileFolderModel kmlFileFolderModel = new KmlFileFolderModel(data);
-        CommonStaticMethods.WriteConfigurationToJsonFile(kmlFileFolderModel.FolderName
-            , kmlFileFolderModel.KmlFileName
-            , CurrentLocation
-            , ConfigFileName
-            , RootUrl);
-        ImageModel imageModel = new ImageModel(kmlFileFolderModel, data);
-        Directory.CreateDirectory(kmlFileFolderModel.FolderName);
-        
-        await System.IO.File.WriteAllBytesAsync(imageModel.ImageOriginalFileName, imageModel.ImageBytes);
-
-        ICreateJsonAryFromImageGpsInfo createJsonAryFromImageGpsInfo =
-            new CreateJsonAryFromImageGpsInfo(new ExtractGpsInfoFromImage(), new UpdateJsonIfExistsOrCreateNewIfNot());
-        IResizeImage resizeImage = new ResizeImage();
-
-        ResizeImageAndCreateJsonAryFromImageGpsInfo resizeImageAndCreateJsonAryFromImageGpsInfo =
-            new ResizeImageAndCreateJsonAryFromImageGpsInfo(resizeImage, createJsonAryFromImageGpsInfo);
-        //
-        resizeImageAndCreateJsonAryFromImageGpsInfo.Execute(imageModel.ImageOriginalFileName
-            , imageModel.ImageThumbsFileName
-            , 25
-            , 25
-            , imageModel.NameOfFileForJson
-            , imageModel.JsonFileName);
-
-        return Ok(new
+        try
         {
-            message =
-                $"Image uploaded to {Path.GetFullPath(imageModel.ImageOriginalFileName)}" +
-                $"{Environment.NewLine}" +
-                $"***" +
-                $"{Environment.NewLine}" +
+            KmlFileFolderModel kmlFileFolderModel = new KmlFileFolderModel(data);
+            CommonStaticMethods.WriteConfigurationToJsonFile(kmlFileFolderModel.FolderName
+                , kmlFileFolderModel.KmlFileName
+                , CurrentLocation
+                , ConfigFileName
+                , RootUrl);
+            ImageModel imageModel = new ImageModel(kmlFileFolderModel, data, RootUrl);
+            Directory.CreateDirectory(kmlFileFolderModel.FolderName);
 
-                $"JSON file saved in {Path.GetFullPath(imageModel.JsonFileName)}" +
-                $"{Environment.NewLine}" +
-                $"***" +
+            await System.IO.File.WriteAllBytesAsync(imageModel.ImageOriginalFileName, imageModel.ImageBytes);
 
-                $"{Environment.NewLine}" +
-                $"ImageThumbsFileName file saved in {Path.GetFullPath(imageModel.ImageThumbsFileName)}"
-        });
+            ICreateJsonAryFromImageGpsInfo createJsonAryFromImageGpsInfo =
+                new CreateJsonAryFromImageGpsInfo(new ExtractGpsInfoFromImage(), new UpdateJsonIfExistsOrCreateNewIfNot());
+            IResizeImage resizeImage = new ResizeImage();
 
+            ResizeImageAndCreateJsonAryFromImageGpsInfo resizeImageAndCreateJsonAryFromImageGpsInfo =
+                new ResizeImageAndCreateJsonAryFromImageGpsInfo(resizeImage, createJsonAryFromImageGpsInfo);
+            //
+            resizeImageAndCreateJsonAryFromImageGpsInfo.Execute(imageModel.ImageOriginalFileName
+                , imageModel.ImageThumbsFileName
+                , 25
+                , 25
+                , imageModel.NameOfFileForJson
+                , imageModel.JsonFileName);
+
+            return Ok(new
+            {
+                message =
+                    $"Image uploaded to {Path.GetFullPath(imageModel.ImageOriginalFileName)}" +
+                    $"{Environment.NewLine}" +
+                    $"***" +
+                    $"{Environment.NewLine}" +
+
+                    $"JSON file saved in {Path.GetFullPath(imageModel.JsonFileName)}" +
+                    $"{Environment.NewLine}" +
+                    $"***" +
+
+                    $"{Environment.NewLine}" +
+                    $"ImageThumbsFileName file saved in {Path.GetFullPath(imageModel.ImageThumbsFileName)}"
+            });
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"Exception message: {e.Message}, inner exception: {e.InnerException}");
+        }
     }
 }
