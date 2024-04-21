@@ -25,7 +25,7 @@ public class ImageModel
         imageFileName ??= "default.jpg";
         ImageThumbsFileName = $"{ImageThumbsFolderName}\\{imageFileName}";
         //NameOfFileForJson = $"../{thumbsFolder}/{imageFileName}"; //ToDO
-        NameOfFileForJson = $"{rootUrl}/{ImageThumbsFolderName}/{imageFileName}";
+        NameOfFileForJson = $"{rootUrl}/{ImageThumbsFolderName.Replace('\\', '/')}/{imageFileName}";
 
         string jsonFileName = Path.GetFileNameWithoutExtension(kmlFileFolderModel.KmlFileName);
         jsonFileName = string.IsNullOrWhiteSpace(jsonFileName) ? "default" : jsonFileName;

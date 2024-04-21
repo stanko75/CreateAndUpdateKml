@@ -16,8 +16,12 @@ public class ImageModelTests
         data["imageFileName"] = "testImage.jpg";
         data["kmlFileName"] = "testKml.kml";
 
+        string RootUrl = "https://milosevtracking.azurewebsites.net";
+        //private const string RootUrl =
+        //    "http://livetracking.milosev.com:100/.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi";
+
         KmlFileFolderModel kmlFileFolderModel = new KmlFileFolderModel(data);
-        ImageModel imageModel = new ImageModel(kmlFileFolderModel, data);
+        ImageModel imageModel = new ImageModel(kmlFileFolderModel, data, RootUrl);
         Assert.AreEqual(imageModel.ImageThumbsFileName, "testFolderName\\thumbs\\testImage.jpg");
         Assert.AreEqual(imageModel.ImageThumbsFolderName, "testFolderName\\thumbs");
         Assert.AreEqual(imageModel.JsonFileName, "testFolderName\\testKmlThumbs.json");
