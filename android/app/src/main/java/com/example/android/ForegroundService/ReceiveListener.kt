@@ -49,12 +49,12 @@ class ReceiveListener: IReceiveListener {
         LocalBroadcastManager.getInstance(context).sendBroadcast(mainActivityIntent)
     }
 
-    override fun fileName(context: Context, intent: Intent) {
+    override fun kmlFileName(context: Context, intent: Intent) {
         val mainActivityIntent = Intent(context, MainActivity::class.java).setAction(
-            IntentAction.FILE_NAME
+            IntentAction.KML_FILE_NAME
         )
-        val fileName = intent.getStringExtra(IntentExtras.FILE_NAME)
-        mainActivityIntent.putExtra(IntentExtras.FILE_NAME, fileName)
+        val kmlFileName = intent.getStringExtra(IntentExtras.KML_FILE_NAME)
+        mainActivityIntent.putExtra(IntentExtras.KML_FILE_NAME, kmlFileName)
         LocalBroadcastManager.getInstance(context).sendBroadcast(mainActivityIntent)
     }
 }

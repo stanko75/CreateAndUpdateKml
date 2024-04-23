@@ -48,13 +48,13 @@ class ForegroundTickService : Service(), CoroutineScope by MainScope() {
                 val numOfSecondsForTick =
                     intent.getLongExtra (IntentExtras.NUM_OF_SECONDS_FOR_TICK, 30)
 
-                val fileName =
-                    intent.getStringExtra (IntentExtras.FILE_NAME)
+                val kmlFileName =
+                    intent.getStringExtra (IntentExtras.KML_FILE_NAME)
                 val folderName =
                     intent.getStringExtra (IntentExtras.FOLDER_NAME)
 
                 val fileFolderLocationModel = FileFolderLocationModel()
-                fileFolderLocationModel.fileName = fileName
+                fileFolderLocationModel.kmlFileName = kmlFileName
                 fileFolderLocationModel.folderName = folderName
                 //Thread.sleep(5000L) //us this for debug
 

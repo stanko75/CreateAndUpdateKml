@@ -9,5 +9,5 @@ interface IReceiveListener {
     fun stopForegroundTickService(context: Context)
     fun numOfTicks(context: Context, intent: Intent)
     fun retrofitOnResponse(context: Context, intent: Intent)
-    fun fileName(context: Context, intent: Intent)
+    fun kmlFileName(context: Context, intent: Intent)
 }

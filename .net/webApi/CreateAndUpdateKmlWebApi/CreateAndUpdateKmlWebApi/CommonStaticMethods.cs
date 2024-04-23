@@ -42,39 +42,44 @@ public static class CommonStaticMethods
         {
             rootUrl += "/";
         }
-        //if (File.Exists(configFileName))
+
+        if (File.Exists(configFileName))
         {
             string strExistingConfig = File.ReadAllText(configFileName);
             JObject jsonObjectExistingConfig = JObject.Parse(strExistingConfig);
             liveExistingConfigModel = jsonObjectExistingConfig.ToObject<LiveConfigModel>() ??
-                                                      throw new InvalidOperationException();
+                                      throw new InvalidOperationException();
+        }
+        else
+        {
+            liveExistingConfigModel = new LiveConfigModel();
+        }
 
-            if (!string.IsNullOrWhiteSpace(folderName))
+        if (!string.IsNullOrWhiteSpace(folderName))
+        {
+            folderName =
+                ConvertRelativeWindowsPathToUri(rootUrl, folderName).AbsoluteUri;
+            folderName += "/";
+
+            if (!string.IsNullOrWhiteSpace(kmlFileName))
             {
-                folderName =
-                    ConvertRelativeWindowsPathToUri(rootUrl, folderName).AbsoluteUri;
-                folderName += "/";
+                liveExistingConfigModel.LiveImageMarkersJsonUrl =
+                    ConvertRelativeWindowsPathToUri($"{folderName}",
+                            $"{Path.GetFileNameWithoutExtension(kmlFileName)}Thumbs.json")
+                        .AbsoluteUri;
 
-                if (!string.IsNullOrWhiteSpace(kmlFileName))
-                {
-                    liveExistingConfigModel.LiveImageMarkersJsonUrl =
-                        ConvertRelativeWindowsPathToUri($"{folderName}",
-                                $"{Path.GetFileNameWithoutExtension(kmlFileName)}Thumbs.json")
-                            .AbsoluteUri;
-
-                    liveExistingConfigModel.KmlFileName =
-                        ConvertRelativeWindowsPathToUri(folderName, kmlFileName)
-                            .AbsoluteUri;
-                }
-
+                liveExistingConfigModel.KmlFileName =
+                    ConvertRelativeWindowsPathToUri(folderName, kmlFileName)
+                        .AbsoluteUri;
             }
 
-            if (!string.IsNullOrWhiteSpace(currentLocation))
-            {
-                liveExistingConfigModel.CurrentLocation = ConvertRelativeWindowsPathToUri(rootUrl,
-                        currentLocation)
-                    .AbsoluteUri;
-            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(currentLocation))
+        {
+            liveExistingConfigModel.CurrentLocation = ConvertRelativeWindowsPathToUri(rootUrl,
+                    currentLocation)
+                .AbsoluteUri;
         }
 
         string liveConfigJson = JsonConvert.SerializeObject(liveExistingConfigModel, Formatting.Indented);

@@ -29,9 +29,9 @@ class BroadcastTickReceiver : BroadcastReceiver() {
                 receiveListener.numOfTicks(context, intent)
             }
 
-            IntentAction.FILE_NAME -> {
+            IntentAction.KML_FILE_NAME -> {
                 receiveListener.numOfTicks(context, intent)
-                receiveListener.fileName(context, intent)
+                receiveListener.kmlFileName(context, intent)
             }
 
             IntentAction.RETROFIT_ON_RESPONSE -> {

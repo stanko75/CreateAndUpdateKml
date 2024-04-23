@@ -12,7 +12,6 @@ import com.example.android.foregroundservice.*
 import android.content.ComponentName
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.android.ForegroundServiceBroadcastReceiver
-import com.example.android.ForegroundServiceBroadcastReceiverOnReceive
 import com.example.android.R
 
 class ButtonStart(private val activity: Activity, private val context: Context, private val broadCastReceiver: ForegroundServiceBroadcastReceiver) {
@@ -61,7 +60,7 @@ class ButtonStart(private val activity: Activity, private val context: Context, 
         val folderName = sharedPreferences.getString("folderName", "default")
 
         intentStartForegroundTickService.putExtra(
-            IntentExtras.FILE_NAME,
+            IntentExtras.KML_FILE_NAME,
             fileName
         )
 

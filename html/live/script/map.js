@@ -103,6 +103,13 @@
         $.getJSON(ns.configJson,
             function (data) {
                 callback(data);
+            }).done(function () {
+                console.log("success");
+            }).fail(function (xhr, status, error) {
+                //alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
+                console.log("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
+            }).always(function () {
+                console.log("finished");
             });
     }
 

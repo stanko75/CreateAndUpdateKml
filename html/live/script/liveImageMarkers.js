@@ -43,17 +43,26 @@
                         console.log("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
                     }).always(function () {
                         console.log("finished");
-                    });;
-            }, 5000);
+                    });
+            },
+                5000);
         });
     };
 
     ns.displayAndPushLiveImageMarker = displayAndPushLiveImageMarker;
     ns.markers = [];
+
     function loadJsonConfig(callback) {
         $.getJSON(ns.configJson,
             function (data) {
                 callback(data);
+            }).done(function () {
+                console.log("success");
+            }).fail(function (xhr, status, error) {
+                //alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
+                console.log("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
+            }).always(function () {
+                console.log("finished");
             });
     }
 
