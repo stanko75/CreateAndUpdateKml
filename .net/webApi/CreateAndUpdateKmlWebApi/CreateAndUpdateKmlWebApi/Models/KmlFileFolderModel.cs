@@ -11,6 +11,7 @@ public class KmlFileFolderModel
 
         string kmlFileName = CommonStaticMethods.GetValue(data, "kmlFileName");
         KmlFileName = string.IsNullOrWhiteSpace(kmlFileName) ? "default" : kmlFileName;
+        KmlFileName = Path.ChangeExtension(KmlFileName, "kml");
     }
 
     public string FolderName { get; set; }
