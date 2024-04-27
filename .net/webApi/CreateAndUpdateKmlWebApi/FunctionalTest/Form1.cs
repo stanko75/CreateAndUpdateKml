@@ -9,7 +9,8 @@ public partial class Form1 : Form
 {
 
 
-    private static readonly HttpClient httpClient = new HttpClient();
+    private static readonly HttpClient HttpClientPost = new();
+    private static readonly HttpClient HttpClientGet = new();
 
     public Form1()
     {
@@ -45,6 +46,9 @@ public partial class Form1 : Form
         jObjectKmlFileFolder["folderName"] = folderName.Text;
         jObjectKmlFileFolder["kmlFileName"] = kmlFileName.Text;
 
+        if (string.IsNullOrWhiteSpace(kmlFileName.Text)) kmlFileName.Text = "default";
+        if (string.IsNullOrWhiteSpace(folderName.Text)) folderName.Text = "default";
+
         if (Directory.Exists(gpsLocationsPath))
         {
             foreach (string file in Directory.GetFiles(gpsLocationsPath))
@@ -61,15 +65,56 @@ public partial class Form1 : Form
                 log.AppendText(Environment.NewLine);
                 log.AppendText(Environment.NewLine);
 
-                HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(requestUri, content);
+                HttpResponseMessage httpResponseMessage = await HttpClientPost.PostAsync(requestUri, content);
 
                 log.AppendText(httpResponseMessage.StatusCode.ToString());
                 log.AppendText(Environment.NewLine);
                 log.AppendText("********************************");
                 log.AppendText(Environment.NewLine);
 
+                Uri baseUri = new Uri(addressText);
+                Uri absoluteUri = new Uri(baseUri, "config.json");
+                JObject configJson = null;
+
+                try
+                {
+                    string configJsonString = await HttpClientGet.GetStringAsync(absoluteUri.AbsoluteUri);
+                    configJson = JObject.Parse(configJsonString);
+                }
+                catch (Exception ex)
+                {
+                    log.AppendText("There is error with config.json:");
+                    log.AppendText(Environment.NewLine);
+                    log.AppendText(ex.Message);
+                    log.AppendText(Environment.NewLine);
+                }
+
+                string? klmFileName = configJson?["KmlFileName"]?.ToString();
+                string? currentLocation = configJson?["CurrentLocation"]?.ToString();
+                //string? liveImageMarkersJsonUrl = configJson?["LiveImageMarkersJsonUrl"]?.ToString();
+
+                CheckConfigJson(addressText, folderName.Text, klmFileName, kmlFileName.Text, "kml");
+                CheckConfigJson(addressText, folderName.Text, currentLocation, "test", "json", true);
+
                 await Task.Delay(2000);
             }
+        }
+    }
+
+    private void CheckConfigJson(string addressText, string folderName, string? fileNameInConfigJsonOnWeb, string localFileName,
+        string extension, bool checkInRoot = false)
+    {
+        UriBuilder uriBuilder = new UriBuilder(addressText);
+        uriBuilder.Path = checkInRoot ? Path.ChangeExtension(localFileName, extension) : Path.Combine(folderName, Path.ChangeExtension(localFileName, extension));
+        Uri fileNameUri = uriBuilder.Uri;
+        if (!string.Equals(fileNameInConfigJsonOnWeb, fileNameUri.AbsoluteUri,
+                StringComparison.InvariantCultureIgnoreCase))
+        {
+            log.AppendText(
+                $"There is an error in config.json! {fileNameInConfigJsonOnWeb} is not equal {fileNameUri.AbsoluteUri}!");
+            log.AppendText(Environment.NewLine);
+            throw new Exception(
+                $"There is an error in config.json! {fileNameInConfigJsonOnWeb} is not equal {fileNameUri.AbsoluteUri}!");
         }
     }
 }
