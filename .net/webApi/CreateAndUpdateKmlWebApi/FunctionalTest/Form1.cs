@@ -1,4 +1,7 @@
+using System.CodeDom;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
@@ -31,13 +34,13 @@ public partial class Form1 : Form
 
     private void PostGpsPositionsFromFilesWithFileName_Click(object sender, EventArgs e)
     {
-        Task task = PostGpsPositionsFromFilesWithFileNameMethod();
+        Task task = PostGpsPositionsFromFilesWithFileNameAsync();
 
         log.AppendText(task.Status.ToString());
         log.AppendText(Environment.NewLine);
     }
 
-    async Task PostGpsPositionsFromFilesWithFileNameMethod()
+    async Task PostGpsPositionsFromFilesWithFileNameAsync()
     {
         string addressText = address.Text;
         string gpsLocationsPath = tbGpsLocationsPath.Text;
@@ -65,16 +68,27 @@ public partial class Form1 : Form
                 log.AppendText(Environment.NewLine);
                 log.AppendText(Environment.NewLine);
 
-                HttpResponseMessage httpResponseMessage = await HttpClientPost.PostAsync(requestUri, content);
+                HttpResponseMessage? httpResponseMessage = null;
+                try
+                {
+                    httpResponseMessage = await HttpClientPost.PostAsync(requestUri, content);
+                }
+                catch (Exception ex)
+                {
+                    log.AppendText("There is error with:" + requestUri);
+                    log.AppendText(Environment.NewLine);
+                    log.AppendText(ex.Message);
+                    log.AppendText(Environment.NewLine);
+                }
 
-                log.AppendText(httpResponseMessage.StatusCode.ToString());
+                log.AppendText(httpResponseMessage?.StatusCode.ToString());
                 log.AppendText(Environment.NewLine);
                 log.AppendText("********************************");
                 log.AppendText(Environment.NewLine);
 
                 Uri baseUri = new Uri(addressText);
                 Uri absoluteUri = new Uri(baseUri, "config.json");
-                JObject? configJson = null;
+                JObject? configJson;
 
                 try
                 {
@@ -87,6 +101,7 @@ public partial class Form1 : Form
                     log.AppendText(Environment.NewLine);
                     log.AppendText(ex.Message);
                     log.AppendText(Environment.NewLine);
+                    throw new Exception(ex.Message);
                 }
 
                 string? klmFileName = configJson?["KmlFileName"]?.ToString();
@@ -94,7 +109,8 @@ public partial class Form1 : Form
                 //string? liveImageMarkersJsonUrl = configJson?["LiveImageMarkersJsonUrl"]?.ToString();
 
                 UriBuilder kmlUri = CheckConfigJson(addressText, folderName.Text, klmFileName, kmlFileName.Text, "kml");
-                UriBuilder testJsonUri = CheckConfigJson(addressText, folderName.Text, currentLocation, "test", "json", true);
+                UriBuilder testJsonUri =
+                    CheckConfigJson(addressText, folderName.Text, currentLocation, "test", "json", true);
 
                 try
                 {
@@ -127,21 +143,83 @@ public partial class Form1 : Form
         }
     }
 
-    private UriBuilder CheckConfigJson(string addressText, string folderNameString, string? fileNameInConfigJsonOnWeb, string localFileName,
+    private UriBuilder CheckConfigJson(string addressText, string folderNameString, string? fileNameInConfigJsonOnWeb,
+        string localFileName,
         string extension, bool checkInRoot = false)
     {
         UriBuilder uriBuilder = new UriBuilder(addressText);
-        uriBuilder.Path = checkInRoot ? Path.ChangeExtension(localFileName, extension) : Path.Combine(folderNameString, Path.ChangeExtension(localFileName, extension));
+        uriBuilder.Path = checkInRoot
+            ? Path.ChangeExtension(localFileName, extension)
+            : Path.Combine(folderNameString, Path.ChangeExtension(localFileName, extension));
         Uri fileNameUri = uriBuilder.Uri;
         if (!string.Equals(fileNameInConfigJsonOnWeb, fileNameUri.AbsoluteUri,
                 StringComparison.InvariantCultureIgnoreCase))
         {
-            string message = $"There is an error in config.json! {fileNameInConfigJsonOnWeb} is not equal {fileNameUri.AbsoluteUri}!";
+            string message =
+                $"There is an error in config.json! {fileNameInConfigJsonOnWeb} is not equal {fileNameUri.AbsoluteUri}!";
             log.AppendText(message);
             log.AppendText(Environment.NewLine);
             throw new Exception(message);
         }
 
         return uriBuilder;
+    }
+
+    private void UploadImage_Click(object sender, EventArgs e)
+    {
+        Task task = UploadImageAsync();
+
+        log.AppendText(task.Status.ToString());
+        log.AppendText(Environment.NewLine);
+    }
+
+    async Task UploadImageAsync()
+    {
+        string addressText = address.Text;
+        string imagesPathString = imagesPath.Text;
+        if (Directory.Exists(imagesPathString))
+        {
+            foreach (string imageFile in Directory.GetFiles(imagesPathString))
+            {
+                string base64Image = ConvertImageToBase64(imageFile);
+
+                JObject jObjectKmlFileFolder = new JObject();
+                jObjectKmlFileFolder["folderName"] = folderName.Text;
+                jObjectKmlFileFolder["kmlFileName"] = kmlFileName.Text;
+                jObjectKmlFileFolder["image"] = base64Image;
+
+                string jsonContent = jObjectKmlFileFolder.ToString();
+                StringContent content = new StringContent(jsonContent);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                string requestUri = Path.Combine(addressText, @"api/UpdateCoordinates/UploadImage");
+                log.AppendText($"Sending");
+                log.AppendText(Environment.NewLine);
+                log.AppendText(Environment.NewLine);
+
+                try
+                {
+                    HttpResponseMessage httpResponseMessage = await HttpClientPost.PostAsync(requestUri, content);
+                    log.AppendText(httpResponseMessage.StatusCode.ToString());
+                    log.AppendText(Environment.NewLine);
+                    log.AppendText("********************************");
+                    log.AppendText(Environment.NewLine);
+                }
+                catch (Exception ex)
+                {
+                    log.AppendText(ex.Message);
+                    log.AppendText(Environment.NewLine);
+                    log.AppendText("********************************");
+                    log.AppendText(Environment.NewLine);
+                    throw new Exception(ex.Message);
+                }
+            }
+        }
+    }
+
+    static string ConvertImageToBase64(string imagePath)
+    {
+        byte[] imageBytes = File.ReadAllBytes(imagePath);
+        return Convert.ToBase64String(imageBytes);
     }
 }

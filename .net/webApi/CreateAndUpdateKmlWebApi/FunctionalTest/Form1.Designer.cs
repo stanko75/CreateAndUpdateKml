@@ -32,14 +32,17 @@
             panel1 = new Panel();
             log = new TextBox();
             panel2 = new Panel();
+            label5 = new Label();
+            imagesPath = new TextBox();
+            label4 = new Label();
+            tbGpsLocationsPath = new TextBox();
             label3 = new Label();
             address = new TextBox();
             folderName = new TextBox();
             label2 = new Label();
             label1 = new Label();
             kmlFileName = new TextBox();
-            tbGpsLocationsPath = new TextBox();
-            label4 = new Label();
+            UploadImage = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
@@ -59,9 +62,9 @@
             // 
             panel1.Controls.Add(log);
             panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(0, 124);
+            panel1.Location = new Point(0, 159);
             panel1.Name = "panel1";
-            panel1.Size = new Size(800, 303);
+            panel1.Size = new Size(800, 268);
             panel1.TabIndex = 1;
             // 
             // log
@@ -70,11 +73,13 @@
             log.Location = new Point(0, 0);
             log.Multiline = true;
             log.Name = "log";
-            log.Size = new Size(800, 303);
+            log.Size = new Size(800, 268);
             log.TabIndex = 0;
             // 
             // panel2
             // 
+            panel2.Controls.Add(label5);
+            panel2.Controls.Add(imagesPath);
             panel2.Controls.Add(label4);
             panel2.Controls.Add(tbGpsLocationsPath);
             panel2.Controls.Add(label3);
@@ -86,8 +91,40 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(800, 124);
+            panel2.Size = new Size(800, 159);
             panel2.TabIndex = 2;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(12, 124);
+            label5.Name = "label5";
+            label5.Size = new Size(75, 15);
+            label5.TabIndex = 9;
+            label5.Text = "Images path:";
+            // 
+            // imagesPath
+            // 
+            imagesPath.Location = new Point(118, 121);
+            imagesPath.Name = "imagesPath";
+            imagesPath.Size = new Size(608, 23);
+            imagesPath.TabIndex = 8;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(12, 41);
+            label4.Name = "label4";
+            label4.Size = new Size(103, 15);
+            label4.TabIndex = 7;
+            label4.Text = "Gps location path:";
+            // 
+            // tbGpsLocationsPath
+            // 
+            tbGpsLocationsPath.Location = new Point(118, 41);
+            tbGpsLocationsPath.Name = "tbGpsLocationsPath";
+            tbGpsLocationsPath.Size = new Size(608, 23);
+            tbGpsLocationsPath.TabIndex = 6;
             // 
             // label3
             // 
@@ -137,27 +174,23 @@
             kmlFileName.Size = new Size(608, 23);
             kmlFileName.TabIndex = 0;
             // 
-            // tbGpsLocationsPath
+            // UploadImage
             // 
-            tbGpsLocationsPath.Location = new Point(118, 41);
-            tbGpsLocationsPath.Name = "tbGpsLocationsPath";
-            tbGpsLocationsPath.Size = new Size(608, 23);
-            tbGpsLocationsPath.TabIndex = 6;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(12, 41);
-            label4.Name = "label4";
-            label4.Size = new Size(103, 15);
-            label4.TabIndex = 7;
-            label4.Text = "Gps location path:";
+            UploadImage.Dock = DockStyle.Bottom;
+            UploadImage.Location = new Point(0, 404);
+            UploadImage.Name = "UploadImage";
+            UploadImage.Size = new Size(800, 23);
+            UploadImage.TabIndex = 3;
+            UploadImage.Text = "UploadImage";
+            UploadImage.UseVisualStyleBackColor = true;
+            UploadImage.Click += UploadImage_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(UploadImage);
             Controls.Add(panel1);
             Controls.Add(panel2);
             Controls.Add(PostGpsPositionsFromFilesWithFileName);
@@ -184,5 +217,8 @@
         private TextBox address;
         private Label label4;
         private TextBox tbGpsLocationsPath;
+        private Button UploadImage;
+        private Label label5;
+        private TextBox imagesPath;
     }
 }
