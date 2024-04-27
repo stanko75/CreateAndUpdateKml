@@ -110,11 +110,10 @@ public partial class Form1 : Form
         if (!string.Equals(fileNameInConfigJsonOnWeb, fileNameUri.AbsoluteUri,
                 StringComparison.InvariantCultureIgnoreCase))
         {
-            log.AppendText(
-                $"There is an error in config.json! {fileNameInConfigJsonOnWeb} is not equal {fileNameUri.AbsoluteUri}!");
+            string message = $"There is an error in config.json! {fileNameInConfigJsonOnWeb} is not equal {fileNameUri.AbsoluteUri}!";
+            log.AppendText(message);
             log.AppendText(Environment.NewLine);
-            throw new Exception(
-                $"There is an error in config.json! {fileNameInConfigJsonOnWeb} is not equal {fileNameUri.AbsoluteUri}!");
+            throw new Exception(message);
         }
     }
 }
