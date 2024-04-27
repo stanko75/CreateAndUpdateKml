@@ -94,7 +94,7 @@ public partial class Form1 : Form
                 //string? liveImageMarkersJsonUrl = configJson?["LiveImageMarkersJsonUrl"]?.ToString();
 
                 UriBuilder kmlUri = CheckConfigJson(addressText, folderName.Text, klmFileName, kmlFileName.Text, "kml");
-                UriBuilder tesJsonUri = CheckConfigJson(addressText, folderName.Text, currentLocation, "test", "json", true);
+                UriBuilder testJsonUri = CheckConfigJson(addressText, folderName.Text, currentLocation, "test", "json", true);
 
                 try
                 {
@@ -102,7 +102,20 @@ public partial class Form1 : Form
                 }
                 catch (Exception ex)
                 {
-                    log.AppendText("There is error with kmlFile:" + kmlUri.Uri.AbsoluteUri.ToString());
+                    log.AppendText("There is error with kmlFile:" + kmlUri.Uri.AbsoluteUri);
+                    log.AppendText(Environment.NewLine);
+                    log.AppendText(ex.Message);
+                    log.AppendText(Environment.NewLine);
+                    throw new Exception(ex.Message);
+                }
+
+                try
+                {
+                    string testJsonString = await HttpClientGet.GetStringAsync(testJsonUri.Uri.AbsoluteUri);
+                }
+                catch (Exception ex)
+                {
+                    log.AppendText("There is error with test.json:" + testJsonUri.Uri.AbsoluteUri);
                     log.AppendText(Environment.NewLine);
                     log.AppendText(ex.Message);
                     log.AppendText(Environment.NewLine);
