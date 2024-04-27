@@ -74,7 +74,7 @@ public partial class Form1 : Form
 
                 Uri baseUri = new Uri(addressText);
                 Uri absoluteUri = new Uri(baseUri, "config.json");
-                JObject configJson = null;
+                JObject? configJson = null;
 
                 try
                 {
@@ -83,7 +83,7 @@ public partial class Form1 : Form
                 }
                 catch (Exception ex)
                 {
-                    log.AppendText("There is error with config.json:");
+                    log.AppendText("There is error with config.json:" + absoluteUri.AbsoluteUri.ToString());
                     log.AppendText(Environment.NewLine);
                     log.AppendText(ex.Message);
                     log.AppendText(Environment.NewLine);
@@ -93,19 +93,32 @@ public partial class Form1 : Form
                 string? currentLocation = configJson?["CurrentLocation"]?.ToString();
                 //string? liveImageMarkersJsonUrl = configJson?["LiveImageMarkersJsonUrl"]?.ToString();
 
-                CheckConfigJson(addressText, folderName.Text, klmFileName, kmlFileName.Text, "kml");
-                CheckConfigJson(addressText, folderName.Text, currentLocation, "test", "json", true);
+                UriBuilder kmlUri = CheckConfigJson(addressText, folderName.Text, klmFileName, kmlFileName.Text, "kml");
+                UriBuilder tesJsonUri = CheckConfigJson(addressText, folderName.Text, currentLocation, "test", "json", true);
+
+                try
+                {
+                    string kmlFileString = await HttpClientGet.GetStringAsync(kmlUri.Uri.AbsoluteUri);
+                }
+                catch (Exception ex)
+                {
+                    log.AppendText("There is error with kmlFile:" + kmlUri.Uri.AbsoluteUri.ToString());
+                    log.AppendText(Environment.NewLine);
+                    log.AppendText(ex.Message);
+                    log.AppendText(Environment.NewLine);
+                    throw new Exception(ex.Message);
+                }
 
                 await Task.Delay(2000);
             }
         }
     }
 
-    private void CheckConfigJson(string addressText, string folderName, string? fileNameInConfigJsonOnWeb, string localFileName,
+    private UriBuilder CheckConfigJson(string addressText, string folderNameString, string? fileNameInConfigJsonOnWeb, string localFileName,
         string extension, bool checkInRoot = false)
     {
         UriBuilder uriBuilder = new UriBuilder(addressText);
-        uriBuilder.Path = checkInRoot ? Path.ChangeExtension(localFileName, extension) : Path.Combine(folderName, Path.ChangeExtension(localFileName, extension));
+        uriBuilder.Path = checkInRoot ? Path.ChangeExtension(localFileName, extension) : Path.Combine(folderNameString, Path.ChangeExtension(localFileName, extension));
         Uri fileNameUri = uriBuilder.Uri;
         if (!string.Equals(fileNameInConfigJsonOnWeb, fileNameUri.AbsoluteUri,
                 StringComparison.InvariantCultureIgnoreCase))
@@ -115,5 +128,7 @@ public partial class Form1 : Form
             log.AppendText(Environment.NewLine);
             throw new Exception(message);
         }
+
+        return uriBuilder;
     }
 }
