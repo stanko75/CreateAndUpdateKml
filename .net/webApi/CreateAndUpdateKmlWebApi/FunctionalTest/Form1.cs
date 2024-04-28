@@ -179,6 +179,9 @@ public partial class Form1 : Form
 
     async Task UploadImageAsync()
     {
+        if (string.IsNullOrWhiteSpace(kmlFileName.Text)) kmlFileName.Text = "default";
+        if (string.IsNullOrWhiteSpace(folderName.Text)) folderName.Text = "default";
+
         string addressText = address.Text;
         string imagesPathString = imagesPath.Text;
         if (Directory.Exists(imagesPathString))
@@ -227,7 +230,32 @@ public partial class Form1 : Form
                     throw new Exception(ex.Message);
                 }
 
-                JObject configJson = await GetConfigJson(absoluteUri.AbsoluteUri);
+                JObject configJson = await GetConfigJson(GetConfigJsonUri(addressText).AbsoluteUri);
+                string liveImageMarkersJson = configJson["LiveImageMarkersJsonUrl"]?.ToString();
+
+                UriBuilder liveImageMarkersJsonUri = CheckConfigJson(addressText, folderName.Text, liveImageMarkersJson, $"{kmlFileName.Text}Thumbs", "json");
+                string liveImageMarkersJsonstring;
+                try
+                {
+                    liveImageMarkersJsonstring = await HttpClientGet.GetStringAsync(liveImageMarkersJsonUri.Uri.AbsoluteUri);
+                }
+                catch (Exception ex)
+                {
+                    log.AppendText("There is error with thumbs file:" + liveImageMarkersJsonUri.Uri.AbsoluteUri);
+                    log.AppendText(Environment.NewLine);
+                    log.AppendText(ex.Message);
+                    log.AppendText(Environment.NewLine);
+                    throw new Exception(ex.Message);
+                }
+
+                if (!liveImageMarkersJsonstring.Contains(Path.GetFileName(imageFile)))
+                {
+                    string message = $"{Path.GetFileName(imageFile)} is not included in thumbs!";
+                    log.AppendText(message);
+                    log.AppendText(Environment.NewLine);
+                    throw new Exception(message);
+                }
+
             }
         }
     }
