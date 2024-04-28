@@ -83,9 +83,7 @@ public partial class Form1 : Form
                 log.AppendText("********************************");
                 log.AppendText(Environment.NewLine);
 
-                Uri baseUri = new Uri(addressText);
-                Uri absoluteUri = new Uri(baseUri, "config.json");
-                JObject configJson = await GetConfigJson(absoluteUri.AbsoluteUri);
+                JObject configJson = await GetConfigJson(GetConfigJsonUri(addressText).AbsoluteUri);
 
                 string? klmFileName = configJson?["KmlFileName"]?.ToString();
                 string? currentLocation = configJson?["CurrentLocation"]?.ToString();
@@ -124,6 +122,12 @@ public partial class Form1 : Form
                 await Task.Delay(2000);
             }
         }
+    }
+
+    private Uri GetConfigJsonUri(string addressText)
+    {
+        Uri baseUri = new Uri(addressText);
+        return new Uri(baseUri, "config.json");
     }
 
     private async Task<JObject> GetConfigJson(string uri)
@@ -222,6 +226,8 @@ public partial class Form1 : Form
                     log.AppendText(Environment.NewLine);
                     throw new Exception(ex.Message);
                 }
+
+                JObject configJson = await GetConfigJson(absoluteUri.AbsoluteUri);
             }
         }
     }
