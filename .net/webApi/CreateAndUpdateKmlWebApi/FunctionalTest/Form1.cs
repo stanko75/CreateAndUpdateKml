@@ -1,6 +1,3 @@
-using System.CodeDom;
-using System.Net;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.Extensions.Configuration;
@@ -88,21 +85,7 @@ public partial class Form1 : Form
 
                 Uri baseUri = new Uri(addressText);
                 Uri absoluteUri = new Uri(baseUri, "config.json");
-                JObject? configJson;
-
-                try
-                {
-                    string configJsonString = await HttpClientGet.GetStringAsync(absoluteUri.AbsoluteUri);
-                    configJson = JObject.Parse(configJsonString);
-                }
-                catch (Exception ex)
-                {
-                    log.AppendText("There is error with config.json:" + absoluteUri.AbsoluteUri.ToString());
-                    log.AppendText(Environment.NewLine);
-                    log.AppendText(ex.Message);
-                    log.AppendText(Environment.NewLine);
-                    throw new Exception(ex.Message);
-                }
+                JObject configJson = await GetConfigJson(absoluteUri.AbsoluteUri);
 
                 string? klmFileName = configJson?["KmlFileName"]?.ToString();
                 string? currentLocation = configJson?["CurrentLocation"]?.ToString();
@@ -140,6 +123,23 @@ public partial class Form1 : Form
 
                 await Task.Delay(2000);
             }
+        }
+    }
+
+    private async Task<JObject> GetConfigJson(string uri)
+    {
+        try
+        {
+            string configJsonString = await HttpClientGet.GetStringAsync(uri);
+            return JObject.Parse(configJsonString);
+        }
+        catch (Exception ex)
+        {
+            log.AppendText("There is error with config.json:" + uri);
+            log.AppendText(Environment.NewLine);
+            log.AppendText(ex.Message);
+            log.AppendText(Environment.NewLine);
+            throw new Exception(ex.Message);
         }
     }
 
