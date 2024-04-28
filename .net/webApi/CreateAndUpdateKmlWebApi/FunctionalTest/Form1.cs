@@ -186,7 +186,8 @@ public partial class Form1 : Form
                 JObject jObjectKmlFileFolder = new JObject();
                 jObjectKmlFileFolder["folderName"] = folderName.Text;
                 jObjectKmlFileFolder["kmlFileName"] = kmlFileName.Text;
-                jObjectKmlFileFolder["image"] = base64Image;
+                jObjectKmlFileFolder["base64Image"] = base64Image;
+                jObjectKmlFileFolder["imageFileName"] = Path.GetFileName(imageFile);
 
                 string jsonContent = jObjectKmlFileFolder.ToString();
                 StringContent content = new StringContent(jsonContent);
@@ -202,6 +203,14 @@ public partial class Form1 : Form
                     HttpResponseMessage httpResponseMessage = await HttpClientPost.PostAsync(requestUri, content);
                     log.AppendText(httpResponseMessage.StatusCode.ToString());
                     log.AppendText(Environment.NewLine);
+                    if (!httpResponseMessage.IsSuccessStatusCode)
+                    {
+                        string errorMessage = await httpResponseMessage.Content.ReadAsStringAsync();
+                        log.AppendText(Environment.NewLine);
+                        log.AppendText(errorMessage);
+                        log.AppendText(Environment.NewLine);
+                        throw new Exception(errorMessage);
+                    }
                     log.AppendText("********************************");
                     log.AppendText(Environment.NewLine);
                 }
