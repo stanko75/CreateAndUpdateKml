@@ -100,7 +100,7 @@ public class UpdateCoordinatesController : ControllerBase
             string folder = CommonStaticMethods.GetValue(data, "folderName");
             folder = string.IsNullOrWhiteSpace(folder) ? "default" : folder;
 
-            string fileName = CommonStaticMethods.GetValue(data, "fileName");
+            string fileName = CommonStaticMethods.GetValue(data, "kmlFileName");
             fileName = string.IsNullOrWhiteSpace(fileName) ? "default" : fileName;
 
             string host = CommonStaticMethods.GetValue(data, "host");
