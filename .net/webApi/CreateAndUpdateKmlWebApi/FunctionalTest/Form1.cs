@@ -26,6 +26,15 @@ public partial class Form1 : Form
 
             string? gpsLocationsPath = configuration.GetSection("gpsLocationsPath").Value;
             if (gpsLocationsPath is not null) tbGpsLocationsPath.Text = gpsLocationsPath;
+
+            string? ftpUser = configuration.GetSection("ftpUser").Value;
+            if (gpsLocationsPath is not null) tbFtpUser.Text = ftpUser;
+
+            string? ftpHost = configuration.GetSection("ftpHost").Value;
+            if (gpsLocationsPath is not null) tbFtpHost.Text = ftpHost;
+
+            string? ftpPass = configuration.GetSection("ftpPass").Value;
+            if (gpsLocationsPath is not null) tbFtpPass.Text = ftpPass;
         }
     }
 
@@ -264,5 +273,59 @@ public partial class Form1 : Form
     {
         byte[] imageBytes = File.ReadAllBytes(imagePath);
         return Convert.ToBase64String(imageBytes);
+    }
+
+    private void UploadToBlog_Click(object sender, EventArgs e)
+    {
+        Task task = UploadToBlogAsync();
+
+        log.AppendText(task.Status.ToString());
+        log.AppendText(Environment.NewLine);
+    }
+
+    async Task UploadToBlogAsync()
+    {
+        string addressText = address.Text;
+
+        JObject jObjectKmlFileFolder = new JObject();
+        jObjectKmlFileFolder["folderName"] = folderName.Text;
+        jObjectKmlFileFolder["kmlFileName"] = kmlFileName.Text;
+        jObjectKmlFileFolder["host"] = tbFtpHost.Text;
+        jObjectKmlFileFolder["user"] = tbFtpUser.Text;
+        jObjectKmlFileFolder["pass"] = tbFtpPass.Text;
+
+        string jsonContent = jObjectKmlFileFolder.ToString();
+        StringContent content = new StringContent(jsonContent);
+        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+        string requestUri = Path.Combine(addressText, @"api/UpdateCoordinates/UploadToBlog");
+        log.AppendText("Sending");
+        log.AppendText(Environment.NewLine);
+        log.AppendText(Environment.NewLine);
+
+        try
+        {
+            HttpResponseMessage httpResponseMessage = await HttpClientPost.PostAsync(requestUri, content);
+            log.AppendText(httpResponseMessage.StatusCode.ToString());
+            log.AppendText(Environment.NewLine);
+            //if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                string errorMessage = await httpResponseMessage.Content.ReadAsStringAsync();
+                log.AppendText(Environment.NewLine);
+                log.AppendText(errorMessage);
+                log.AppendText(Environment.NewLine);
+                throw new Exception(errorMessage);
+            }
+            log.AppendText("********************************");
+            log.AppendText(Environment.NewLine);
+        }
+        catch (Exception ex)
+        {
+            log.AppendText(ex.Message);
+            log.AppendText(Environment.NewLine);
+            log.AppendText("********************************");
+            log.AppendText(Environment.NewLine);
+            throw new Exception(ex.Message);
+        }
     }
 }

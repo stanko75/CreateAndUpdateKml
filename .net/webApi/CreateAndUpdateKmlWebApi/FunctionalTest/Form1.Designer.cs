@@ -32,6 +32,12 @@
             panel1 = new Panel();
             log = new TextBox();
             panel2 = new Panel();
+            label8 = new Label();
+            tbFtpHost = new TextBox();
+            label7 = new Label();
+            tbFtpPass = new TextBox();
+            label6 = new Label();
+            tbFtpUser = new TextBox();
             label5 = new Label();
             imagesPath = new TextBox();
             label4 = new Label();
@@ -43,6 +49,7 @@
             label1 = new Label();
             kmlFileName = new TextBox();
             UploadImage = new Button();
+            UploadToBlog = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
@@ -50,7 +57,7 @@
             // PostGpsPositionsFromFilesWithFileName
             // 
             PostGpsPositionsFromFilesWithFileName.Dock = DockStyle.Bottom;
-            PostGpsPositionsFromFilesWithFileName.Location = new Point(0, 427);
+            PostGpsPositionsFromFilesWithFileName.Location = new Point(0, 381);
             PostGpsPositionsFromFilesWithFileName.Name = "PostGpsPositionsFromFilesWithFileName";
             PostGpsPositionsFromFilesWithFileName.Size = new Size(800, 23);
             PostGpsPositionsFromFilesWithFileName.TabIndex = 0;
@@ -62,9 +69,9 @@
             // 
             panel1.Controls.Add(log);
             panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(0, 159);
+            panel1.Location = new Point(0, 260);
             panel1.Name = "panel1";
-            panel1.Size = new Size(800, 268);
+            panel1.Size = new Size(800, 121);
             panel1.TabIndex = 1;
             // 
             // log
@@ -73,11 +80,18 @@
             log.Location = new Point(0, 0);
             log.Multiline = true;
             log.Name = "log";
-            log.Size = new Size(800, 268);
+            log.ScrollBars = ScrollBars.Both;
+            log.Size = new Size(800, 121);
             log.TabIndex = 0;
             // 
             // panel2
             // 
+            panel2.Controls.Add(label8);
+            panel2.Controls.Add(tbFtpHost);
+            panel2.Controls.Add(label7);
+            panel2.Controls.Add(tbFtpPass);
+            panel2.Controls.Add(label6);
+            panel2.Controls.Add(tbFtpUser);
             panel2.Controls.Add(label5);
             panel2.Controls.Add(imagesPath);
             panel2.Controls.Add(label4);
@@ -91,8 +105,56 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(800, 159);
+            panel2.Size = new Size(800, 260);
             panel2.TabIndex = 2;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(12, 211);
+            label8.Name = "label8";
+            label8.Size = new Size(53, 15);
+            label8.TabIndex = 15;
+            label8.Text = "Ftp host:";
+            // 
+            // tbFtpHost
+            // 
+            tbFtpHost.Location = new Point(118, 208);
+            tbFtpHost.Name = "tbFtpHost";
+            tbFtpHost.Size = new Size(608, 23);
+            tbFtpHost.TabIndex = 14;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(12, 182);
+            label7.Name = "label7";
+            label7.Size = new Size(53, 15);
+            label7.TabIndex = 13;
+            label7.Text = "Ftp pass:";
+            // 
+            // tbFtpPass
+            // 
+            tbFtpPass.Location = new Point(118, 179);
+            tbFtpPass.Name = "tbFtpPass";
+            tbFtpPass.Size = new Size(608, 23);
+            tbFtpPass.TabIndex = 12;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(12, 153);
+            label6.Name = "label6";
+            label6.Size = new Size(52, 15);
+            label6.TabIndex = 11;
+            label6.Text = "Ftp user:";
+            // 
+            // tbFtpUser
+            // 
+            tbFtpUser.Location = new Point(118, 150);
+            tbFtpUser.Name = "tbFtpUser";
+            tbFtpUser.Size = new Size(608, 23);
+            tbFtpUser.TabIndex = 10;
             // 
             // label5
             // 
@@ -185,15 +247,27 @@
             UploadImage.UseVisualStyleBackColor = true;
             UploadImage.Click += UploadImage_Click;
             // 
+            // UploadToBlog
+            // 
+            UploadToBlog.Dock = DockStyle.Bottom;
+            UploadToBlog.Location = new Point(0, 427);
+            UploadToBlog.Name = "UploadToBlog";
+            UploadToBlog.Size = new Size(800, 23);
+            UploadToBlog.TabIndex = 4;
+            UploadToBlog.Text = "UploadToBlog";
+            UploadToBlog.UseVisualStyleBackColor = true;
+            UploadToBlog.Click += UploadToBlog_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(UploadImage);
             Controls.Add(panel1);
             Controls.Add(panel2);
             Controls.Add(PostGpsPositionsFromFilesWithFileName);
+            Controls.Add(UploadImage);
+            Controls.Add(UploadToBlog);
             Name = "Form1";
             Text = "Form1";
             panel1.ResumeLayout(false);
@@ -220,5 +294,12 @@
         private Button UploadImage;
         private Label label5;
         private TextBox imagesPath;
+        private Button UploadToBlog;
+        private Label label8;
+        private TextBox tbFtpHost;
+        private Label label7;
+        private TextBox tbFtpPass;
+        private Label label6;
+        private TextBox tbFtpUser;
     }
 }
