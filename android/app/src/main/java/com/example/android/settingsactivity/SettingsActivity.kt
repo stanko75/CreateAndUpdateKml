@@ -25,7 +25,7 @@ class SettingsActivity : AppCompatActivity() {
         //ToDo do it in MVVM
         val sharedPreferences = activityContext.getSharedPreferences("settings", Context.MODE_PRIVATE)
 
-        val fileName = sharedPreferences.getString("fileName", "default")
+        val fileName = sharedPreferences.getString("kmlFileName", "default")
         val folderName = sharedPreferences.getString("folderName", "default")
 
         bindingSettingsActivity.editTextFileName.setText(fileName)

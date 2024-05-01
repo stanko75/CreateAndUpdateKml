@@ -56,7 +56,7 @@ class ButtonStart(private val activity: Activity, private val context: Context, 
         )
 
         val sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-        val fileName = sharedPreferences.getString("fileName", "default")
+        val fileName = sharedPreferences.getString("kmlFileName", "default")
         val folderName = sharedPreferences.getString("folderName", "default")
 
         intentStartForegroundTickService.putExtra(

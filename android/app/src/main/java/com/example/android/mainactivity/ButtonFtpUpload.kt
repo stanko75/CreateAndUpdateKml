@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.android.Config
 import com.example.android.CreateRetrofitBuilder
+import com.example.android.location.FileFolderLocationModel
 import com.example.android.logger.ActivityLogger
 import com.example.android.logger.LogEntry
 import com.example.android.logger.LoggingEventType
@@ -34,9 +35,9 @@ class ButtonFtpUpload(private val activity: Activity, private val context: Conte
         ftpModel.user = ftpSharedPreferences.getString("user", "")
         ftpModel.pass = ftpSharedPreferences.getString("pass", "")
         ftpModel.folderName = fileAndFolderNameSharedPreferences.getString("folderName", "")
-        ftpModel.fileName =
+        ftpModel.kmlFileName =
             ftpModel.folderName + "\\" + fileAndFolderNameSharedPreferences.getString(
-                "fileName",
+                "kmlFileName",
                 ""
             )
 
@@ -44,7 +45,7 @@ class ButtonFtpUpload(private val activity: Activity, private val context: Conte
         activityLogger.Log(
             LogEntry(
                 LoggingEventType.Information,
-                "Ftp upload executed, sending fileName: ${ftpModel.fileName}"
+                "Ftp upload executed, sending fileName: ${ftpModel.kmlFileName}"
             )
         )
 
@@ -57,11 +58,9 @@ class ButtonFtpUpload(private val activity: Activity, private val context: Conte
         ).uploadToBlogHttpPost(gson.toJson(ftpModel));
     }
 
-    class FtpModel {
+    class FtpModel: FileFolderLocationModel() {
         var host: String? = null
         var user: String? = null
         var pass: String? = null
-        var folderName: String? = null
-        var fileName: String? = null
     }
 }

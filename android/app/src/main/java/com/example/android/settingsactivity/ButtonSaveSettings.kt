@@ -10,7 +10,7 @@ class ButtonSaveSettings(private val context: Context, private val fileName: Str
 
         val sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.putString("fileName", fileName)
+        editor.putString("kmlFileName", fileName)
         editor.putString("folderName", folderName)
         editor.apply()
     }
