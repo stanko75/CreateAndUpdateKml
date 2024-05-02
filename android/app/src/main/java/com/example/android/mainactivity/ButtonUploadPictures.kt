@@ -19,7 +19,7 @@ class ButtonUploadPictures(
             context.getSharedPreferences("settings", Context.MODE_PRIVATE)
 
         val folderName: String = fileAndFolderNameSharedPreferences.getString("folderName", "").toString()
-        val kmlFileName: String = fileAndFolderNameSharedPreferences.getString("fileName", "").toString()
+        val kmlFileName: String = fileAndFolderNameSharedPreferences.getString("kmlFileName", "").toString()
 
         for (image in images) {
             val cursor = context.contentResolver.query(image, null, null, null, null)
