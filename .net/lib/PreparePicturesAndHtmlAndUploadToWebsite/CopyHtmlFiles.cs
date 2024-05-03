@@ -1,6 +1,6 @@
 ﻿namespace PreparePicturesAndHtmlAndUploadToWebsite;
 
-public class PrepareHtmlFiles: IPrepareHtmlFiles
+public class CopyHtmlFiles: ICopyHtmlFiles
 {
     //copy HTML template for blog (html\blog) to another folder (prepareForUpload/nameofAlbum)
     public void CopyHtmlTemplateForBlog(

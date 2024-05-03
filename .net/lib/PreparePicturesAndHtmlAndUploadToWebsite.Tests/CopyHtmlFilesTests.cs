@@ -1,14 +1,14 @@
 ﻿namespace PreparePicturesAndHtmlAndUploadToWebsite.Tests;
 
 [TestClass]
-public class PrepareHtmlFilesTests
+public class CopyHtmlFilesTests
 {
     [TestMethod]
     public void RaiseDirectoryNotFoundException()
     {
-        PrepareHtmlFiles prepareHtmlFiles = new PrepareHtmlFiles();
+        CopyHtmlFiles copyHtmlFiles = new CopyHtmlFiles();
         DirectoryNotFoundException directoryNotFoundException = Assert.ThrowsException<DirectoryNotFoundException>(() =>
-            prepareHtmlFiles.CopyHtmlTemplateForBlog(@"html\blog1", "prepareForUpload", "nameOfAlbum", "test.kml"));
+            copyHtmlFiles.CopyHtmlTemplateForBlog(@"html\blog1", "prepareForUpload", "nameOfAlbum", "test.kml"));
         Assert.AreEqual(directoryNotFoundException.Message,
             @"The folder C:\projects\CreateAndUpdateKml\.net\lib\PreparePicturesAndHtmlAndUploadToWebsite.Tests\bin\Debug\net8.0\html\blog1 does not exist!");
     }
@@ -22,9 +22,9 @@ public class PrepareHtmlFilesTests
             File.Delete(fileName);
         }
 
-        PrepareHtmlFiles prepareHtmlFiles = new PrepareHtmlFiles();
+        CopyHtmlFiles copyHtmlFiles = new CopyHtmlFiles();
         FileNotFoundException fileNotFoundException = Assert.ThrowsException<FileNotFoundException>(() =>
-            prepareHtmlFiles.CopyHtmlTemplateForBlog(@"..\..\..\..\..\..\html\blog", "prepareForUpload", "nameOfAlbum",
+            copyHtmlFiles.CopyHtmlTemplateForBlog(@"..\..\..\..\..\..\html\blog", "prepareForUpload", "nameOfAlbum",
                 fileName));
         Assert.AreEqual(fileNotFoundException.Message,
             "The file test.kml does not exist. Absolute path: C:\\projects\\CreateAndUpdateKml\\.net\\lib\\PreparePicturesAndHtmlAndUploadToWebsite.Tests\\bin\\Debug\\net8.0\\test.kml");
@@ -39,8 +39,8 @@ public class PrepareHtmlFilesTests
         string extension = ".kml";
         fileName = CommonMethodsForTests.Common.ChangeFileExtension(fileName, extension);
 
-        PrepareHtmlFiles prepareHtmlFiles = new PrepareHtmlFiles();
-        prepareHtmlFiles.CopyHtmlTemplateForBlog(@"html\blog"
+        CopyHtmlFiles copyHtmlFiles = new CopyHtmlFiles();
+        copyHtmlFiles.CopyHtmlTemplateForBlog(@"html\blog"
             , "prepareForUpload"
             , folder
             , fileName);

@@ -1,6 +1,6 @@
 ﻿namespace PreparePicturesAndHtmlAndUploadToWebsite;
 
-public interface IPrepareHtmlFiles
+public interface ICopyHtmlFiles
 {
     public void CopyHtmlTemplateForBlog(
         string htmlTemplateFolderWithRelativePath

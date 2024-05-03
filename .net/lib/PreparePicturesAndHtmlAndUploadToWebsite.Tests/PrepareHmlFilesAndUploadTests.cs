@@ -30,15 +30,15 @@ public class PrepareHmlFilesAndUploadTests
         string user = _configuration.GetSection("user").Value ?? string.Empty;
         string pass = _configuration.GetSection("pass").Value ?? string.Empty;
 
-        PrepareHtmlFilesAndUpload prepareHmlFilesAndUpload = new PrepareHtmlFilesAndUpload(
-            new PrepareHtmlFiles()
+        CopyHtmlFilesAndUpload copyHmlFilesAndUpload = new CopyHtmlFilesAndUpload(
+            new CopyHtmlFiles()
             , new MirrorDirAndFileStructureOnFtp(
                 new FtpUpload(host, user, pass)
             )
             , new WriteConfigurationToJsonFile()
         );
 
-        prepareHmlFilesAndUpload.Execute(
+        copyHmlFilesAndUpload.Execute(
             @"..\..\..\..\..\..\html\blog"
             , "prepareForUpload"
             , "nameOfAlbum"
