@@ -1,43 +1,43 @@
 (function (ns) {
     /*globals google, map, $*/
     "use strict";
-    var map,
-		gpsLatLng,
-		marker;
+    var map;
 		
     function initMap() {
-		loadJSONConfig(function (config) {
-			try {
-				map = new google.maps.Map(document.getElementById('map-canvas'), {
-					scrollWheel: true,
-					zoom: 20
-				});
-				
-				var kmlLayer = new google.maps.KmlLayer({
-					url: config.kmlUrl, 
-					map: map					
-				});			
-				
-				ns.map = map;
-			}
-			catch (e) {
-				console.log(e);
-				setTimeout(function () {
-					if (typeof google !== 'object') {
-						location.reload();
-					}
-				}, 1000);
-			}			
-		})
-	}
+        loadJsonConfig(function(config) {
+            try {
+                map = new google.maps.Map(document.getElementById('map-canvas'),
+                    {
+                        scrollWheel: true,
+                        zoom: 20
+                    });
+
+                var kmlLayer = new google.maps.KmlLayer({
+                    url: config.kmlUrl,
+                    map: map
+                });
+
+                ns.map = map;
+            } catch (e) {
+                console.log(e);
+                setTimeout(function() {
+                        if (typeof google !== 'object') {
+                            location.reload();
+                        }
+                    },
+                    1000);
+            }
+        });
+    }
 	
-	function loadJSONConfig(callback) {	
-		$.getJSON("config.json", function (data) {
-			callback(data);
-		}).fail(function(xhr, status, error) {
-			alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
-		})
-	}
+	function loadJsonConfig(callback) {
+        $.getJSON("config.json",
+            function(data) {
+                callback(data);
+            }).fail(function(xhr, status, error) {
+            alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
+        });
+    }
 
     ns.initMap = initMap;
 
