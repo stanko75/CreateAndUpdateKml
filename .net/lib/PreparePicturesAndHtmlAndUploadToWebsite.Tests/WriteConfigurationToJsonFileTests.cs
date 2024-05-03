@@ -28,7 +28,7 @@ public class WriteConfigurationToJsonFileTests
         CreateConfigurationFileAndCheckIfExists();
         JObject configJson = JObject.Parse(File.ReadAllText("config.json"));
         Assert.IsNotNull(configJson);
-        Assert.IsTrue(configJson["kmlUrl"].ToString().Equals("https://www.milosev.com/test.kml"), $"Value is {configJson["kmlUrl"]}");
+        Assert.IsTrue(configJson["KmlFileName"].ToString().Equals("https://www.milosev.com/test.kml"), $"Value is {configJson["kmlUrl"]}");
     }
 
     [TestMethod]
@@ -44,7 +44,7 @@ public class WriteConfigurationToJsonFileTests
 
         JObject configJson = JObject.Parse(File.ReadAllText(@"prepareForUpload\album1\config.json"));
         Assert.IsNotNull(configJson);
-        Assert.IsTrue(configJson["kmlUrl"].ToString().Equals("https://www.milosev.com/gallery/allWithPics/travelBuddies/album1/test.kml"), $"Value is {configJson["kmlUrl"]}");
+        Assert.IsTrue(configJson["KmlFileName"].ToString().Equals("https://www.milosev.com/gallery/allWithPics/travelBuddies/album1/test.kml"), $"Value is {configJson["kmlUrl"]}");
     }
 
     [TestMethod]
@@ -61,6 +61,6 @@ public class WriteConfigurationToJsonFileTests
         CreateConfigurationFileWithPathToKmlAndCheckIfExists();
         JObject configJson = JObject.Parse(File.ReadAllText("config.json"));
         Assert.IsNotNull(configJson);
-        Assert.IsTrue(configJson["kmlUrl"].ToString().Equals("https://www.milosev.com/test.kml"), $"Value is {configJson["kmlUrl"]}");
+        Assert.IsTrue(configJson["KmlFileName"].ToString().Equals("https://www.milosev.com/test.kml"), $"Value is {configJson["kmlUrl"]}");
     }
 }
