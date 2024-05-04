@@ -10,8 +10,15 @@ html, body {
 	#map-canvas {
 		position: relative;
 		width: 100%; 
-		height: 100%; 
+		height: 50%; 
 		float: left;
+	}
+
+	#thumbnails {
+		width: 100%; 
+		height: 50%; 
+		float: left; 
+		overflow: auto;
 	}
 }
 
@@ -19,8 +26,15 @@ html, body {
 (min-device-width: 768px)  {
 	#map-canvas {
 		position: relative;
-		width: 100%; 
+		width: 50%; 
 		height: 100%; 
 		float: left;
 	}
+
+	#thumbnails {
+		width: 50%; 
+		height: 100%; 
+		float: left; 
+		overflow: auto;
+	}	
 }

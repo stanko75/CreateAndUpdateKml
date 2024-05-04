@@ -1,6 +1,4 @@
-﻿using PreparePicturesAndHtmlAndUploadToWebsite;
-using System.Diagnostics;
-using MetadataExtractor.Formats.Exif;
+﻿using System.Diagnostics;
 
 namespace PreparePicturesAndHtmlAndUploadToWebsite.Tests;
 
