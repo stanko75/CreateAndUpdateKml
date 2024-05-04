@@ -15,7 +15,7 @@ static class Common
     {
         if (!File.Exists(fileName))
         {
-            throw new Exception($"File: {fileName} does not exist!");
+            throw new Exception($"File: {Path.GetFullPath(fileName)} does not exist!");
         }
 
         string jsonFileContent = File.ReadAllText(fileName);
@@ -26,7 +26,7 @@ static class Common
     {
         if (!File.Exists(fileName))
         {
-            throw new Exception($"File: {fileName} does not exist!");
+            throw new Exception($"File: {Path.GetFullPath(fileName)} does not exist!");
         }
 
         string jsonFileContent = File.ReadAllText(fileName);

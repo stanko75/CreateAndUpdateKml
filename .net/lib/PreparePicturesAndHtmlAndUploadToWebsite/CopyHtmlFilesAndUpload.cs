@@ -3,7 +3,7 @@
 public class CopyHtmlFilesAndUpload(
     ICopyHtmlFiles copyHtmlFiles,
     IMirrorDirAndFileStructureOnFtp mirrorDirAndFileStructureOnFtp,
-    IWriteConfigurationToJsonFile writeConfigurationToJsonFile)
+    IWriteConfigurationToJsonFile writeConfigurationToJsonFile) : ICopyHtmlFilesAndUpload
 {
     public void Execute(
         string htmlTemplateFolderWithRelativePath

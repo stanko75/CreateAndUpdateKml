@@ -112,14 +112,31 @@ public class UpdateCoordinatesController : ControllerBase
 
             string remoteRootFolder = "/allWithPics/travelBuddies";
 
-            CopyHtmlFilesAndUpload copyHtmlFilesAndUpload = new CopyHtmlFilesAndUpload(new CopyHtmlFiles()
+            ICopyHtmlFilesAndUpload copyHtmlFilesAndUpload = new CopyHtmlFilesAndUpload(new CopyHtmlFiles()
                 , new MirrorDirAndFileStructureOnFtp(new FtpUpload(host, user, pass))
                 , new WriteConfigurationToJsonFile());
+
+            IPrepareTemplates prepareTemplates = new PrepareTemplates();
+            PrepareCopyAndUploadHtmlFiles prepareCopyAndUploadHtmlFiles =
+                new PrepareCopyAndUploadHtmlFiles(copyHtmlFilesAndUpload, prepareTemplates);
+
+            prepareCopyAndUploadHtmlFiles.Execute(@"html\templateForBlog\listOfFilesToReplaceAndCopy.json"
+                , @"html\templateForBlog\listOfKeyValuesToReplaceInFiles.json"
+                , @"html\templateForBlog"
+                , @"html\blog"
+                , @"html\blog"
+                , "prepareForUpload"
+                , folder
+                , fileName
+                , remoteRootFolder);
+
+            /*
             copyHtmlFilesAndUpload.Execute(@"html\blog"
                 , "prepareForUpload"
                 , folder
                 , fileName
                 , remoteRootFolder);
+            */
 
             return Ok(@$"Uploaded: {remoteRootFolder}/{folder}/{fileName}");
         }

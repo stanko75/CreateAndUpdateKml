@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace PreparePicturesAndHtmlAndUploadToWebsite;
 
-public class PrepareTemplates
+public class PrepareTemplates: IPrepareTemplates
 {
     public void ReplaceKeysInTemplateFilesWithProperValues(string listOfFilesToReplaceJson
         , string listOfKeyValuesToReplaceInFilesJson
@@ -51,7 +51,7 @@ public class PrepareTemplates
                 }
                 else
                 {
-                    throw new Exception($"File: {fileToReplaceInFolder} not found!");
+                    throw new Exception($"File: {Path.GetFullPath(fileToReplaceInFolder)} not found!");
                 }
             }
         }
