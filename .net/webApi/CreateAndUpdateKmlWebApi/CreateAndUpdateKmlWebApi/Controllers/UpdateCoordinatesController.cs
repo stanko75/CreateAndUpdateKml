@@ -177,7 +177,7 @@ public class UpdateCoordinatesController : ControllerBase
                 , 25
                 , 25
                 , imageModel.NameOfFileForJson
-                , imageModel.JsonFileName);
+                , imageModel.FileNameThumbsJson);
 
             return Ok(new
             {
@@ -187,7 +187,7 @@ public class UpdateCoordinatesController : ControllerBase
                     $"***" +
                     $"{Environment.NewLine}" +
 
-                    $"JSON file saved in {Path.GetFullPath(imageModel.JsonFileName)}" +
+                    $"JSON file saved in {Path.GetFullPath(imageModel.FileNameThumbsJson)}" +
                     $"{Environment.NewLine}" +
                     $"***" +
 

@@ -24,7 +24,7 @@ public class ImageModelTests
         ImageModel imageModel = new ImageModel(kmlFileFolderModel, data, RootUrl);
         Assert.AreEqual(imageModel.ImageThumbsFileName, "testFolderName\\thumbs\\testImage.jpg");
         Assert.AreEqual(imageModel.ImageThumbsFolderName, "testFolderName\\thumbs");
-        Assert.AreEqual(imageModel.JsonFileName, "testFolderName\\testKmlThumbs.json");
+        Assert.AreEqual(imageModel.FileNameThumbsJson, "testFolderName\\testKmlThumbs.json");
         Assert.AreEqual(imageModel.NameOfFileForJson, "../thumbs/testImage.jpg");
     }
 }
