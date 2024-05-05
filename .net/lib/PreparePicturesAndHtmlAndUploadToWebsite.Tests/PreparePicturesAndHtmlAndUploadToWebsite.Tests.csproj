@@ -26,26 +26,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\..\webApi\CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi\html\blog\css\index.css">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<Link>html\blog\css\index.css</Link>
-		</None>
-		<None Include="..\..\webApi\CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi\html\blog\lib\jquery-3.6.4.js">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<Link>html\blog\css\index.css</Link>
-		</None>
-		<None Include="..\..\webApi\CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi\html\blog\script\map.js">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<Link>html\blog\lib\jquery-3.6.4.js</Link>
-		</None>
-		<None Include="..\..\webApi\CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi\html\blog\script\namespaces.js">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<Link>html\blog\script\namespaces.js</Link>
-		</None>
-		<None Include="..\..\webApi\CreateAndUpdateKmlWebApi\CreateAndUpdateKmlWebApi\html\blog\index.html">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<Link>html\blog\index.html</Link>
-		</None>
 		<None Include="jsconfigForTests.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

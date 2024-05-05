@@ -1,19 +1,19 @@
-<a href="JoomlaImgSrcPathindex.html" target="_blank">/*ogTitle*/</a>
+<a href="JoomlaImgSrcPathindex.html" target="_blank">OgTitleTest</a>
 
 <script type="text/javascript" src="JoomlaImgSrcPathlib/jquery-3.3.1.js"></script>
 <p/>
 
-<a href="JoomlaImgSrcPathindex.html" target="_blank"><img id="jPreview/*galleryName*/" src="JoomlaImgSrcPath..//*ogImage*/" width=200 length=200/></a>
+<a href="JoomlaImgSrcPathindex.html" target="_blank"><img id="jPreviewGalleryNameTest" src="JoomlaImgSrcPath../OgImageTest" width=200 length=200/></a>
 
 	<script>
-        var /*galleryName*/PicNo = 0;
-        jQuery.getJSON("/*joomlaThumbsPath*/", function (data) {
+        var GalleryNameTestPicNo = 0;
+        jQuery.getJSON("JoomlaThumbsPath", function (data) {
 			setInterval(function () {
-                jQuery("#jPreview/*galleryName*/").attr("src", "JoomlaImgSrcPath" + data[/*galleryName*/PicNo].FileName);						
-                jQuery("#jPreview/*galleryName*/").on("load", function () {
-					/*galleryName*/PicNo = /*galleryName*/PicNo + 1;
-                    if (/*galleryName*/PicNo >= data.length) {
-						/*galleryName*/PicNo = 0;
+                jQuery("#jPreviewGalleryNameTest").attr("src", "JoomlaImgSrcPath" + data[GalleryNameTestPicNo].FileName);						
+                jQuery("#jPreviewGalleryNameTest").on("load", function () {
+					GalleryNameTestPicNo = GalleryNameTestPicNo + 1;
+                    if (GalleryNameTestPicNo >= data.length) {
+						GalleryNameTestPicNo = 0;
 					}
 				});
 			}, 1000)

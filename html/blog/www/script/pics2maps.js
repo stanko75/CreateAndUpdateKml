@@ -4,7 +4,7 @@
 
     var markers = [];
 
-    $.getJSON("/*picsJson*/.json", function (data) {
+    $.getJSON("PicsJsonTest.json", function (data) {
         data.forEach(function (file) {
 
             try {
@@ -30,7 +30,7 @@
                 var zoomChangeBoundsListener =
                     google.maps.event.addListenerOnce(ns.map, 'bounds_changed', function (event) {
                         if (ns.map.getZoom()) {
-                            ns.map.setZoom(/*zoom*/);  // set zoom here
+                            ns.map.setZoom(ZoomTest);  // set zoom here
                         }
                     });
 

@@ -19,7 +19,8 @@ public class UpdateCoordinatesController : ControllerBase
 
     private const string CurrentLocation = "test.json";
 
-    private const string RootUrl = "https://milosevtracking.azurewebsites.net";
+    //private const string RootUrl = "https://milosevtracking.azurewebsites.net";
+    private const string RootUrl = "https://localhost:7293/";
     //private const string RootUrl =
     //    "http://livetracking.milosev.com:100/.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi";
 
@@ -100,15 +101,15 @@ public class UpdateCoordinatesController : ControllerBase
             string folder = CommonStaticMethods.GetValue(data, "folderName");
             folder = string.IsNullOrWhiteSpace(folder) ? "default" : folder;
 
-            string fileName = CommonStaticMethods.GetValue(data, "kmlFileName");
-            fileName = string.IsNullOrWhiteSpace(fileName) ? "default" : fileName;
+            string kmlFileName = CommonStaticMethods.GetValue(data, "kmlFileName");
+            kmlFileName = string.IsNullOrWhiteSpace(kmlFileName) ? "default" : kmlFileName;
 
             string host = CommonStaticMethods.GetValue(data, "host");
             string user = CommonStaticMethods.GetValue(data, "user");
             string pass = CommonStaticMethods.GetValue(data, "pass");
 
             string extension = ".kml";
-            fileName = CommonStaticMethods.ChangeFileExtension(fileName, extension);
+            kmlFileName = CommonStaticMethods.ChangeFileExtension(kmlFileName, extension);
 
             string remoteRootFolder = "/allWithPics/travelBuddies";
 
@@ -127,7 +128,7 @@ public class UpdateCoordinatesController : ControllerBase
                 , @"html\blog\www"
                 , @"prepareForUpload"
                 , folder
-                , fileName
+                , Path.Join(folder, kmlFileName)
                 , remoteRootFolder);
 
             /*
@@ -138,7 +139,7 @@ public class UpdateCoordinatesController : ControllerBase
                 , remoteRootFolder);
             */
 
-            return Ok(@$"Uploaded: {remoteRootFolder}/{folder}/{fileName}");
+            return Ok(@$"Uploaded: {remoteRootFolder}/{folder}/{kmlFileName}");
         }
         catch (Exception e)
         {

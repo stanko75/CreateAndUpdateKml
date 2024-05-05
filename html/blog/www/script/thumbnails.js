@@ -15,7 +15,7 @@
         });
     }
 
-    $.getJSON("/*picsJson*/Thumbs.json", function (data) {
+    $.getJSON("PicsJsonTestThumbs.json", function (data) {
         var thumbs,
             clicked,
             picsLatLng;
@@ -35,7 +35,7 @@
             //thumbs.on('mouseout', '#' + key, function () {
             //    if (!clicked) {
             //        $('#' + key).css("border", "");
-            //        ns.map.setZoom(/*zoom*/);
+            //        ns.map.setZoom(ZoomTest);
             //        resizeMarkerIcon(30, "");
             //    }
             //});
@@ -61,6 +61,6 @@
                 }
             });
         });
-        ns.map.setZoom(/*zoom*/);
+        ns.map.setZoom(ZoomTest);
     });
 })(window.milosev);
