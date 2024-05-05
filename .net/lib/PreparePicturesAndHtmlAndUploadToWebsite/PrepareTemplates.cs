@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace PreparePicturesAndHtmlAndUploadToWebsite;
 
-public class PrepareTemplates: IPrepareTemplates
+public class PrepareTemplates : IPrepareTemplates
 {
     public void ReplaceKeysInTemplateFilesWithProperValues(string listOfFilesToReplaceJson
         , string listOfKeyValuesToReplaceInFilesJson
@@ -17,43 +17,41 @@ public class PrepareTemplates: IPrepareTemplates
 
         //string saveToPath = "replacedTemplate\\test";
 
-        foreach (KeyValuePair<string, JToken?> keyValuesToReplaceInFiles in listOfKeyValuesToReplaceInFilesObject)
+        foreach (string fileToReplace in listOfFilesToReplace)
         {
-            foreach (string fileToReplace in listOfFilesToReplace)
+            string fileToReplaceInFolder = Path.Join(templatesFolder, fileToReplace);
+            if (!File.Exists(fileToReplaceInFolder))
             {
-                string fileToReplaceInFolder = Path.Join(templatesFolder, fileToReplace);
-                if (File.Exists(fileToReplaceInFolder))
+                throw new Exception($"File: {Path.GetFullPath(fileToReplaceInFolder)} not found!");
+            }
+
+            string fileContent = File.ReadAllText(fileToReplaceInFolder);
+            foreach (KeyValuePair<string, JToken?> keyValuesToReplaceInFiles in listOfKeyValuesToReplaceInFilesObject)
+            {
+                if (keyValuesToReplaceInFiles.Value is not null)
                 {
-                    string fileContent = File.ReadAllText(fileToReplaceInFolder);
-                    if (keyValuesToReplaceInFiles.Value is not null)
+                    fileContent = fileContent.Replace(keyValuesToReplaceInFiles.Key,
+                        keyValuesToReplaceInFiles.Value.Value<string>());
+
+                    if (!Directory.Exists(saveToPath))
                     {
-                        fileContent = fileContent.Replace(keyValuesToReplaceInFiles.Key,
-                            keyValuesToReplaceInFiles.Value.Value<string>());
-
-                        if (!Directory.Exists(saveToPath))
-                        {
-                            Directory.CreateDirectory(saveToPath);
-                        }
-
-                        string fileToReplaceDir = Path.GetDirectoryName(fileToReplace) ?? string.Empty;
-                        if (!string.IsNullOrWhiteSpace(fileToReplaceDir))
-                        {
-                            fileToReplaceDir = Path.Join(saveToPath, fileToReplaceDir);
-                            if (!Directory.Exists(fileToReplaceDir))
-                            {
-                                Directory.CreateDirectory(fileToReplaceDir);
-                            }
-                        }
-
-                        string saveToFileNameWithPath = Path.Join(saveToPath, fileToReplace);
-                        File.WriteAllText(saveToFileNameWithPath, fileContent);
+                        Directory.CreateDirectory(saveToPath);
                     }
-                }
-                else
-                {
-                    throw new Exception($"File: {Path.GetFullPath(fileToReplaceInFolder)} not found!");
+
+                    string fileToReplaceDir = Path.GetDirectoryName(fileToReplace) ?? string.Empty;
+                    if (!string.IsNullOrWhiteSpace(fileToReplaceDir))
+                    {
+                        fileToReplaceDir = Path.Join(saveToPath, fileToReplaceDir);
+                        if (!Directory.Exists(fileToReplaceDir))
+                        {
+                            Directory.CreateDirectory(fileToReplaceDir);
+                        }
+                    }
+
                 }
             }
+            string saveToFileNameWithPath = Path.Join(saveToPath, fileToReplace);
+            File.WriteAllText(saveToFileNameWithPath, fileContent);
         }
     }
 }

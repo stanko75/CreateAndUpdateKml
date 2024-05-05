@@ -123,9 +123,9 @@ public class UpdateCoordinatesController : ControllerBase
             prepareCopyAndUploadHtmlFiles.Execute(@"html\templateForBlog\listOfFilesToReplaceAndCopy.json"
                 , @"html\templateForBlog\listOfKeyValuesToReplaceInFiles.json"
                 , @"html\templateForBlog"
-                , @"html\blog"
-                , @"html\blog"
-                , "prepareForUpload"
+                , @"html\blog\www"
+                , @"html\blog\www"
+                , @"prepareForUpload"
                 , folder
                 , fileName
                 , remoteRootFolder);
