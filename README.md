@@ -5,9 +5,9 @@ User starts live GPS tracking, and KML is saved in the folder "albumName", like 
 
 ```
 {
-  "KmlFileName": "funcTest2/funcTest2.kml",
+  "KmlFileName": "albumName/kmlFileName.kml",
   "CurrentLocation": "lastGPSposition.json",
-  "LiveImageMarkersJsonUrl": "funcTest2/funcTest2Thumbs.json"
+  "LiveImageMarkersJsonUrl": "albumName/albumNameThumbs.json"
 }
 ```
 
