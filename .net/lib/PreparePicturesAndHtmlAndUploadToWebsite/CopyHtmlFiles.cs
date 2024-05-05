@@ -106,6 +106,7 @@ public class CopyHtmlFiles: ICopyHtmlFiles
 
             File.Copy(file, savewwwFiles);
         }
+        File.Copy(Path.Join(nameOfAlbum, $"{nameOfAlbum}Thumbs.json"), Path.Join(wwwFolder, $"{nameOfAlbum}Thumbs.json"));
     }
 
     private static void CopyFilesRecursively(string sourcePath, string targetPath)
