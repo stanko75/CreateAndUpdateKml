@@ -165,19 +165,27 @@ public class UpdateCoordinatesController : ControllerBase
 
             await System.IO.File.WriteAllBytesAsync(imageModel.ImageOriginalFileName, imageModel.ImageBytes);
 
-            ICreateJsonAryFromImageGpsInfo createJsonAryFromImageGpsInfo =
-                new CreateJsonAryFromImageGpsInfo(new ExtractGpsInfoFromImage(), new UpdateJsonIfExistsOrCreateNewIfNot());
+            IFillLatLngFileNameModelFromImageGpsInfo fillLatLngFileNameModelFromImageGpsInfo =
+                new FillLatLngFileNameModelFromImageGpsInfo(new ExtractGpsInfoFromImage());
             IResizeImage resizeImage = new ResizeImage();
 
             ResizeImageAndCreateJsonAryFromImageGpsInfo resizeImageAndCreateJsonAryFromImageGpsInfo =
-                new ResizeImageAndCreateJsonAryFromImageGpsInfo(resizeImage, createJsonAryFromImageGpsInfo);
-            //
-            resizeImageAndCreateJsonAryFromImageGpsInfo.Execute(imageModel.ImageOriginalFileName
+                new ResizeImageAndCreateJsonAryFromImageGpsInfo(resizeImage, fillLatLngFileNameModelFromImageGpsInfo);
+
+            LatLngFileNameModel? latLngFileNameModel = resizeImageAndCreateJsonAryFromImageGpsInfo.Execute(imageModel.ImageOriginalFileName
                 , imageModel.ImageThumbsFileName
                 , 25
                 , 25
-                , imageModel.NameOfFileForJson
-                , imageModel.FileNameThumbsJson);
+                , imageModel.NameOfFileForJson);
+
+            IUpdateJsonIfExistsOrCreateNewIfNot updateJsonIfExistsOrCreateNewIfNot =
+                new UpdateJsonIfExistsOrCreateNewIfNot();
+
+            if (latLngFileNameModel is not null)
+            {
+                updateJsonIfExistsOrCreateNewIfNot.Execute(imageModel.FileNameThumbsJson, latLngFileNameModel);
+                updateJsonIfExistsOrCreateNewIfNot.Execute(imageModel.FileNameJson, latLngFileNameModel);
+            }
 
             return Ok(new
             {

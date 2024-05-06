@@ -32,6 +32,9 @@ public class ImageModel
         FileNameThumbsJson = Path.ChangeExtension($"{jsonFileName}Thumbs", "json");
         FileNameThumbsJson = Path.Join(kmlFileFolderModel.FolderName, FileNameThumbsJson);
 
+        FileNameJson = Path.ChangeExtension(jsonFileName, "json");
+        FileNameJson = Path.Join(kmlFileFolderModel.FolderName, FileNameJson);
+
         ImageOriginalFileName = Path.Join(ImageOriginalFolderName, imageFileName);
         ImageBytes = Convert.FromBase64String(Base64Image);
     }
@@ -41,6 +44,7 @@ public class ImageModel
     public string ImageThumbsFileName { get; set; }
     public string NameOfFileForJson { get; set; }
     public string FileNameThumbsJson { get; set; }
+    public string FileNameJson { get; set; }
     public string ImageOriginalFolderName { get; set; }
     public string ImageOriginalFileName { get; set; }
     public byte[] ImageBytes { get; set; }

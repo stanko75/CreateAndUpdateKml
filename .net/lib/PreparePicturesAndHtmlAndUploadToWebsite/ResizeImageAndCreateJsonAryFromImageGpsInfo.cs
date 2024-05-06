@@ -3,28 +3,27 @@
 public class ResizeImageAndCreateJsonAryFromImageGpsInfo
 {
     IResizeImage _resizeImage;
-    ICreateJsonAryFromImageGpsInfo _createJsonAryFromImageGpsInfo;
+    IFillLatLngFileNameModelFromImageGpsInfo _fillLatLngFileNameModelFromImageGpsInfo;
 
-    public ResizeImageAndCreateJsonAryFromImageGpsInfo(IResizeImage resizeImage, ICreateJsonAryFromImageGpsInfo createJsonAryFromImageGpsInfo)
+    public ResizeImageAndCreateJsonAryFromImageGpsInfo(IResizeImage resizeImage, IFillLatLngFileNameModelFromImageGpsInfo fillLatLngFileNameModelFromImageGpsInfo)
     {
         _resizeImage = resizeImage;
-        _createJsonAryFromImageGpsInfo = createJsonAryFromImageGpsInfo;
+        _fillLatLngFileNameModelFromImageGpsInfo = fillLatLngFileNameModelFromImageGpsInfo;
     }
 
-    public void Execute(
+    public LatLngFileNameModel? Execute(
         string originalFilename
         , string saveTo
         , int canvasWidth
         , int canvasHeight
 
-        , string nameOfFileForJson
-        , string jsonFileName)
+        , string nameOfFileForJson)
     {
         _resizeImage.Execute(originalFilename
             , saveTo
             , canvasWidth
             , canvasHeight);
 
-        _createJsonAryFromImageGpsInfo.Execute(originalFilename, nameOfFileForJson, jsonFileName);
+        return _fillLatLngFileNameModelFromImageGpsInfo.Execute(originalFilename, nameOfFileForJson);
     }
 }

@@ -211,7 +211,7 @@ public partial class Form1 : Form
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                 string requestUri = Path.Combine(addressText, @"api/UpdateCoordinates/UploadImage");
-                log.AppendText($"Sending");
+                log.AppendText("Sending");
                 log.AppendText(Environment.NewLine);
                 log.AppendText(Environment.NewLine);
 
@@ -228,6 +228,11 @@ public partial class Form1 : Form
                         log.AppendText(Environment.NewLine);
                         throw new Exception(errorMessage);
                     }
+
+                    string message = await httpResponseMessage.Content.ReadAsStringAsync();
+                    log.AppendText(Environment.NewLine);
+                    log.AppendText(message);
+                    log.AppendText(Environment.NewLine);
                     log.AppendText("********************************");
                     log.AppendText(Environment.NewLine);
                 }
@@ -251,7 +256,7 @@ public partial class Form1 : Form
                 }
                 catch (Exception ex)
                 {
-                    log.AppendText("There is error with thumbs file:" + liveImageMarkersJsonUri.Uri.AbsoluteUri);
+                    log.AppendText("There is error with thumbs file: " + liveImageMarkersJsonUri.Uri.AbsoluteUri);
                     log.AppendText(Environment.NewLine);
                     log.AppendText(ex.Message);
                     log.AppendText(Environment.NewLine);
