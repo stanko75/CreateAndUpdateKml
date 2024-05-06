@@ -1,4 +1,6 @@
-﻿namespace PreparePicturesAndHtmlAndUploadToWebsite;
+﻿using System.Drawing;
+
+namespace PreparePicturesAndHtmlAndUploadToWebsite;
 
 public class CopyHtmlFiles: ICopyHtmlFiles
 {
@@ -84,6 +86,7 @@ public class CopyHtmlFiles: ICopyHtmlFiles
         Directory.CreateDirectory(Path.Join(wwwFolder, "script"));
         Directory.CreateDirectory(Path.Join(wwwFolder, "css"));
         Directory.CreateDirectory(Path.Join(wwwFolder, "lib"));
+        Directory.CreateDirectory(Path.Join(prepareForUploadFolder, "kml"));
 
         //copy from "html\blog\www" to prepareForUpload
         string[] allFiles = Directory.GetFiles(htmlTemplateFolderWithRelativePath, "*.*", SearchOption.AllDirectories);
@@ -107,6 +110,11 @@ public class CopyHtmlFiles: ICopyHtmlFiles
             File.Copy(file, savewwwFiles);
         }
         File.Copy(Path.Join(nameOfAlbum, $"{nameOfAlbum}Thumbs.json"), Path.Join(wwwFolder, $"{nameOfAlbum}Thumbs.json"));
+        File.Copy(Path.Join(nameOfAlbum, $"{nameOfAlbum}.json"), Path.Join(wwwFolder, $"{nameOfAlbum}.json"));
+        string kmlFileNameSaveTo = Path.GetFileName(kmlFileName);
+        string kmlFolder = Path.Join(prepareForUploadFolder, "kml");
+        kmlFileNameSaveTo = Path.Join(kmlFolder, kmlFileNameSaveTo);
+        File.Copy(kmlFileName, kmlFileNameSaveTo);
     }
 
     private static void CopyFilesRecursively(string sourcePath, string targetPath)
