@@ -87,6 +87,8 @@ public class CopyHtmlFiles: ICopyHtmlFiles
         Directory.CreateDirectory(Path.Join(wwwFolder, "css"));
         Directory.CreateDirectory(Path.Join(wwwFolder, "lib"));
         Directory.CreateDirectory(Path.Join(prepareForUploadFolder, "kml"));
+        Directory.CreateDirectory(Path.Join(prepareForUploadFolder, "pics"));
+        Directory.CreateDirectory(Path.Join(prepareForUploadFolder, "thumbs"));
 
         //copy from "html\blog\www" to prepareForUpload
         string[] allFiles = Directory.GetFiles(htmlTemplateFolderWithRelativePath, "*.*", SearchOption.AllDirectories);
@@ -115,6 +117,20 @@ public class CopyHtmlFiles: ICopyHtmlFiles
         string kmlFolder = Path.Join(prepareForUploadFolder, "kml");
         kmlFileNameSaveTo = Path.Join(kmlFolder, kmlFileNameSaveTo);
         File.Copy(kmlFileName, kmlFileNameSaveTo);
+
+        string[] picsFiles = Directory.GetFiles(Path.Join(nameOfAlbum, "pics"));
+        string picsDestination = Path.Join(prepareForUploadFolder, "pics");
+        foreach (string picsFile in picsFiles)
+        {
+            File.Copy(picsFile, Path.Join(picsDestination, Path.GetFileName(picsFile)));
+        }
+
+        string[] thumbsFiles = Directory.GetFiles(Path.Join(nameOfAlbum, "thumbs"));
+        string thumbsDestination = Path.Join(prepareForUploadFolder, "thumbs");
+        foreach (string thumbsFile in thumbsFiles)
+        {
+            File.Copy(thumbsFile, Path.Join(thumbsDestination, Path.GetFileName(thumbsFile)));
+        }
     }
 
     private static void CopyFilesRecursively(string sourcePath, string targetPath)
