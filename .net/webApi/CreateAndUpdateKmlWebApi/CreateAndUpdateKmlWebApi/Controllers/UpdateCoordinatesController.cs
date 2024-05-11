@@ -160,7 +160,7 @@ public class UpdateCoordinatesController : ControllerBase
                 , CurrentLocation
                 , ConfigFileName
                 , RootUrl);
-            ImageModel imageModel = new ImageModel(kmlFileFolderModel, data, RootUrl);
+            ImageModel imageModel = new ImageModel(kmlFileFolderModel, data,@"..\..\");
             Directory.CreateDirectory(kmlFileFolderModel.FolderName);
 
             await System.IO.File.WriteAllBytesAsync(imageModel.ImageOriginalFileName, imageModel.ImageBytes);

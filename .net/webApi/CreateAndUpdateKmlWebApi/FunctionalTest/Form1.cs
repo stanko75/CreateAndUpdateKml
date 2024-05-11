@@ -65,8 +65,8 @@ public partial class Form1 : Form
             {
                 JObject myJObject = JObject.Parse(File.ReadAllText(file));
                 //o["coordinates"] = $"{myJObject["lng"]}, {myJObject["lat"]}, 2357 ";
-                jObjectKmlFileFolder["lng"] = myJObject["lng"];
-                jObjectKmlFileFolder["lat"] = myJObject["lat"];
+                jObjectKmlFileFolder["Longitude"] = myJObject["lng"];
+                jObjectKmlFileFolder["Latitude"] = myJObject["lat"];
 
                 string requestUri = Path.Combine(addressText, @"api/UpdateCoordinates/PostFileFolder");
                 StringContent content = new StringContent($@"{jObjectKmlFileFolder}", Encoding.UTF8, "text/json");
