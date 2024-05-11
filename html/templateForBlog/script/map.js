@@ -27,8 +27,7 @@
                     if (typeof google !== 'object') {
                         location.reload();
                     }
-                },
-                    1000);
+                }, 1000);
             }
         });
     }
