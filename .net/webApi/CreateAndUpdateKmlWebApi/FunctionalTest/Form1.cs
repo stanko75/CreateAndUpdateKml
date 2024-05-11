@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
@@ -8,7 +9,7 @@ namespace FunctionalTest;
 
 public partial class Form1 : Form
 {
-
+    CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
     private static readonly HttpClient HttpClientPost = new();
     private static readonly HttpClient HttpClientGet = new();
@@ -41,13 +42,13 @@ public partial class Form1 : Form
 
     private void PostGpsPositionsFromFilesWithFileName_Click(object sender, EventArgs e)
     {
-        Task task = PostGpsPositionsFromFilesWithFileNameAsync();
+        Task task = PostGpsPositionsFromFilesWithFileNameAsync(cancellationTokenSource.Token);
 
         log.AppendText(task.Status.ToString());
         log.AppendText(Environment.NewLine);
     }
 
-    async Task PostGpsPositionsFromFilesWithFileNameAsync()
+    async Task PostGpsPositionsFromFilesWithFileNameAsync(CancellationToken cancellationToken)
     {
         string addressText = address.Text;
         string gpsLocationsPath = tbGpsLocationsPath.Text;
@@ -63,6 +64,7 @@ public partial class Form1 : Form
         {
             foreach (string file in Directory.GetFiles(gpsLocationsPath))
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 JObject myJObject = JObject.Parse(File.ReadAllText(file));
                 //o["coordinates"] = $"{myJObject["lng"]}, {myJObject["lat"]}, 2357 ";
                 jObjectKmlFileFolder["Longitude"] = myJObject["lng"];
@@ -181,13 +183,13 @@ public partial class Form1 : Form
 
     private void UploadImage_Click(object sender, EventArgs e)
     {
-        Task task = UploadImageAsync();
+        Task task = UploadImageAsync(cancellationTokenSource.Token);
 
         log.AppendText(task.Status.ToString());
         log.AppendText(Environment.NewLine);
     }
 
-    async Task UploadImageAsync()
+    async Task UploadImageAsync(CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(kmlFileName.Text)) kmlFileName.Text = "default";
         if (string.IsNullOrWhiteSpace(folderName.Text)) folderName.Text = "default";
@@ -198,6 +200,7 @@ public partial class Form1 : Form
         {
             foreach (string imageFile in Directory.GetFiles(imagesPathString))
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 string base64Image = ConvertImageToBase64(imageFile);
 
                 JObject jObjectKmlFileFolder = new JObject();
@@ -283,13 +286,13 @@ public partial class Form1 : Form
 
     private void UploadToBlog_Click(object sender, EventArgs e)
     {
-        Task task = UploadToBlogAsync();
+        Task task = UploadToBlogAsync(cancellationTokenSource.Token);
 
         log.AppendText(task.Status.ToString());
         log.AppendText(Environment.NewLine);
     }
 
-    async Task UploadToBlogAsync()
+    async Task UploadToBlogAsync(CancellationToken cancellationToken)
     {
         string addressText = address.Text;
 
@@ -351,6 +354,7 @@ public partial class Form1 : Form
         {
             foreach (string url in fileUrls)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 string milosevUrl = $"http://milosev.com/gallery/allWithPics/travelBuddies/{folderName.Text}/";
                 Uri baseUri = new Uri(milosevUrl);
                 Uri uri = new Uri(baseUri, url);
