@@ -17,7 +17,7 @@ public class CopyHtmlFilesAndUpload(
         copyHtmlFiles.CopyHtmlTemplateForBlog(htmlTemplateFolderWithRelativePath, rootFolderWithRelativePathToCopy, nameOfAlbum, kmlFileName);
         writeConfigurationToJsonFile.Execute($"https://www.milosev.com/gallery/allWithPics/travelBuddies/{nameOfAlbum}/"
             , kmlFileName
-            , $@"{rootFolderWithRelativePathToCopy}\{nameOfAlbum}\config.json");
+            , $@"{rootFolderWithRelativePathToCopy}\{nameOfAlbum}\www\config.json");
         mirrorDirAndFileStructureOnFtp.Execute(Path.Join(rootFolderWithRelativePathToCopy, nameOfAlbum),
             $"{remoteRootFolder}/{nameOfAlbum}");
 

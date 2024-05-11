@@ -66,7 +66,7 @@ public class GetPostKmlTests
             foreach (string file in Directory.GetFiles(_gpsLocationsPath))
             {
                 JObject myJObject = JObject.Parse(File.ReadAllText(file));
-                string gpsLocation = $"{myJObject["lng"]}, {myJObject["lat"]}, 2357 ";
+                string gpsLocation = $"{myJObject["Longitude"]}, {myJObject["Latitude"]}, 2357 ";
 
                 Task<HttpResponseMessage> task = Task.Run(() => httpClient.PostAsync(
                     Path.Combine(_address, @"api/UpdateCoordinates")
@@ -121,9 +121,9 @@ public class GetPostKmlTests
             foreach (string file in Directory.GetFiles(_gpsLocationsPath))
             {
                 JObject myJObject = JObject.Parse(File.ReadAllText(file));
-                //o["coordinates"] = $"{myJObject["lng"]}, {myJObject["lat"]}, 2357 ";
-                o["lng"] = myJObject["lng"];
-                o["lat"] = myJObject["lat"];
+                //o["coordinates"] = $"{myJObject["Longitude"]}, {myJObject["Latitude"]}, 2357 ";
+                o["Longitude"] = myJObject["Longitude"];
+                o["Latitude"] = myJObject["Latitude"];
 
                 Task<HttpResponseMessage> task = Task.Run(() => httpClient.PostAsync(
                     Path.Combine(_address, @"api/UpdateCoordinates/PostFileFolder")

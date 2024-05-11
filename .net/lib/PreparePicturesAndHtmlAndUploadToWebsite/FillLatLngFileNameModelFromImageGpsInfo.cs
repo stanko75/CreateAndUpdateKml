@@ -12,7 +12,7 @@ public class FillLatLngFileNameModelFromImageGpsInfo: IFillLatLngFileNameModelFr
     public LatLngFileNameModel? Execute(string imageFileNameToReadGpsFrom, string nameOfFileForJson)
     {
         LatLngFileNameModel? latLngFileNameModel = _extractGpsInfoFromImage.Execute(imageFileNameToReadGpsFrom, nameOfFileForJson);
-        if (latLngFileNameModel is null || latLngFileNameModel.lat == 0 || latLngFileNameModel.lng == 0)
+        if (latLngFileNameModel is null || latLngFileNameModel.Latitude == 0 || latLngFileNameModel.Longitude == 0)
         {
             throw new Exception("Cannot extract GPS info from image!");
         }

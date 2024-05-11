@@ -14,9 +14,9 @@ public class ExtractGpsInfoFromImage : IExtractGpsInfoFromImage
         {
             return new LatLngFileNameModel
             {
-                fileName = nameOfFileForJson,
-                lat = location.Latitude,
-                lng = location.Longitude
+                FileName = nameOfFileForJson,
+                Latitude = location.Latitude,
+                Longitude = location.Longitude
             };
         }
 

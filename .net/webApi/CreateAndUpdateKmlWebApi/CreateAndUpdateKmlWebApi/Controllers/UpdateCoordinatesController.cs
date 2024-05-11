@@ -59,12 +59,12 @@ public class UpdateCoordinatesController : ControllerBase
 
         kmlFileFolderModel.KmlFileName = CommonStaticMethods.CreateFolderIfNotExistAndChangeFileExtenstion(kmlFileFolderModel.FolderName, kmlFileFolderModel.KmlFileName, extension);
 
-        if (string.IsNullOrWhiteSpace(data["lng"]?.ToString()) && string.IsNullOrWhiteSpace(data["lat"]?.ToString()))
+        if (string.IsNullOrWhiteSpace(data["Longitude"]?.ToString()) && string.IsNullOrWhiteSpace(data["Latitude"]?.ToString()))
         {
             throw new Exception("Coordinates cannot be empty!");
         }
 
-        string coordinates = string.Join(',', data["lng"], data["lat"], "2357");
+        string coordinates = string.Join(',', data["Longitude"], data["Latitude"], "2357");
         CommonStaticMethods.WriteFileNameAndCoordinatesToJsonFile(coordinates,
             CurrentLocation);
 

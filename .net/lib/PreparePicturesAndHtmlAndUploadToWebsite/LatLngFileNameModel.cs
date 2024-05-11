@@ -2,7 +2,7 @@
 
 public class LatLngFileNameModel
 {
-    public string fileName { get; set; }
-    public double lat { get; set; }
-    public double lng { get; set; }
+    public string FileName { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
 }
