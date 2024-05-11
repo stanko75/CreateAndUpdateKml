@@ -10,6 +10,7 @@
             try {
                 map = new google.maps.Map(document.getElementById('map-canvas'),
                     {
+                        center: { lat: 50.4038916, lng: 7.2542361 },
                         scrollwheel: true,
                         zoom: 20
                     });
