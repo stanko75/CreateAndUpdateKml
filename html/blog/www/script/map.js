@@ -2,11 +2,11 @@
     /*globals google, map, $*/
     "use strict";
     var map,
-		gpsLatLng,
-		marker;
-		
+        gpsLatLng,
+        marker;
+
     function initMap() {
-        loadJSONConfig(function(config) {
+        loadJSONConfig(function (config) {
             try {
                 map = new google.maps.Map(document.getElementById('map-canvas'),
                     {
@@ -23,23 +23,22 @@
                 ns.map = map;
             } catch (e) {
                 console.log(e);
-                setTimeout(function() {
-                        if (typeof google !== 'object') {
-                            location.reload();
-                        }
-                    },
-                    1000);
+                setTimeout(function () {
+                    if (typeof google !== 'object') {
+                        location.reload();
+                    }
+                }, 1000);
             }
         });
     }
-	
-	function loadJSONConfig(callback) {
+
+    function loadJSONConfig(callback) {
         $.getJSON("config.json",
-            function(data) {
+            function (data) {
                 callback(data);
-            }).fail(function(xhr, status, error) {
-            alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
-        });
+            }).fail(function (xhr, status, error) {
+                alert("An AJAX error occured: " + xhr.statusCode().status + "\nError: " + error);
+            });
     }
 
     ns.initMap = initMap;
