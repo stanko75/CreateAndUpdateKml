@@ -50,6 +50,7 @@
             kmlFileName = new TextBox();
             UploadImage = new Button();
             UploadToBlog = new Button();
+            btnCancel = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
@@ -57,7 +58,7 @@
             // PostGpsPositionsFromFilesWithFileName
             // 
             PostGpsPositionsFromFilesWithFileName.Dock = DockStyle.Bottom;
-            PostGpsPositionsFromFilesWithFileName.Location = new Point(0, 381);
+            PostGpsPositionsFromFilesWithFileName.Location = new Point(0, 358);
             PostGpsPositionsFromFilesWithFileName.Name = "PostGpsPositionsFromFilesWithFileName";
             PostGpsPositionsFromFilesWithFileName.Size = new Size(800, 23);
             PostGpsPositionsFromFilesWithFileName.TabIndex = 0;
@@ -71,7 +72,7 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 260);
             panel1.Name = "panel1";
-            panel1.Size = new Size(800, 121);
+            panel1.Size = new Size(800, 98);
             panel1.TabIndex = 1;
             // 
             // log
@@ -81,7 +82,7 @@
             log.Multiline = true;
             log.Name = "log";
             log.ScrollBars = ScrollBars.Both;
-            log.Size = new Size(800, 121);
+            log.Size = new Size(800, 98);
             log.TabIndex = 0;
             // 
             // panel2
@@ -239,7 +240,7 @@
             // UploadImage
             // 
             UploadImage.Dock = DockStyle.Bottom;
-            UploadImage.Location = new Point(0, 404);
+            UploadImage.Location = new Point(0, 381);
             UploadImage.Name = "UploadImage";
             UploadImage.Size = new Size(800, 23);
             UploadImage.TabIndex = 3;
@@ -250,13 +251,24 @@
             // UploadToBlog
             // 
             UploadToBlog.Dock = DockStyle.Bottom;
-            UploadToBlog.Location = new Point(0, 427);
+            UploadToBlog.Location = new Point(0, 404);
             UploadToBlog.Name = "UploadToBlog";
             UploadToBlog.Size = new Size(800, 23);
             UploadToBlog.TabIndex = 4;
             UploadToBlog.Text = "UploadToBlog";
             UploadToBlog.UseVisualStyleBackColor = true;
             UploadToBlog.Click += UploadToBlog_Click;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Dock = DockStyle.Bottom;
+            btnCancel.Location = new Point(0, 427);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(800, 23);
+            btnCancel.TabIndex = 5;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
             // 
             // Form1
             // 
@@ -268,6 +280,7 @@
             Controls.Add(PostGpsPositionsFromFilesWithFileName);
             Controls.Add(UploadImage);
             Controls.Add(UploadToBlog);
+            Controls.Add(btnCancel);
             Name = "Form1";
             Text = "Form1";
             FormClosed += Form1_FormClosed;
@@ -302,5 +315,6 @@
         private TextBox tbFtpPass;
         private Label label6;
         private TextBox tbFtpUser;
+        private Button btnCancel;
     }
 }

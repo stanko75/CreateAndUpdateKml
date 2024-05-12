@@ -12,7 +12,6 @@ namespace FunctionalTest;
 public partial class Form1 : Form
 {
     CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
     private static readonly HttpClient HttpClientPost = new();
     private static readonly HttpClient HttpClientGet = new();
 
@@ -73,6 +72,7 @@ public partial class Form1 : Form
 
     private void PostGpsPositionsFromFilesWithFileName_Click(object sender, EventArgs e)
     {
+        cancellationTokenSource = new CancellationTokenSource();
         Task task = PostGpsPositionsFromFilesWithFileNameAsync(cancellationTokenSource.Token);
 
         log.AppendText(task.Status.ToString());
@@ -214,6 +214,7 @@ public partial class Form1 : Form
 
     private void UploadImage_Click(object sender, EventArgs e)
     {
+        cancellationTokenSource = new CancellationTokenSource();
         Task task = UploadImageAsync(cancellationTokenSource.Token);
 
         log.AppendText(task.Status.ToString());
@@ -317,6 +318,7 @@ public partial class Form1 : Form
 
     private void UploadToBlog_Click(object sender, EventArgs e)
     {
+        cancellationTokenSource = new CancellationTokenSource();
         Task task = UploadToBlogAsync(cancellationTokenSource.Token);
 
         log.AppendText(task.Status.ToString());
@@ -411,5 +413,11 @@ public partial class Form1 : Form
             log.AppendText(Environment.NewLine);
             throw new Exception(ex.Message);
         }
+    }
+
+    private void btnCancel_Click(object sender, EventArgs e)
+    {
+        cancellationTokenSource.Cancel();
+        cancellationTokenSource.Dispose();
     }
 }
