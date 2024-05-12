@@ -19,16 +19,21 @@
                     function (data) {
                         data.forEach(function (liveImageMarkersNodes) {
 
-                            var search = { lat: liveImageMarkersNodes.lat, lng: liveImageMarkersNodes.lng };
+                            var search = { lat: liveImageMarkersNodes.Latitude, lng: liveImageMarkersNodes.Longitude };
                             if (!markerExists(search)) {
 
                                 var gpsLatLng =
-                                    new google.maps.LatLng(liveImageMarkersNodes.lat, liveImageMarkersNodes.lng);
+                                    new google.maps.LatLng(liveImageMarkersNodes.Latitude, liveImageMarkersNodes.Longitude);
+
+                                var scaledIcon = {
+                                    url: liveImageMarkersNodes.FileName,
+                                    scaledSize: new google.maps.Size(50, 50) // Adjust the size as needed
+                                };
 
                                 var marker = new google.maps.Marker({
                                     position: gpsLatLng,
                                     map: ns.map,
-                                    icon: liveImageMarkersNodes.fileName
+                                    icon: scaledIcon
                                 });
 
                                 ns.map.setCenter(gpsLatLng);

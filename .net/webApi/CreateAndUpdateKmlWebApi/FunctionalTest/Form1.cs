@@ -1,8 +1,5 @@
-using System.Configuration;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -12,6 +9,7 @@ namespace FunctionalTest;
 public partial class Form1 : Form
 {
     CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+    private bool cancellationTokenSourceDisposed = false;
     private static readonly HttpClient HttpClientPost = new();
     private static readonly HttpClient HttpClientGet = new();
 
@@ -72,7 +70,11 @@ public partial class Form1 : Form
 
     private void PostGpsPositionsFromFilesWithFileName_Click(object sender, EventArgs e)
     {
-        cancellationTokenSource = new CancellationTokenSource();
+        if (cancellationTokenSourceDisposed)
+        {
+            cancellationTokenSource = new CancellationTokenSource();
+        }
+
         Task task = PostGpsPositionsFromFilesWithFileNameAsync(cancellationTokenSource.Token);
 
         log.AppendText(task.Status.ToString());
@@ -214,7 +216,10 @@ public partial class Form1 : Form
 
     private void UploadImage_Click(object sender, EventArgs e)
     {
-        cancellationTokenSource = new CancellationTokenSource();
+        if (cancellationTokenSourceDisposed)
+        {
+            cancellationTokenSource = new CancellationTokenSource();
+        }
         Task task = UploadImageAsync(cancellationTokenSource.Token);
 
         log.AppendText(task.Status.ToString());
@@ -318,7 +323,10 @@ public partial class Form1 : Form
 
     private void UploadToBlog_Click(object sender, EventArgs e)
     {
-        cancellationTokenSource = new CancellationTokenSource();
+        if (cancellationTokenSourceDisposed)
+        {
+            cancellationTokenSource = new CancellationTokenSource();
+        }
         Task task = UploadToBlogAsync(cancellationTokenSource.Token);
 
         log.AppendText(task.Status.ToString());
@@ -417,7 +425,11 @@ public partial class Form1 : Form
 
     private void btnCancel_Click(object sender, EventArgs e)
     {
-        cancellationTokenSource.Cancel();
-        cancellationTokenSource.Dispose();
+        if (!cancellationTokenSourceDisposed)
+        {
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+            cancellationTokenSourceDisposed = true;
+        }
     }
 }

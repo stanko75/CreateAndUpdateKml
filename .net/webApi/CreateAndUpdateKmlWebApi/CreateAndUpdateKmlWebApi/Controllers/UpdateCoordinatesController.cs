@@ -19,8 +19,8 @@ public class UpdateCoordinatesController : ControllerBase
 
     private const string CurrentLocation = "test.json";
 
-    //private const string RootUrl = "https://milosevtracking.azurewebsites.net";
-    private const string RootUrl = "https://localhost:7293/";
+    private const string RootUrl = "https://milosevtracking.azurewebsites.net";
+    //private const string RootUrl = "https://localhost:7293/";
     //private const string RootUrl =
     //    "http://livetracking.milosev.com:100/.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi";
 
