@@ -174,8 +174,8 @@ public class UpdateCoordinatesController : ControllerBase
 
             LatLngFileNameModel? latLngFileNameModel = resizeImageAndCreateJsonAryFromImageGpsInfo.Execute(imageModel.ImageOriginalFileName
                 , imageModel.ImageThumbsFileName
-                , 25
-                , 25
+                , 200
+                , 200
                 , imageModel.NameOfFileForJson);
 
             IUpdateJsonIfExistsOrCreateNewIfNot updateJsonIfExistsOrCreateNewIfNot =

@@ -1,8 +1,10 @@
+using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace FunctionalTest;
@@ -14,13 +16,15 @@ public partial class Form1 : Form
     private static readonly HttpClient HttpClientPost = new();
     private static readonly HttpClient HttpClientGet = new();
 
+    private const string jsconfigForTests = "jsconfigForTests.json";
+
     public Form1()
     {
         InitializeComponent();
-        if (File.Exists("jsconfigForTests.json"))
+        if (File.Exists(jsconfigForTests))
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
-                .AddJsonFile("jsconfigForTests.json")
+                .AddJsonFile(jsconfigForTests)
                 .Build();
 
             string? addressValue = configuration.GetSection("address").Value;
@@ -30,14 +34,41 @@ public partial class Form1 : Form
             if (gpsLocationsPath is not null) tbGpsLocationsPath.Text = gpsLocationsPath;
 
             string? ftpUser = configuration.GetSection("ftpUser").Value;
-            if (gpsLocationsPath is not null) tbFtpUser.Text = ftpUser;
+            if (ftpUser is not null) tbFtpUser.Text = ftpUser;
 
             string? ftpHost = configuration.GetSection("ftpHost").Value;
-            if (gpsLocationsPath is not null) tbFtpHost.Text = ftpHost;
+            if (ftpHost is not null) tbFtpHost.Text = ftpHost;
 
             string? ftpPass = configuration.GetSection("ftpPass").Value;
-            if (gpsLocationsPath is not null) tbFtpPass.Text = ftpPass;
+            if (ftpPass is not null) tbFtpPass.Text = ftpPass;
+
+            string? strImagesPath = configuration.GetSection("imagesPath").Value;
+            if (strImagesPath is not null) imagesPath.Text = strImagesPath;
+
+            string? strKmlFileName = configuration.GetSection("kmlFileName").Value;
+            if (strKmlFileName is not null) kmlFileName.Text = strKmlFileName;
+
+            string? strFolderName = configuration.GetSection("folderName").Value;
+            if (strFolderName is not null) folderName.Text = strFolderName;
         }
+    }
+
+    private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+    {
+        JObject jsonConfig = new JObject();
+
+        jsonConfig["address"] = address.Text;
+        jsonConfig["gpsLocationsPath"] = tbGpsLocationsPath.Text;
+        jsonConfig["ftpUser"] = tbFtpUser.Text;
+        jsonConfig["ftpHost"] = tbFtpHost.Text;
+        jsonConfig["ftpPass"] = tbFtpPass.Text;
+
+        jsonConfig["folderName"] = folderName.Text;
+        jsonConfig["kmlFileName"] = kmlFileName.Text;
+        jsonConfig["imagesPath"] = imagesPath.Text;
+
+        string json = jsonConfig.ToString(Formatting.Indented);
+        File.WriteAllText(@$"..\..\..\{jsconfigForTests}", json);
     }
 
     private void PostGpsPositionsFromFilesWithFileName_Click(object sender, EventArgs e)
@@ -80,7 +111,7 @@ public partial class Form1 : Form
                 HttpResponseMessage? httpResponseMessage = null;
                 try
                 {
-                    httpResponseMessage = await HttpClientPost.PostAsync(requestUri, content);
+                    httpResponseMessage = await HttpClientPost.PostAsync(requestUri, content, cancellationToken);
                 }
                 catch (Exception ex)
                 {
@@ -107,7 +138,7 @@ public partial class Form1 : Form
 
                 try
                 {
-                    string kmlFileString = await HttpClientGet.GetStringAsync(kmlUri.Uri.AbsoluteUri);
+                    string kmlFileString = await HttpClientGet.GetStringAsync(kmlUri.Uri.AbsoluteUri, cancellationToken);
                 }
                 catch (Exception ex)
                 {

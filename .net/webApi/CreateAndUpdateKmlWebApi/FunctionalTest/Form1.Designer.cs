@@ -122,7 +122,7 @@
             tbFtpHost.Location = new Point(118, 208);
             tbFtpHost.Name = "tbFtpHost";
             tbFtpHost.Size = new Size(608, 23);
-            tbFtpHost.TabIndex = 14;
+            tbFtpHost.TabIndex = 7;
             // 
             // label7
             // 
@@ -138,7 +138,7 @@
             tbFtpPass.Location = new Point(118, 179);
             tbFtpPass.Name = "tbFtpPass";
             tbFtpPass.Size = new Size(608, 23);
-            tbFtpPass.TabIndex = 12;
+            tbFtpPass.TabIndex = 6;
             // 
             // label6
             // 
@@ -154,7 +154,7 @@
             tbFtpUser.Location = new Point(118, 150);
             tbFtpUser.Name = "tbFtpUser";
             tbFtpUser.Size = new Size(608, 23);
-            tbFtpUser.TabIndex = 10;
+            tbFtpUser.TabIndex = 5;
             // 
             // label5
             // 
@@ -170,7 +170,7 @@
             imagesPath.Location = new Point(118, 121);
             imagesPath.Name = "imagesPath";
             imagesPath.Size = new Size(608, 23);
-            imagesPath.TabIndex = 8;
+            imagesPath.TabIndex = 4;
             // 
             // label4
             // 
@@ -186,7 +186,7 @@
             tbGpsLocationsPath.Location = new Point(118, 41);
             tbGpsLocationsPath.Name = "tbGpsLocationsPath";
             tbGpsLocationsPath.Size = new Size(608, 23);
-            tbGpsLocationsPath.TabIndex = 6;
+            tbGpsLocationsPath.TabIndex = 1;
             // 
             // label3
             // 
@@ -202,7 +202,7 @@
             address.Location = new Point(118, 12);
             address.Name = "address";
             address.Size = new Size(608, 23);
-            address.TabIndex = 4;
+            address.TabIndex = 0;
             // 
             // folderName
             // 
@@ -234,7 +234,7 @@
             kmlFileName.Location = new Point(118, 66);
             kmlFileName.Name = "kmlFileName";
             kmlFileName.Size = new Size(608, 23);
-            kmlFileName.TabIndex = 0;
+            kmlFileName.TabIndex = 2;
             // 
             // UploadImage
             // 
@@ -270,6 +270,7 @@
             Controls.Add(UploadToBlog);
             Name = "Form1";
             Text = "Form1";
+            FormClosed += Form1_FormClosed;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel2.ResumeLayout(false);
