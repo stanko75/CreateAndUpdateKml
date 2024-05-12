@@ -5,6 +5,8 @@ using System.Text.Json;
 using Newtonsoft.Json.Linq;
 using PreparePicturesAndHtmlAndUploadToWebsite;
 using CreateAndUpdateKmlWebApi.Models;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -120,6 +122,22 @@ public class UpdateCoordinatesController : ControllerBase
             IPrepareTemplates prepareTemplates = new PrepareTemplates();
             PrepareCopyAndUploadHtmlFiles prepareCopyAndUploadHtmlFiles =
                 new PrepareCopyAndUploadHtmlFiles(copyHtmlFilesAndUpload, prepareTemplates);
+            
+            string listOfFilesToReplaceAndCopyJson = System.IO.File.ReadAllText(@"html\templateForBlog\listOfFilesToReplaceAndCopy.json");
+            Dictionary<string, string>? listOfFilesToReplaceAndCopyDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(listOfFilesToReplaceAndCopyJson);
+
+            if (listOfFilesToReplaceAndCopyDict is not null)
+            {
+                listOfFilesToReplaceAndCopyDict["galleryName"] = folder;
+                listOfFilesToReplaceAndCopyDict["ogTitle"] = "ogTitle";
+                listOfFilesToReplaceAndCopyDict["ogDescription"] = "ogDescription";
+                listOfFilesToReplaceAndCopyDict["ogImage"] = "ogImage";
+                listOfFilesToReplaceAndCopyDict["ogUrl"] = "ogUrl";
+                listOfFilesToReplaceAndCopyDict["picsJson"] = "picsJson";
+                listOfFilesToReplaceAndCopyDict["zoom"] = "4";
+                listOfFilesToReplaceAndCopyDict["joomlaThumbsPath"] = "joomlaThumbsPath";
+                listOfFilesToReplaceAndCopyDict["joomlaImgSrcPath"] = "joomlaImgSrcPath";
+            }
 
             prepareCopyAndUploadHtmlFiles.Execute(@"html\templateForBlog\listOfFilesToReplaceAndCopy.json"
                 , @"html\templateForBlog\listOfKeyValuesToReplaceInFiles.json"
