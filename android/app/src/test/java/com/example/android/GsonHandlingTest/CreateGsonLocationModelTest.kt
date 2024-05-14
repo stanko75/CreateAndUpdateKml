@@ -17,7 +17,7 @@ class CreateGsonLocationModelTest {
         var gson = Gson()
 
         val locationModel = gson.fromJson(result, LocationModel::class.java)
-        Assert.assertEquals(locationModel.lat, lat)
-        Assert.assertEquals(locationModel.lng, lng)
+        Assert.assertEquals(locationModel.Latitude, lat)
+        Assert.assertEquals(locationModel.Longitude, lng)
     }
 }

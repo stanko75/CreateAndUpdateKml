@@ -190,6 +190,11 @@ public class UpdateCoordinatesController : ControllerBase
             ResizeImageAndCreateJsonAryFromImageGpsInfo resizeImageAndCreateJsonAryFromImageGpsInfo =
                 new ResizeImageAndCreateJsonAryFromImageGpsInfo(resizeImage, fillLatLngFileNameModelFromImageGpsInfo);
 
+            if (!System.IO.File.Exists(imageModel.ImageOriginalFileName))
+            {
+                throw new Exception($"File: {Path.GetFullPath(imageModel.ImageOriginalFileName)} does not exist!");
+            }
+
             LatLngFileNameModel? latLngFileNameModel = resizeImageAndCreateJsonAryFromImageGpsInfo.Execute(imageModel.ImageOriginalFileName
                 , imageModel.ImageThumbsFileName
                 , 200

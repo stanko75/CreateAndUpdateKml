@@ -10,8 +10,8 @@ class CreateGsonLocationModel: ICreateGsonLocationModel {
         val gson: Gson = builder.create()
 
         val locationModel = LocationModel()
-        locationModel.lat = lat
-        locationModel.lng = lng
+        locationModel.Latitude = lat
+        locationModel.Longitude = lng
 
         return gson.toJson(locationModel)
     }

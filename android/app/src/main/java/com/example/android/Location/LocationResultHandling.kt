@@ -20,8 +20,8 @@ class LocationResultHandling(
         val path = File(context.getExternalFilesDir(null), "locations")
         val fileName = "test$currentDate"
 
-        fileFolderLocationModel.lat = lat
-        fileFolderLocationModel.lng = lng
+        fileFolderLocationModel.Latitude = lat
+        fileFolderLocationModel.Longitude = lng
 
         val json = createGsonLocationModel.serializeToJSON(fileFolderLocationModel)
         writeFileOnInternalStorage.execute(path, fileName, json)
