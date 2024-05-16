@@ -123,20 +123,20 @@ public class UpdateCoordinatesController : ControllerBase
             PrepareCopyAndUploadHtmlFiles prepareCopyAndUploadHtmlFiles =
                 new PrepareCopyAndUploadHtmlFiles(copyHtmlFilesAndUpload, prepareTemplates);
             
-            string listOfFilesToReplaceAndCopyJson = System.IO.File.ReadAllText(@"html\templateForBlog\listOfFilesToReplaceAndCopy.json");
-            Dictionary<string, string>? listOfFilesToReplaceAndCopyDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(listOfFilesToReplaceAndCopyJson);
+            string listOfKeyValuesToReplaceInFilesJson = System.IO.File.ReadAllText(@"html\templateForBlog\listOfKeyValuesToReplaceInFiles.json");
+            Dictionary<string, string>? listOfKeyValuesToReplaceInFilesDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(listOfKeyValuesToReplaceInFilesJson);
 
-            if (listOfFilesToReplaceAndCopyDict is not null)
+            if (listOfKeyValuesToReplaceInFilesDict is not null)
             {
-                listOfFilesToReplaceAndCopyDict["galleryName"] = folder;
-                listOfFilesToReplaceAndCopyDict["ogTitle"] = "ogTitle";
-                listOfFilesToReplaceAndCopyDict["ogDescription"] = "ogDescription";
-                listOfFilesToReplaceAndCopyDict["ogImage"] = "ogImage";
-                listOfFilesToReplaceAndCopyDict["ogUrl"] = "ogUrl";
-                listOfFilesToReplaceAndCopyDict["picsJson"] = "picsJson";
-                listOfFilesToReplaceAndCopyDict["zoom"] = "4";
-                listOfFilesToReplaceAndCopyDict["joomlaThumbsPath"] = "joomlaThumbsPath";
-                listOfFilesToReplaceAndCopyDict["joomlaImgSrcPath"] = "joomlaImgSrcPath";
+                listOfKeyValuesToReplaceInFilesDict["galleryName"] = folder;
+                listOfKeyValuesToReplaceInFilesDict["ogTitle"] = "ogTitle";
+                listOfKeyValuesToReplaceInFilesDict["ogDescription"] = "ogDescription";
+                listOfKeyValuesToReplaceInFilesDict["ogImage"] = "ogImage";
+                listOfKeyValuesToReplaceInFilesDict["ogUrl"] = "ogUrl";
+                listOfKeyValuesToReplaceInFilesDict["picsJson"] = "picsJson";
+                listOfKeyValuesToReplaceInFilesDict["zoom"] = "4";
+                listOfKeyValuesToReplaceInFilesDict["joomlaThumbsPath"] = "joomlaThumbsPath";
+                listOfKeyValuesToReplaceInFilesDict["joomlaImgSrcPath"] = "joomlaImgSrcPath";
             }
 
             prepareCopyAndUploadHtmlFiles.Execute(@"html\templateForBlog\listOfFilesToReplaceAndCopy.json"
