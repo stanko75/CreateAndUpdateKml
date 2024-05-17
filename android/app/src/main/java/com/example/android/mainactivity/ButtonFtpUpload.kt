@@ -35,11 +35,7 @@ class ButtonFtpUpload(private val activity: Activity, private val context: Conte
         ftpModel.user = ftpSharedPreferences.getString("user", "")
         ftpModel.pass = ftpSharedPreferences.getString("pass", "")
         ftpModel.folderName = fileAndFolderNameSharedPreferences.getString("folderName", "")
-        ftpModel.kmlFileName =
-            ftpModel.folderName + "\\" + fileAndFolderNameSharedPreferences.getString(
-                "kmlFileName",
-                ""
-            )
+        ftpModel.kmlFileName = fileAndFolderNameSharedPreferences.getString("kmlFileName","")
 
         val activityLogger = ActivityLogger(activity)
         activityLogger.Log(
