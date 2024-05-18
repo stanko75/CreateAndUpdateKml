@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Reflection.Metadata;
 
 namespace PreparePicturesAndHtmlAndUploadToWebsite;
 
@@ -111,25 +112,47 @@ public class CopyHtmlFiles: ICopyHtmlFiles
 
             File.Copy(file, savewwwFiles);
         }
-        File.Copy(Path.Join(nameOfAlbum, $"{nameOfAlbum}Thumbs.json"), Path.Join(wwwFolder, $"{nameOfAlbum}Thumbs.json"));
-        File.Copy(Path.Join(nameOfAlbum, $"{nameOfAlbum}.json"), Path.Join(wwwFolder, $"{nameOfAlbum}.json"));
+
+        string destFileName = Path.Join(wwwFolder, $"{nameOfAlbum}Thumbs.json");
+        if (File.Exists(destFileName))
+        {
+            File.Copy(Path.Join(nameOfAlbum, $"{nameOfAlbum}Thumbs.json"), destFileName);
+        }
+
+        destFileName = Path.Join(wwwFolder, $"{nameOfAlbum}.json");
+        if (File.Exists(destFileName))
+        {
+            File.Copy(Path.Join(nameOfAlbum, $"{nameOfAlbum}.json"), destFileName);
+        }
+
         string kmlFileNameSaveTo = Path.GetFileName(kmlFileName);
         string kmlFolder = Path.Join(prepareForUploadFolder, "kml");
         kmlFileNameSaveTo = Path.Join(kmlFolder, kmlFileNameSaveTo);
-        File.Copy(kmlFileName, kmlFileNameSaveTo);
-
-        string[] picsFiles = Directory.GetFiles(Path.Join(nameOfAlbum, "pics"));
-        string picsDestination = Path.Join(prepareForUploadFolder, "pics");
-        foreach (string picsFile in picsFiles)
+        if (File.Exists(kmlFileNameSaveTo))
         {
-            File.Copy(picsFile, Path.Join(picsDestination, Path.GetFileName(picsFile)));
+            File.Copy(kmlFileName, kmlFileNameSaveTo);
         }
 
-        string[] thumbsFiles = Directory.GetFiles(Path.Join(nameOfAlbum, "thumbs"));
-        string thumbsDestination = Path.Join(prepareForUploadFolder, "thumbs");
-        foreach (string thumbsFile in thumbsFiles)
+        string pics = Path.Join(nameOfAlbum, "pics");
+        if (Directory.Exists(pics))
         {
-            File.Copy(thumbsFile, Path.Join(thumbsDestination, Path.GetFileName(thumbsFile)));
+            string[] picsFiles = Directory.GetFiles(pics);
+            string picsDestination = Path.Join(prepareForUploadFolder, "pics");
+            foreach (string picsFile in picsFiles)
+            {
+                File.Copy(picsFile, Path.Join(picsDestination, Path.GetFileName(picsFile)));
+            }
+        }
+
+        string thumbs = Path.Join(nameOfAlbum, "thumbs");
+        if (Directory.Exists(thumbs))
+        {
+            string[] thumbsFiles = Directory.GetFiles(thumbs);
+            string thumbsDestination = Path.Join(prepareForUploadFolder, "thumbs");
+            foreach (string thumbsFile in thumbsFiles)
+            {
+                File.Copy(thumbsFile, Path.Join(thumbsDestination, Path.GetFileName(thumbsFile)));
+            }
         }
     }
 

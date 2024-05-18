@@ -133,7 +133,7 @@ public class UpdateCoordinatesController : ControllerBase
                 listOfKeyValuesToReplaceInFilesDict["ogDescription"] = "ogDescription";
                 listOfKeyValuesToReplaceInFilesDict["ogImage"] = "ogImage";
                 listOfKeyValuesToReplaceInFilesDict["ogUrl"] = "ogUrl";
-                listOfKeyValuesToReplaceInFilesDict["picsJson"] = "picsJson";
+                listOfKeyValuesToReplaceInFilesDict["picsJson"] = Path.GetFileNameWithoutExtension(kmlFileName);
                 listOfKeyValuesToReplaceInFilesDict["zoom"] = "4";
                 listOfKeyValuesToReplaceInFilesDict["joomlaThumbsPath"] = "joomlaThumbsPath";
                 listOfKeyValuesToReplaceInFilesDict["joomlaImgSrcPath"] = "joomlaImgSrcPath";
