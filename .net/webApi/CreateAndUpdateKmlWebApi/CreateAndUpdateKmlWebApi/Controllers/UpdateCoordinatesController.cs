@@ -128,19 +128,23 @@ public class UpdateCoordinatesController : ControllerBase
 
             if (listOfKeyValuesToReplaceInFilesDict is not null)
             {
-                listOfKeyValuesToReplaceInFilesDict["galleryName"] = folder;
-                listOfKeyValuesToReplaceInFilesDict["ogTitle"] = "ogTitle";
-                listOfKeyValuesToReplaceInFilesDict["ogDescription"] = "ogDescription";
-                listOfKeyValuesToReplaceInFilesDict["ogImage"] = "ogImage";
-                listOfKeyValuesToReplaceInFilesDict["ogUrl"] = "ogUrl";
-                listOfKeyValuesToReplaceInFilesDict["picsJson"] = Path.GetFileNameWithoutExtension(kmlFileName);
-                listOfKeyValuesToReplaceInFilesDict["zoom"] = "4";
-                listOfKeyValuesToReplaceInFilesDict["joomlaThumbsPath"] = "joomlaThumbsPath";
-                listOfKeyValuesToReplaceInFilesDict["joomlaImgSrcPath"] = "joomlaImgSrcPath";
+                listOfKeyValuesToReplaceInFilesDict["/*galleryName*/"] = folder;
+                listOfKeyValuesToReplaceInFilesDict["/*gapikey*/"] = "AIzaSyCC96EGKbYxxIadYOGTozj8NdD0F5CIYM4";
+                listOfKeyValuesToReplaceInFilesDict["/*ogTitle*/"] = "ogTitle";
+                listOfKeyValuesToReplaceInFilesDict["/*ogDescription*/"] = "ogDescription";
+                listOfKeyValuesToReplaceInFilesDict["/*ogImage*/"] = "ogImage";
+                listOfKeyValuesToReplaceInFilesDict["/*ogUrl*/"] = "ogUrl";
+                listOfKeyValuesToReplaceInFilesDict["/*picsJson*/"] = Path.GetFileNameWithoutExtension(kmlFileName);
+                listOfKeyValuesToReplaceInFilesDict["/*zoom*/"] = "4";
+                listOfKeyValuesToReplaceInFilesDict["/*joomlaThumbsPath*/"] = "joomlaThumbsPath";
+                listOfKeyValuesToReplaceInFilesDict["/*joomlaImgSrcPath*/"] = "joomlaImgSrcPath";
             }
 
+            System.IO.File.WriteAllText("listOfKeyValuesToReplaceInFiles.json", JsonConvert.SerializeObject(listOfKeyValuesToReplaceInFilesDict));
+
             prepareCopyAndUploadHtmlFiles.Execute(@"html\templateForBlog\listOfFilesToReplaceAndCopy.json"
-                , @"html\templateForBlog\listOfKeyValuesToReplaceInFiles.json"
+                //, @"html\templateForBlog\listOfKeyValuesToReplaceInFiles.json"
+                , @"listOfKeyValuesToReplaceInFiles.json"
                 , @"html\templateForBlog"
                 , @"html\blog\www"
                 , @"html\blog\www"

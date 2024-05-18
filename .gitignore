@@ -63,3 +63,4 @@ web.config
 /.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/funcTest2
 html/blog/www/index.html
 html/templateForBlog/index.html
+.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/listOfKeyValuesToReplaceInFiles.json
