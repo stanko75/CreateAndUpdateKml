@@ -11,7 +11,7 @@ class UploadToBlogCallbacks(var logger: ILogger, var activity: Activity, var fol
 
     override fun onResponse(response: Response<String>) {
         if (response.isSuccessful) {
-            val url = "http://www.milosev.com/gallery/allWithPics/travelBuddies/$folderName/index.html"
+            val url = "http://www.milosev.com/gallery/allWithPics/travelBuddies/$folderName/www/index.html"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             activity.startActivity(intent)
 
