@@ -21,8 +21,10 @@ public class WriteConfigurationToJsonFile: IWriteConfigurationToJsonFile
 
     private static string WriteConfigurationToJson(string strAbsolutePath, string kmlFileNameWithRelativePath)
     {
+        string kmlFileName = Path.GetFileName(kmlFileNameWithRelativePath);
+        kmlFileName = Path.Join("kml", kmlFileName);
         Uri kmlUrl =
-            Common.ConvertRelativeWindowsPathToUri(strAbsolutePath, Path.GetFileName(kmlFileNameWithRelativePath));
+            Common.ConvertRelativeWindowsPathToUri(strAbsolutePath, kmlFileName);
         var objConfig = new
         {
             KmlFileName = kmlUrl.AbsoluteUri

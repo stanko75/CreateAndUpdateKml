@@ -8,7 +8,7 @@ namespace FunctionalTest;
 
 public partial class Form1 : Form
 {
-    CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+    CancellationTokenSource? cancellationTokenSource = new CancellationTokenSource();
     private bool cancellationTokenSourceDisposed = false;
     private static readonly HttpClient HttpClientPost = new();
     private static readonly HttpClient HttpClientGet = new();
@@ -427,8 +427,9 @@ public partial class Form1 : Form
     {
         if (!cancellationTokenSourceDisposed)
         {
-            cancellationTokenSource.Cancel();
-            cancellationTokenSource.Dispose();
+            cancellationTokenSource?.Cancel();
+            cancellationTokenSource?.Dispose();
+            cancellationTokenSource = null;
             cancellationTokenSourceDisposed = true;
         }
     }
