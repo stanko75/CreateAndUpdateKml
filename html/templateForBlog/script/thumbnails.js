@@ -71,7 +71,3 @@
     ns.readThumbPicsFromJsonAndDisplayThemOnGmaps = readThumbPicsFromJsonAndDisplayThemOnGmaps;
 
 })(window.milosev);
-
-window.onload = function () {
-    window.milosev.readThumbPicsFromJsonAndDisplayThemOnGmaps();
-};

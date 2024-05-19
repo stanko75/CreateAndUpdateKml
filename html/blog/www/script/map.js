@@ -21,6 +21,8 @@
                 });
 
                 ns.map = map;
+                ns.readPicsFromJsonAndDisplayThemOnGmaps();
+                ns.readThumbPicsFromJsonAndDisplayThemOnGmaps();
             } catch (e) {
                 console.log(e);
                 setTimeout(function () {
