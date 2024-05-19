@@ -113,22 +113,22 @@ public class CopyHtmlFiles: ICopyHtmlFiles
             File.Copy(file, savewwwFiles);
         }
 
-        string destFileName = Path.Join(wwwFolder, $"{nameOfAlbum}Thumbs.json");
-        if (File.Exists(destFileName))
+        string sourceFileName = Path.Join(nameOfAlbum, $"{nameOfAlbum}Thumbs.json");
+        if (File.Exists(sourceFileName))
         {
-            File.Copy(Path.Join(nameOfAlbum, $"{nameOfAlbum}Thumbs.json"), destFileName);
+            File.Copy(sourceFileName, Path.Join(wwwFolder, $"{nameOfAlbum}Thumbs.json"));
         }
 
-        destFileName = Path.Join(wwwFolder, $"{nameOfAlbum}.json");
-        if (File.Exists(destFileName))
+        sourceFileName = Path.Join(nameOfAlbum, $"{nameOfAlbum}.json");
+        if (File.Exists(sourceFileName))
         {
-            File.Copy(Path.Join(nameOfAlbum, $"{nameOfAlbum}.json"), destFileName);
+            File.Copy(sourceFileName, Path.Join(wwwFolder, $"{nameOfAlbum}.json"));
         }
 
         string kmlFileNameSaveTo = Path.GetFileName(kmlFileName);
         string kmlFolder = Path.Join(prepareForUploadFolder, "kml");
         kmlFileNameSaveTo = Path.Join(kmlFolder, kmlFileNameSaveTo);
-        if (File.Exists(kmlFileNameSaveTo))
+        if (File.Exists(kmlFileName))
         {
             File.Copy(kmlFileName, kmlFileNameSaveTo);
         }
