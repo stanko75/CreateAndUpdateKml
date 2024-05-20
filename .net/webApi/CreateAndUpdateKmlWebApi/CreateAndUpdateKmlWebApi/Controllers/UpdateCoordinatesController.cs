@@ -21,8 +21,8 @@ public class UpdateCoordinatesController : ControllerBase
 
     private const string CurrentLocation = "test.json";
 
-    //private const string RootUrl = "https://milosevtracking.azurewebsites.net";
-    private const string RootUrl = "https://localhost:7293/";
+    private const string RootUrl = "https://milosevtracking.azurewebsites.net";
+    //private const string RootUrl = "https://localhost:7293/";
     //private const string RootUrl =
     //    "http://livetracking.milosev.com:100/.net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi";
 
@@ -210,7 +210,10 @@ public class UpdateCoordinatesController : ControllerBase
 
             if (latLngFileNameModel is not null)
             {
+                latLngFileNameModel.FileName = @$"..\..\{imageModel.ImageThumbsFileName}";
                 updateJsonIfExistsOrCreateNewIfNot.Execute(imageModel.FileNameThumbsJson, latLngFileNameModel);
+
+                latLngFileNameModel.FileName = @$"..\..\{imageModel.ImageOriginalFileName}";
                 updateJsonIfExistsOrCreateNewIfNot.Execute(imageModel.FileNameJson, latLngFileNameModel);
             }
 
