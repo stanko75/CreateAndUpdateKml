@@ -1,6 +1,5 @@
 package com.example.android.retrofit.ftp
 
-import android.content.Context
 import retrofit2.Response
 
 interface IUploadToBlogCallbacks {
