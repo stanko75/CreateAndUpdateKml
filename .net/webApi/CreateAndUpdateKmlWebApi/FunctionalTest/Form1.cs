@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text;
+using FunctionalTest.Log;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -13,11 +14,14 @@ public partial class Form1 : Form
     private static readonly HttpClient HttpClientPost = new();
     private static readonly HttpClient HttpClientGet = new();
 
+    private TextBoxLogger _textBoxLogger;
+
     private const string jsconfigForTests = "jsconfigForTests.json";
 
     public Form1()
     {
         InitializeComponent();
+        _textBoxLogger = new TextBoxLogger(log);
         if (File.Exists(jsconfigForTests))
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -77,8 +81,11 @@ public partial class Form1 : Form
 
         Task task = PostGpsPositionsFromFilesWithFileNameAsync(cancellationTokenSource.Token);
 
+        _textBoxLogger.Log(new LogEntry(LoggingEventType.Information, task.Status.ToString())); 
+        /*
         log.AppendText(task.Status.ToString());
         log.AppendText(Environment.NewLine);
+        */
     }
 
     async Task PostGpsPositionsFromFilesWithFileNameAsync(CancellationToken cancellationToken)
