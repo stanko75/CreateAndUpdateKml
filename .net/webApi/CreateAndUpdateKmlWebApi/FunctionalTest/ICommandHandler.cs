@@ -1,0 +1,6 @@
+﻿namespace FunctionalTest;
+
+public interface ICommandHandler<in TCommand>
+{
+    void Execute(TCommand command);
+}
