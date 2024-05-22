@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Threading;
 using FunctionalTest.Log;
+using Microsoft.VisualBasic.Logging;
 
 namespace FunctionalTest;
 
@@ -10,11 +10,12 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
 {
     private ILogger _logger = logger;
 
-    public void Execute(PostGpsPositionsFromFilesWithFileNameCommand command)
+    public async Task Execute(PostGpsPositionsFromFilesWithFileNameCommand command)
     {
         string addressText = command.AddressText;
         string gpsLocationsPath = command.GpsLocationsPath;
         CancellationToken cancellationToken = command.CancellationToken;
+        HttpClient httpClientPost = command.HttpClientPost;
 
         JObject jObjectKmlFileFolderLatLng = new JObject
         {
@@ -35,7 +36,21 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
                 StringContent content = new StringContent($@"{jObjectKmlFileFolderLatLng}", Encoding.UTF8, "text/json");
 
                 _logger.Log(new LogEntry(LoggingEventType.Information, $"Sending: {jObjectKmlFileFolderLatLng}"));
+
+                HttpResponseMessage? httpResponseMessage = null;
+                try
+                {
+                    httpResponseMessage = await httpClientPost.PostAsync(requestUri, content, cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Log(new LogEntry(LoggingEventType.Fatal, $"Exception: {ex.Message}", ex));
+                }
+
+                _logger.Log(new LogEntry(LoggingEventType.Fatal, $"{httpResponseMessage?.StatusCode.ToString()}"));
             }
         }
     }
 }
+
+//Task task = PostGpsPositionsFromFilesWithFileNameAsync(cancellationTokenSource.Token);

@@ -7,4 +7,5 @@ public class PostGpsPositionsFromFilesWithFileNameCommand
     public string FolderName { get; set; }
     public string KmlFileName { get; set; }
     public CancellationToken CancellationToken { get; set; }
+    public HttpClient HttpClientPost { get; set; }
 }
