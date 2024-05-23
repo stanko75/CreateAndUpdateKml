@@ -122,4 +122,3 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
         return uriBuilder;
     }
 }
-//Task task = PostGpsPositionsFromFilesWithFileNameAsync(cancellationTokenSource.Token)}
