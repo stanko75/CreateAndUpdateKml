@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using FunctionalTest.Log;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -79,13 +80,26 @@ public partial class Form1 : Form
             cancellationTokenSource = new CancellationTokenSource();
         }
 
-        Task task = PostGpsPositionsFromFilesWithFileNameAsync(cancellationTokenSource.Token);
+        if (cancellationTokenSource != null)
+        {
+            var command = new PostGpsPositionsFromFilesWithFileNameCommand
+            {
+                AddressText = address.Text,
+                KmlFileName = kmlFileName.Text,
+                FolderName = folderName.Text,
+                HttpClientPost = HttpClientPost,
+                GpsLocationsPath = tbGpsLocationsPath.Text,
+                CancellationToken = cancellationTokenSource.Token
+            };
 
-        _textBoxLogger.Log(new LogEntry(LoggingEventType.Information, task.Status.ToString())); 
-        /*
-        log.AppendText(task.Status.ToString());
+            ICommandHandler<PostGpsPositionsFromFilesWithFileNameCommand> commandE =
+                new PostGpsPositionsFromFilesWithFileNameHandler(new TextBoxLogger(log));
+
+            Task task = commandE.Execute(command);
+            log.AppendText(task.Status.ToString());
+        }
+
         log.AppendText(Environment.NewLine);
-        */
     }
 
     async Task PostGpsPositionsFromFilesWithFileNameAsync(CancellationToken cancellationToken)
