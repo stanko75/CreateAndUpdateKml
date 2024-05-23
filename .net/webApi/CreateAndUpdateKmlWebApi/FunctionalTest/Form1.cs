@@ -92,10 +92,10 @@ public partial class Form1 : Form
                 CancellationToken = cancellationTokenSource.Token
             };
 
-            ICommandHandler<PostGpsPositionsFromFilesWithFileNameCommand> commandE =
+            ICommandHandler<PostGpsPositionsFromFilesWithFileNameCommand> handler =
                 new PostGpsPositionsFromFilesWithFileNameHandler(new TextBoxLogger(log));
 
-            Task task = commandE.Execute(command);
+            Task task = handler.Execute(command);
             log.AppendText(task.Status.ToString());
         }
 
