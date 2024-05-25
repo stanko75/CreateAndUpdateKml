@@ -44,20 +44,25 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
                     logger.Log(new Exception($"Exception: {ex.Message}", ex));
                 }
 
-                logger.Log(new Exception($"{httpResponseMessage?.StatusCode.ToString()}"));
+                logger.Log($"{httpResponseMessage?.StatusCode.ToString()}");
 
-                JObject configJson = await GetConfigJson(GetConfigJsonUri(addressText).AbsoluteUri, httpClientPost);
+                JObject configJson =
+                    await StaticCommon.GetConfigJson(StaticCommon.GetConfigJsonUri(addressText).AbsoluteUri,
+                        httpClientPost, logger);
 
-                string? klmFileName = configJson?["KmlFileName"]?.ToString();
-                string? currentLocation = configJson?["CurrentLocation"]?.ToString();
+                string? klmFileName = configJson["KmlFileName"]?.ToString();
+                string? currentLocation = configJson["CurrentLocation"]?.ToString();
                 //string? liveImageMarkersJsonUrl = configJson?["LiveImageMarkersJsonUrl"]?.ToString();
 
-                UriBuilder kmlUri = CheckConfigJson(addressText, command.FolderName, klmFileName, command.KmlFileName, "kml");
+                UriBuilder kmlUri = StaticCommon.CheckConfigJson(addressText, command.FolderName, klmFileName,
+                    command.KmlFileName, "kml", logger);
                 UriBuilder testJsonUri =
-                    CheckConfigJson(addressText, command.FolderName, currentLocation, "test", "json", true);
+                    StaticCommon.CheckConfigJson(addressText, command.FolderName, currentLocation, "test", "json",
+                        logger, true);
                 try
                 {
-                    string kmlFileString = await httpClientPost.GetStringAsync(kmlUri.Uri.AbsoluteUri, cancellationToken);
+                    string kmlFileString =
+                        await httpClientPost.GetStringAsync(kmlUri.Uri.AbsoluteUri, cancellationToken);
                 }
                 catch (Exception ex)
                 {
@@ -67,7 +72,8 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
 
                 try
                 {
-                    string testJsonString = await httpClientPost.GetStringAsync(testJsonUri.Uri.AbsoluteUri, cancellationToken);
+                    string testJsonString =
+                        await httpClientPost.GetStringAsync(testJsonUri.Uri.AbsoluteUri, cancellationToken);
                 }
                 catch (Exception ex)
                 {
@@ -79,46 +85,5 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
 
             }
         }
-    }
-
-    private Uri GetConfigJsonUri(string addressText)
-    {
-        Uri baseUri = new Uri(addressText);
-        return new Uri(baseUri, "config.json");
-    }
-
-    private async Task<JObject> GetConfigJson(string uri, HttpClient httpClient)
-    {
-        try
-        {
-            string configJsonString = await httpClient.GetStringAsync(uri);
-            return JObject.Parse(configJsonString);
-        }
-        catch (Exception ex)
-        {
-            logger.Log(new Exception("There is error with config.json:" + uri));
-            throw new Exception(ex.Message);
-        }
-    }
-
-    private UriBuilder CheckConfigJson(string addressText, string folderNameString, string? fileNameInConfigJsonOnWeb,
-        string localFileName,
-        string extension, bool checkInRoot = false)
-    {
-        UriBuilder uriBuilder = new UriBuilder(addressText);
-        uriBuilder.Path = checkInRoot
-            ? Path.ChangeExtension(localFileName, extension)
-            : Path.Combine(folderNameString, Path.ChangeExtension(localFileName, extension));
-        Uri fileNameUri = uriBuilder.Uri;
-        if (!string.Equals(fileNameInConfigJsonOnWeb, fileNameUri.AbsoluteUri,
-                StringComparison.InvariantCultureIgnoreCase))
-        {
-            string message =
-                $"There is an error in config.json! {fileNameInConfigJsonOnWeb} is not equal {fileNameUri.AbsoluteUri}!";
-            logger.Log(new Exception(message));
-            throw new Exception(message);
-        }
-
-        return uriBuilder;
     }
 }
