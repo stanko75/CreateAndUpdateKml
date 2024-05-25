@@ -119,9 +119,6 @@ public partial class Form1 : Form
     {
         if (_cancellationTokenSourceDisposed)
         {
-            _cancellationTokenSource?.Dispose();
-            _cancellationTokenSource = null;
-
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -138,6 +135,8 @@ public partial class Form1 : Form
         if (!_cancellationTokenSourceDisposed && _cancellationTokenSource is not null)
         {
             _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
             _cancellationTokenSourceDisposed = true;
         }
     }
