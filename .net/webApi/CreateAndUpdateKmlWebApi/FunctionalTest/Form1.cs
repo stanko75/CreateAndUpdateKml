@@ -10,17 +10,16 @@ public partial class Form1 : Form
     CancellationTokenSource? _cancellationTokenSource = new();
     private bool _cancellationTokenSourceDisposed;
     private static readonly HttpClient HttpClientPost = new();
-    private static readonly HttpClient HttpClientGet = new();
 
-    private const string JsconfigForTests = "jsconfigForTests.json";
+    private const string JsonConfigForTests = "jsconfigForTests.json";
 
     public Form1()
     {
         InitializeComponent();
-        if (File.Exists(JsconfigForTests))
+        if (File.Exists(JsonConfigForTests))
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
-                .AddJsonFile(JsconfigForTests)
+                .AddJsonFile(JsonConfigForTests)
                 .Build();
 
             string? addressValue = configuration.GetSection("address").Value;
@@ -51,20 +50,20 @@ public partial class Form1 : Form
 
     private void Form1_FormClosed(object sender, FormClosedEventArgs e)
     {
-        JObject jsonConfig = new JObject();
-
-        jsonConfig["address"] = address.Text;
-        jsonConfig["gpsLocationsPath"] = tbGpsLocationsPath.Text;
-        jsonConfig["ftpUser"] = tbFtpUser.Text;
-        jsonConfig["ftpHost"] = tbFtpHost.Text;
-        jsonConfig["ftpPass"] = tbFtpPass.Text;
-
-        jsonConfig["folderName"] = folderName.Text;
-        jsonConfig["kmlFileName"] = kmlFileName.Text;
-        jsonConfig["imagesPath"] = imagesPath.Text;
+        var jsonConfig = new JObject
+        {
+            ["address"] = address.Text,
+            ["gpsLocationsPath"] = tbGpsLocationsPath.Text,
+            ["ftpUser"] = tbFtpUser.Text,
+            ["ftpHost"] = tbFtpHost.Text,
+            ["ftpPass"] = tbFtpPass.Text,
+            ["folderName"] = folderName.Text,
+            ["kmlFileName"] = kmlFileName.Text,
+            ["imagesPath"] = imagesPath.Text
+        };
 
         string json = jsonConfig.ToString(Formatting.Indented);
-        File.WriteAllText(@$"..\..\..\{JsconfigForTests}", json);
+        File.WriteAllText(@$"..\..\..\{JsonConfigForTests}", json);
     }
 
     private void PostGpsPositionsFromFilesWithFileName_Click(object sender, EventArgs e)
