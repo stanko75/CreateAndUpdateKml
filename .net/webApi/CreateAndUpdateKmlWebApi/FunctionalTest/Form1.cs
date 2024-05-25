@@ -68,7 +68,6 @@ public partial class Form1 : Form
 
     private void PostGpsPositionsFromFilesWithFileName_Click(object sender, EventArgs e)
     {
-        if (_cancellationTokenSource == null) return;
         var command = new PostGpsPositionsFromFilesWithFileNameCommand
         {
             AddressText = address.Text,
@@ -76,7 +75,7 @@ public partial class Form1 : Form
             FolderName = folderName.Text,
             HttpClientPost = HttpClientPost,
             GpsLocationsPath = tbGpsLocationsPath.Text,
-            CancellationToken = _cancellationTokenSource.Token
+            CancellationToken = _cancellationTokenSource?.Token
         };
 
         ICommandHandler<PostGpsPositionsFromFilesWithFileNameCommand> handler =
@@ -137,7 +136,7 @@ public partial class Form1 : Form
 
     private void btnCancel_Click(object sender, EventArgs e)
     {
-        if (!_cancellationTokenSourceDisposed)
+        if (!_cancellationTokenSourceDisposed && _cancellationTokenSource is not null)
         {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
