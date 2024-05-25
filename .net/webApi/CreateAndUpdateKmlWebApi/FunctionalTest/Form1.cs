@@ -66,7 +66,7 @@ public partial class Form1 : Form
         File.WriteAllText(@$"..\..\..\{JsonConfigForTests}", json);
     }
 
-    private void PostGpsPositionsFromFilesWithFileName_Click(object sender, EventArgs e)
+    private async void PostGpsPositionsFromFilesWithFileName_Click(object sender, EventArgs e)
     {
         var command = new PostGpsPositionsFromFilesWithFileNameCommand
         {
@@ -81,13 +81,10 @@ public partial class Form1 : Form
         ICommandHandler<PostGpsPositionsFromFilesWithFileNameCommand> handler =
             new PostGpsPositionsFromFilesWithFileNameHandler(new TextBoxLogger(log));
 
-        ExecuteHandler(command, logger => new PostGpsPositionsFromFilesWithFileNameHandler(logger));
-
-        Task task = handler.Execute(command);
-        log.AppendText(task.Status.ToString());
+        await ExecuteHandler(command, logger => new PostGpsPositionsFromFilesWithFileNameHandler(logger));
     }
 
-    private void UploadImage_Click(object sender, EventArgs e)
+    private async void UploadImage_Click(object sender, EventArgs e)
     {
         if (_cancellationTokenSource == null) return;
         var command = new UploadImageCommand
@@ -100,10 +97,10 @@ public partial class Form1 : Form
             ImagesPath = imagesPath.Text
         };
 
-        ExecuteHandler(command, logger => new UploadImageHandler(logger));
+        await ExecuteHandler(command, logger => new UploadImageHandler(logger));
     }
 
-    private void UploadToBlog_Click(object sender, EventArgs e)
+    private async void UploadToBlog_Click(object sender, EventArgs e)
     {
         if (_cancellationTokenSource == null) return;
         var command = new UploadToBlogCommand
@@ -115,13 +112,16 @@ public partial class Form1 : Form
             CancellationToken = _cancellationTokenSource.Token,
         };
 
-        ExecuteHandler(command, logger => new UploadToBlogHandler(logger));
+        await ExecuteHandler(command, logger => new UploadToBlogHandler(logger));
     }
 
-    private void ExecuteHandler<TCommand>(TCommand command, Func<ILogger, ICommandHandler<TCommand>> handlerFactory)
+    private async Task ExecuteHandler<TCommand>(TCommand command, Func<ILogger, ICommandHandler<TCommand>> handlerFactory)
     {
         if (_cancellationTokenSourceDisposed)
         {
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
+
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -129,8 +129,7 @@ public partial class Form1 : Form
         {
             ICommandHandler<TCommand> handler = handlerFactory(new TextBoxLogger(log));
 
-            Task task = handler.Execute(command);
-            log.AppendText(task.Status.ToString());
+            await handler.Execute(command);
         }
     }
 
@@ -139,8 +138,6 @@ public partial class Form1 : Form
         if (!_cancellationTokenSourceDisposed && _cancellationTokenSource is not null)
         {
             _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource?.Dispose();
-            _cancellationTokenSource = null;
             _cancellationTokenSourceDisposed = true;
         }
     }
