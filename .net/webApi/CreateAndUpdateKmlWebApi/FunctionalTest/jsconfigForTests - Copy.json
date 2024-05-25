@@ -1,8 +1,0 @@
-{
-  //"address": "https://milosevtracking.azurewebsites.net/",
-  "address": "https://localhost:7293/",
-  "gpsLocationsPath": "C:\\projects\\example\\mariaLaach\\mariaLaach",
-  "ftpUser": "gallery@milosev.com",
-  "ftpHost": "92.204.210.0",
-  "ftpPass": "qsehZbgrvaLR"
-}
