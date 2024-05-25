@@ -1,6 +1,3 @@
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using FunctionalTest.Log;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -72,61 +69,58 @@ public partial class Form1 : Form
 
     private void PostGpsPositionsFromFilesWithFileName_Click(object sender, EventArgs e)
     {
-        if (_cancellationTokenSourceDisposed)
+        if (_cancellationTokenSource == null) return;
+        var command = new PostGpsPositionsFromFilesWithFileNameCommand
         {
-            _cancellationTokenSource = new CancellationTokenSource();
-        }
+            AddressText = address.Text,
+            KmlFileName = kmlFileName.Text,
+            FolderName = folderName.Text,
+            HttpClientPost = HttpClientPost,
+            GpsLocationsPath = tbGpsLocationsPath.Text,
+            CancellationToken = _cancellationTokenSource.Token
+        };
 
-        if (_cancellationTokenSource != null)
-        {
-            var command = new PostGpsPositionsFromFilesWithFileNameCommand
-            {
-                AddressText = address.Text,
-                KmlFileName = kmlFileName.Text,
-                FolderName = folderName.Text,
-                HttpClientPost = HttpClientPost,
-                GpsLocationsPath = tbGpsLocationsPath.Text,
-                CancellationToken = _cancellationTokenSource.Token
-            };
+        ICommandHandler<PostGpsPositionsFromFilesWithFileNameCommand> handler =
+            new PostGpsPositionsFromFilesWithFileNameHandler(new TextBoxLogger(log));
 
-            ICommandHandler<PostGpsPositionsFromFilesWithFileNameCommand> handler =
-                new PostGpsPositionsFromFilesWithFileNameHandler(new TextBoxLogger(log));
+        ExecuteHandler(command, logger => new PostGpsPositionsFromFilesWithFileNameHandler(logger));
 
-            Task task = handler.Execute(command);
-            log.AppendText(task.Status.ToString());
-        }
-
-        log.AppendText(Environment.NewLine);
+        Task task = handler.Execute(command);
+        log.AppendText(task.Status.ToString());
     }
 
     private void UploadImage_Click(object sender, EventArgs e)
     {
-        if (_cancellationTokenSourceDisposed)
+        if (_cancellationTokenSource == null) return;
+        var command = new UploadImageCommand
         {
-            _cancellationTokenSource = new CancellationTokenSource();
-        }
+            AddressText = address.Text,
+            KmlFileName = kmlFileName.Text,
+            FolderName = folderName.Text,
+            HttpClientPost = HttpClientPost,
+            CancellationToken = _cancellationTokenSource.Token,
+            ImagesPath = imagesPath.Text
+        };
 
-        if (_cancellationTokenSource != null)
-        {
-            var command = new UploadImageCommand
-            {
-                AddressText = address.Text,
-                KmlFileName = kmlFileName.Text,
-                FolderName = folderName.Text,
-                HttpClientPost = HttpClientPost,
-                CancellationToken = _cancellationTokenSource.Token,
-                ImagesPath = imagesPath.Text
-            };
-
-            ICommandHandler<UploadImageCommand> handler =
-                new UploadImageHandler(new TextBoxLogger(log));
-
-            Task task = handler.Execute(command);
-            log.AppendText(task.Status.ToString());
-        }
+        ExecuteHandler(command, logger => new UploadImageHandler(logger));
     }
 
     private void UploadToBlog_Click(object sender, EventArgs e)
+    {
+        if (_cancellationTokenSource == null) return;
+        var command = new UploadToBlogCommand
+        {
+            AddressText = address.Text,
+            KmlFileName = kmlFileName.Text,
+            FolderName = folderName.Text,
+            HttpClientPost = HttpClientPost,
+            CancellationToken = _cancellationTokenSource.Token,
+        };
+
+        ExecuteHandler(command, logger => new UploadToBlogHandler(logger));
+    }
+
+    private void ExecuteHandler<TCommand>(TCommand command, Func<ILogger, ICommandHandler<TCommand>> handlerFactory)
     {
         if (_cancellationTokenSourceDisposed)
         {
@@ -135,17 +129,7 @@ public partial class Form1 : Form
 
         if (_cancellationTokenSource != null)
         {
-            var command = new UploadToBlogCommand
-            {
-                AddressText = address.Text,
-                KmlFileName = kmlFileName.Text,
-                FolderName = folderName.Text,
-                HttpClientPost = HttpClientPost,
-                CancellationToken = _cancellationTokenSource.Token,
-            };
-
-            ICommandHandler<UploadToBlogCommand> handler =
-                new UploadToBlogHandler(new TextBoxLogger(log));
+            ICommandHandler<TCommand> handler = handlerFactory(new TextBoxLogger(log));
 
             Task task = handler.Execute(command);
             log.AppendText(task.Status.ToString());
