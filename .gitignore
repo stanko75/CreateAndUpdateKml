@@ -64,3 +64,4 @@ web.config
 html/blog/www/index.html
 html/templateForBlog/index.html
 .net/webApi/CreateAndUpdateKmlWebApi/CreateAndUpdateKmlWebApi/listOfKeyValuesToReplaceInFiles.json
+.net/webApi/CreateAndUpdateKmlWebApi/FunctionalTest/jsconfigForTests - Copy.json
