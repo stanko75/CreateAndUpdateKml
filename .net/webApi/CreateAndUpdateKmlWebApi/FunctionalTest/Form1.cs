@@ -135,101 +135,20 @@ public partial class Form1 : Form
 
         if (_cancellationTokenSource != null)
         {
-            Task task = UploadToBlogAsync(_cancellationTokenSource.Token);
+            var command = new UploadToBlogCommand
+            {
+                AddressText = address.Text,
+                KmlFileName = kmlFileName.Text,
+                FolderName = folderName.Text,
+                HttpClientPost = HttpClientPost,
+                CancellationToken = _cancellationTokenSource.Token,
+            };
 
+            ICommandHandler<UploadToBlogCommand> handler =
+                new UploadToBlogHandler(new TextBoxLogger(log));
+
+            Task task = handler.Execute(command);
             log.AppendText(task.Status.ToString());
-        }
-
-        log.AppendText(Environment.NewLine);
-    }
-
-    async Task UploadToBlogAsync(CancellationToken cancellationToken)
-    {
-        string addressText = address.Text;
-
-        JObject jObjectKmlFileFolder = new JObject();
-        jObjectKmlFileFolder["folderName"] = folderName.Text;
-        jObjectKmlFileFolder["kmlFileName"] = kmlFileName.Text;
-        jObjectKmlFileFolder["host"] = tbFtpHost.Text;
-        jObjectKmlFileFolder["user"] = tbFtpUser.Text;
-        jObjectKmlFileFolder["pass"] = tbFtpPass.Text;
-
-        string jsonContent = jObjectKmlFileFolder.ToString();
-        StringContent content = new StringContent(jsonContent);
-        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-        string requestUri = Path.Combine(addressText, @"api/UpdateCoordinates/UploadToBlog");
-        log.AppendText("Sending");
-        log.AppendText(Environment.NewLine);
-        log.AppendText(Environment.NewLine);
-
-        try
-        {
-            HttpResponseMessage httpResponseMessage = await HttpClientPost.PostAsync(requestUri, content);
-            log.AppendText(httpResponseMessage.StatusCode.ToString());
-            log.AppendText(Environment.NewLine);
-            if (!httpResponseMessage.IsSuccessStatusCode)
-            {
-                string errorMessage = await httpResponseMessage.Content.ReadAsStringAsync();
-                log.AppendText(Environment.NewLine);
-                log.AppendText(errorMessage);
-                log.AppendText(Environment.NewLine);
-                throw new Exception(errorMessage);
-            }
-
-            string okMessage = await httpResponseMessage.Content.ReadAsStringAsync();
-            log.AppendText(Environment.NewLine);
-            log.AppendText(okMessage);
-            log.AppendText(Environment.NewLine);
-        }
-        catch (Exception ex)
-        {
-            log.AppendText(ex.Message);
-            log.AppendText(Environment.NewLine);
-            log.AppendText("********************************");
-            log.AppendText(Environment.NewLine);
-            throw new Exception(ex.Message);
-        }
-
-        string[] fileUrls = {
-            "css/index.css",
-            "lib/jquery-3.6.4.js",
-            "script/map.js",
-            "script/namespaces.js",
-            "script/namespaces.js",
-            "config.json",
-            "index.html"
-        };
-
-        try
-        {
-            foreach (string url in fileUrls)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                string milosevUrl = $"http://milosev.com/gallery/allWithPics/travelBuddies/{folderName.Text}/";
-                Uri baseUri = new Uri(milosevUrl);
-                Uri uri = new Uri(baseUri, url);
-
-                HttpResponseMessage response = await HttpClientGet.GetAsync(uri.AbsoluteUri);
-                if (response.IsSuccessStatusCode)
-                {
-                    log.AppendText(@$"File: {uri.AbsoluteUri} exists");
-                }
-                else
-                {
-                    log.AppendText(@$"Request failed with status code: {response.StatusCode}");
-                }
-
-                log.AppendText(Environment.NewLine);
-            }
-        }
-        catch (Exception ex)
-        {
-            log.AppendText(ex.Message);
-            log.AppendText(Environment.NewLine);
-            log.AppendText("********************************");
-            log.AppendText(Environment.NewLine);
-            throw new Exception(ex.Message);
         }
     }
 
