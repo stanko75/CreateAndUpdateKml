@@ -37,7 +37,6 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
                 HttpResponseMessage? httpResponseMessage = null;
                 try
                 {
-                    await Task.Delay(2000);
                     httpResponseMessage = await httpClientPost.PostAsync(requestUri, content);
                 }
                 catch (Exception ex)
@@ -81,6 +80,9 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
                     logger.Log(new Exception("There is error with test.json:" + testJsonUri.Uri.AbsoluteUri));
                     throw new Exception(ex.Message);
                 }
+
+                await Task.Delay(2000);
+
             }
         }
     }
