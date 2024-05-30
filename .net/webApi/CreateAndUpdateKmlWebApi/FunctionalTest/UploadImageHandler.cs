@@ -41,7 +41,8 @@ public class UploadImageHandler(ILogger logger) : ICommandHandler<UploadImageCom
 
                 try
                 {
-                    HttpResponseMessage httpResponseMessage = await httpClientPost.PostAsync(requestUri, content, cancellationToken);
+                    HttpResponseMessage httpResponseMessage =
+                        await httpClientPost.PostAsync(requestUri, content, cancellationToken);
                     logger.Log(httpResponseMessage.StatusCode.ToString());
                     if (!httpResponseMessage.IsSuccessStatusCode)
                     {
@@ -56,14 +57,14 @@ public class UploadImageHandler(ILogger logger) : ICommandHandler<UploadImageCom
                 catch (Exception ex)
                 {
                     logger.Log(ex);
-                    throw new Exception(ex.Message);
+                    throw;
                 }
 
                 JObject configJson = await StaticCommon.GetConfigJson(StaticCommon.GetConfigJsonUri(addressText).AbsoluteUri, httpClientPost, logger);
                 string? liveImageMarkersJson = configJson["LiveImageMarkersJsonUrl"]?.ToString();
 
                 UriBuilder liveImageMarkersJsonUri = StaticCommon.CheckConfigJson(addressText, folderName, liveImageMarkersJson, $"{kmlFileName}Thumbs", "json", logger);
-                string liveImageMarkersJsonString;
+                string liveImageMarkersJsonString = string.Empty;
                 try
                 {
                     liveImageMarkersJsonString = await httpClientPost.GetStringAsync(liveImageMarkersJsonUri.Uri.AbsoluteUri, cancellationToken);
@@ -72,7 +73,7 @@ public class UploadImageHandler(ILogger logger) : ICommandHandler<UploadImageCom
                 {
                     logger.Log(new Exception("There is error with thumbs file: " + liveImageMarkersJsonUri.Uri.AbsoluteUri));
                     logger.Log(ex);
-                    throw new Exception(ex.Message);
+                    throw;
                 }
 
                 if (!liveImageMarkersJsonString.Contains(Path.GetFileName(imageFile)))

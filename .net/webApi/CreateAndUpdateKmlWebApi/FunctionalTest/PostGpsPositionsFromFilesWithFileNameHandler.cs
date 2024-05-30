@@ -39,9 +39,13 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
                 {
                     httpResponseMessage = await httpClientPost.PostAsync(requestUri, content);
                 }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
                 catch (Exception ex)
                 {
-                    logger.Log(new Exception($"Exception: {ex.Message}", ex));
+                    logger.Log(ex);
                 }
 
                 logger.Log($"{httpResponseMessage?.StatusCode.ToString()}");
@@ -67,7 +71,7 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
                 catch (Exception ex)
                 {
                     logger.Log(new Exception("There is error with kmlFile:" + kmlUri.Uri.AbsoluteUri));
-                    throw new Exception(ex.Message);
+                    throw;
                 }
 
                 try
@@ -78,7 +82,7 @@ public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
                 catch (Exception ex)
                 {
                     logger.Log(new Exception("There is error with test.json:" + testJsonUri.Uri.AbsoluteUri));
-                    throw new Exception(ex.Message);
+                    throw;
                 }
 
                 await Task.Delay(2000);

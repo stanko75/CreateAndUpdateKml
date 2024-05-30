@@ -50,7 +50,7 @@ public class UploadToBlogHandler(ILogger logger) : ICommandHandler<UploadToBlogC
         catch (Exception ex)
         {
             logger.Log(ex);
-            throw new Exception(ex.Message);
+            throw;
         }
 
         string[] fileUrls = {
@@ -83,7 +83,7 @@ public class UploadToBlogHandler(ILogger logger) : ICommandHandler<UploadToBlogC
         catch (Exception ex)
         {
             logger.Log(ex);
-            throw new Exception(ex.Message);
+            throw;
         }
     }
 }

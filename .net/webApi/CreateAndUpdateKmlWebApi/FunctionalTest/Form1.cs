@@ -7,7 +7,7 @@ namespace FunctionalTest;
 
 public partial class Form1 : Form
 {
-    CancellationTokenSource? _cancellationTokenSource = new();
+    private CancellationTokenSource? _cancellationTokenSource = new();
     private bool _cancellationTokenSourceDisposed;
     private static readonly HttpClient HttpClientPost = new();
 
@@ -86,7 +86,6 @@ public partial class Form1 : Form
 
     private async void UploadImage_Click(object sender, EventArgs e)
     {
-        if (_cancellationTokenSource == null) return;
         var command = new UploadImageCommand
         {
             AddressText = address.Text,
@@ -102,7 +101,6 @@ public partial class Form1 : Form
 
     private async void UploadToBlog_Click(object sender, EventArgs e)
     {
-        if (_cancellationTokenSource == null) return;
         var command = new UploadToBlogCommand
         {
             AddressText = address.Text,
@@ -117,27 +115,29 @@ public partial class Form1 : Form
 
     private async Task ExecuteHandler<TCommand>(TCommand command, Func<ILogger, ICommandHandler<TCommand>> handlerFactory)
     {
-        if (_cancellationTokenSourceDisposed)
-        {
-            _cancellationTokenSource = new CancellationTokenSource();
-        }
-
         if (_cancellationTokenSource != null)
         {
-            ICommandHandler<TCommand> handler = handlerFactory(new TextBoxLogger(log));
+            var logger = new TextBoxLogger(log);
 
-            await handler.Execute(command);
+            try
+            {
+                ICommandHandler<TCommand> handler = handlerFactory(logger);
+                await handler.Execute(command);
+            }
+            catch (OperationCanceledException)
+            {
+                logger.Log("Canceled.");
+            }
         }
     }
 
     private void btnCancel_Click(object sender, EventArgs e)
     {
-        if (!_cancellationTokenSourceDisposed && _cancellationTokenSource is not null)
-        {
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource?.Dispose();
-            _cancellationTokenSource = null;
-            _cancellationTokenSourceDisposed = true;
-        }
+        _cancellationTokenSource?.Cancel();
+
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = null;
+        _cancellationTokenSource = new CancellationTokenSource();
+        _cancellationTokenSourceDisposed = false;
     }
 }
