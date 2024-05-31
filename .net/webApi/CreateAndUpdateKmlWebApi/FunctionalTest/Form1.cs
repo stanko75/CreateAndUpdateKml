@@ -108,6 +108,9 @@ public partial class Form1 : Form
             FolderName = folderName.Text,
             HttpClientPost = HttpClientPost,
             CancellationToken = _cancellationTokenSource.Token,
+            FtpHost = tbFtpHost.Text,
+            FtpPass = tbFtpPass.Text,
+            FtpUser = tbFtpUser.Text
         };
 
         await ExecuteHandler(command, logger => new UploadToBlogHandler(logger));

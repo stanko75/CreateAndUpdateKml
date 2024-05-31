@@ -55,13 +55,13 @@ public class UploadToBlogHandler(ILogger logger) : ICommandHandler<UploadToBlogC
 
         string[] fileUrls =
         [
-            "css/index.css",
-            "lib/jquery-3.6.4.js",
-            "script/map.js",
-            "script/namespaces.js",
-            "script/namespaces.js",
-            "config.json",
-            "index.html"
+            "www/css/index.css",
+            "www/lib/jquery-3.6.4.js",
+            "www/script/map.js",
+            "www/script/namespaces.js",
+            "www/script/namespaces.js",
+            "www/config.json",
+            "www/index.html"
         ];
 
         try
@@ -76,9 +76,7 @@ public class UploadToBlogHandler(ILogger logger) : ICommandHandler<UploadToBlogC
                 HttpResponseMessage response = await httpClientPost.GetAsync(uri.AbsoluteUri, cancellationToken);
                 logger.Log(response.IsSuccessStatusCode
                     ? @$"File: {uri.AbsoluteUri} exists"
-                    : @$"Request failed with status code: {response.StatusCode}");
-
-                logger.Log(Environment.NewLine);
+                    : @$"Request failed with status code: {response.StatusCode}, file: {uri.AbsoluteUri}");
             }
         }
         catch (Exception ex)
