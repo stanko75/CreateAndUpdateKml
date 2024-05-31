@@ -78,9 +78,6 @@ public partial class Form1 : Form
             CancellationToken = _cancellationTokenSource?.Token
         };
 
-        ICommandHandler<PostGpsPositionsFromFilesWithFileNameCommand> handler =
-            new PostGpsPositionsFromFilesWithFileNameHandler(new TextBoxLogger(log));
-
         await ExecuteHandler(command, logger => new PostGpsPositionsFromFilesWithFileNameHandler(logger));
     }
 
