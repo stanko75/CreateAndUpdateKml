@@ -64,7 +64,7 @@ public class UploadImageHandler(ILogger logger) : ICommandHandler<UploadImageCom
                 string? liveImageMarkersJson = configJson["LiveImageMarkersJsonUrl"]?.ToString();
 
                 UriBuilder liveImageMarkersJsonUri = StaticCommon.CheckConfigJson(addressText, folderName, liveImageMarkersJson, $"{kmlFileName}Thumbs", "json", logger);
-                string liveImageMarkersJsonString = string.Empty;
+                string liveImageMarkersJsonString;
                 try
                 {
                     liveImageMarkersJsonString = await httpClientPost.GetStringAsync(liveImageMarkersJsonUri.Uri.AbsoluteUri, cancellationToken);
