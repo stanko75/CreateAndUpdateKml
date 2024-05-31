@@ -53,7 +53,8 @@ public class UploadToBlogHandler(ILogger logger) : ICommandHandler<UploadToBlogC
             throw;
         }
 
-        string[] fileUrls = {
+        string[] fileUrls =
+        [
             "css/index.css",
             "lib/jquery-3.6.4.js",
             "script/map.js",
@@ -61,7 +62,7 @@ public class UploadToBlogHandler(ILogger logger) : ICommandHandler<UploadToBlogC
             "script/namespaces.js",
             "config.json",
             "index.html"
-        };
+        ];
 
         try
         {
