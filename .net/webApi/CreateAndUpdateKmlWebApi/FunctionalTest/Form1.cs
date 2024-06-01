@@ -7,15 +7,17 @@ namespace FunctionalTest;
 
 public partial class Form1 : Form
 {
-    private CancellationTokenSource? _cancellationTokenSource = new();
-    private bool _cancellationTokenSourceDisposed;
     private static readonly HttpClient HttpClientPost = new();
+    private readonly CancellationDecorator _cancellationDecorator;
 
     private const string JsonConfigForTests = "jsconfigForTests.json";
 
     public Form1()
     {
         InitializeComponent();
+
+        _cancellationDecorator = new CancellationDecorator( new TextBoxLogger(log));
+
         if (File.Exists(JsonConfigForTests))
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -74,11 +76,10 @@ public partial class Form1 : Form
             KmlFileName = kmlFileName.Text,
             FolderName = folderName.Text,
             HttpClientPost = HttpClientPost,
-            GpsLocationsPath = tbGpsLocationsPath.Text,
-            CancellationToken = _cancellationTokenSource?.Token
+            GpsLocationsPath = tbGpsLocationsPath.Text
         };
 
-        await ExecuteHandler(command, logger => new PostGpsPositionsFromFilesWithFileNameHandler(logger));
+        await _cancellationDecorator.PostGpsPositionsFromFilesWithFileExecute(command);
     }
 
     private async void UploadImage_Click(object sender, EventArgs e)
@@ -89,11 +90,10 @@ public partial class Form1 : Form
             KmlFileName = kmlFileName.Text,
             FolderName = folderName.Text,
             HttpClientPost = HttpClientPost,
-            CancellationToken = _cancellationTokenSource.Token,
             ImagesPath = imagesPath.Text
         };
 
-        await ExecuteHandler(command, logger => new UploadImageHandler(logger));
+        await _cancellationDecorator.UploadImageExecute(command);
     }
 
     private async void UploadToBlog_Click(object sender, EventArgs e)
@@ -104,40 +104,18 @@ public partial class Form1 : Form
             KmlFileName = kmlFileName.Text,
             FolderName = folderName.Text,
             HttpClientPost = HttpClientPost,
-            CancellationToken = _cancellationTokenSource.Token,
             FtpHost = tbFtpHost.Text,
             FtpPass = tbFtpPass.Text,
             FtpUser = tbFtpUser.Text
         };
 
-        await ExecuteHandler(command, logger => new UploadToBlogHandler(logger));
-    }
-
-    private async Task ExecuteHandler<TCommand>(TCommand command, Func<ILogger, ICommandHandler<TCommand>> handlerFactory)
-    {
-        if (_cancellationTokenSource != null)
-        {
-            var logger = new TextBoxLogger(log);
-
-            try
-            {
-                ICommandHandler<TCommand> handler = handlerFactory(logger);
-                await handler.Execute(command);
-            }
-            catch (OperationCanceledException)
-            {
-                logger.Log("Canceled.");
-            }
-        }
+        await _cancellationDecorator.UploadToBlogExecute(command);
     }
 
     private void btnCancel_Click(object sender, EventArgs e)
     {
-        _cancellationTokenSource?.Cancel();
-
-        _cancellationTokenSource?.Dispose();
-        _cancellationTokenSource = null;
-        _cancellationTokenSource = new CancellationTokenSource();
-        _cancellationTokenSourceDisposed = false;
+         _cancellationDecorator.CancellationTokenSource?.Cancel();
+         _cancellationDecorator.CancellationTokenSource?.Dispose();
+         _cancellationDecorator.CancellationTokenSource = null;
     }
 }
