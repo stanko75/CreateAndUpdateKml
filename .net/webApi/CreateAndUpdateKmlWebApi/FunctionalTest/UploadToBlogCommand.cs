@@ -8,6 +8,5 @@ public class UploadToBlogCommand
     public string FtpHost { get; set; }
     public string FtpUser { get; set; }
     public string FtpPass { get; set; }
-    public CancellationToken CancellationToken { get; set; }
     public HttpClient HttpClientPost { get; set; }
 }

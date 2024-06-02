@@ -8,7 +8,9 @@ namespace FunctionalTest;
 public partial class Form1 : Form
 {
     private static readonly HttpClient HttpClientPost = new();
-    private readonly CancellationDecorator _cancellationDecorator;
+    private readonly CancellationDecorator<PostGpsPositionsFromFilesWithFileNameCommand> _cancellationDecoratorPostGpsPositionsFromFiles;
+    private readonly CancellationDecorator<UploadToBlogCommand> _cancellationDecoratorUploadToBlog;
+    private readonly CancellationDecorator<UploadImageCommand> _cancellationDecoratorUploadImage;
 
     private const string JsonConfigForTests = "jsconfigForTests.json";
 
@@ -16,7 +18,9 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        _cancellationDecorator = new CancellationDecorator( new TextBoxLogger(log));
+        _cancellationDecoratorPostGpsPositionsFromFiles = new CancellationDecorator<PostGpsPositionsFromFilesWithFileNameCommand>(new PostGpsPositionsFromFilesWithFileNameHandler(new TextBoxLogger(log)), new TextBoxLogger(log));
+        _cancellationDecoratorUploadToBlog = new CancellationDecorator<UploadToBlogCommand>(new UploadToBlogHandler(new TextBoxLogger(log)), new TextBoxLogger(log));
+        _cancellationDecoratorUploadImage = new CancellationDecorator<UploadImageCommand>(new UploadImageHandler(new TextBoxLogger(log)), new TextBoxLogger(log));
 
         if (File.Exists(JsonConfigForTests))
         {
@@ -79,7 +83,7 @@ public partial class Form1 : Form
             GpsLocationsPath = tbGpsLocationsPath.Text
         };
 
-        await _cancellationDecorator.PostGpsPositionsFromFilesWithFileExecute(command);
+        await _cancellationDecoratorPostGpsPositionsFromFiles.Execute(command);
     }
 
     private async void UploadImage_Click(object sender, EventArgs e)
@@ -93,7 +97,7 @@ public partial class Form1 : Form
             ImagesPath = imagesPath.Text
         };
 
-        await _cancellationDecorator.UploadImageExecute(command);
+        await _cancellationDecoratorUploadImage.Execute(command);
     }
 
     private async void UploadToBlog_Click(object sender, EventArgs e)
@@ -109,13 +113,13 @@ public partial class Form1 : Form
             FtpUser = tbFtpUser.Text
         };
 
-        await _cancellationDecorator.UploadToBlogExecute(command);
+        await _cancellationDecoratorUploadToBlog.Execute(command);
     }
 
     private void btnCancel_Click(object sender, EventArgs e)
     {
-         _cancellationDecorator.CancellationTokenSource?.Cancel();
-         _cancellationDecorator.CancellationTokenSource?.Dispose();
-         _cancellationDecorator.CancellationTokenSource = null;
+        _cancellationDecoratorUploadImage.CancelOperation();
+        _cancellationDecoratorPostGpsPositionsFromFiles.CancelOperation();
+        _cancellationDecoratorUploadToBlog.CancelOperation();
     }
 }

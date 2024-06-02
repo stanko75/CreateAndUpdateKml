@@ -1,59 +1,33 @@
 ﻿using FunctionalTest.Log;
 
-namespace FunctionalTest
+namespace FunctionalTest;
+
+public class CancellationDecorator<TCommand>(ICommandHandler<TCommand> decoratedHandler, ILogger logger)
+    : ICommandHandler<TCommand>
 {
-    public class CancellationDecorator(ILogger logger)
+    public CancellationTokenSource? CancellationTokenSource
     {
-        public CancellationTokenSource? CancellationTokenSource;
+        get => decoratedHandler.CancellationTokenSource;
+        set => decoratedHandler.CancellationTokenSource = value;
+    }
 
-        private readonly PostGpsPositionsFromFilesWithFileNameHandler _postGpsPositionsFromFilesWithFileNameHandler = new(logger);
-        private readonly UploadImageHandler _uploadImageHandler = new(logger);
-        private readonly UploadToBlogHandler _uploadToBlogHandler = new(logger);
-
-        private CancellationToken GetCancellationToken()
+    public async Task Execute(TCommand command)
+    {
+        try
         {
             CancellationTokenSource ??= new CancellationTokenSource();
-            return CancellationTokenSource.Token;
+            await decoratedHandler.Execute(command);
         }
-
-        private async Task ExecuteWithCancellationHandling(Func<CancellationToken, Task> action)
+        catch (OperationCanceledException)
         {
-            try
-            {
-                var token = GetCancellationToken();
-                await action(token);
-            }
-            catch (OperationCanceledException)
-            {
-                logger.Log("Canceled.");
-            }
+            logger.Log("Canceled.");
         }
+    }
 
-        public Task PostGpsPositionsFromFilesWithFileExecute(PostGpsPositionsFromFilesWithFileNameCommand command)
-        {
-            return ExecuteWithCancellationHandling(async token =>
-            {
-                command.CancellationToken = token;
-                await _postGpsPositionsFromFilesWithFileNameHandler.Execute(command);
-            });
-        }
-
-        public Task UploadImageExecute(UploadImageCommand command)
-        {
-            return ExecuteWithCancellationHandling(async token =>
-            {
-                command.CancellationToken = token;
-                await _uploadImageHandler.Execute(command);
-            });
-        }
-
-        public Task UploadToBlogExecute(UploadToBlogCommand command)
-        {
-            return ExecuteWithCancellationHandling(async token =>
-            {
-                command.CancellationToken = token;
-                await _uploadToBlogHandler.Execute(command);
-            });
-        }
+    public void CancelOperation()
+    {
+        CancellationTokenSource?.Cancel();
+        CancellationTokenSource?.Dispose();
+        CancellationTokenSource = null;
     }
 }

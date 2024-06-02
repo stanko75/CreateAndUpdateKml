@@ -7,11 +7,13 @@ namespace FunctionalTest;
 public class PostGpsPositionsFromFilesWithFileNameHandler(ILogger logger)
     : ICommandHandler<PostGpsPositionsFromFilesWithFileNameCommand>
 {
+    public CancellationTokenSource? CancellationTokenSource { get; set; }
+
     public async Task Execute(PostGpsPositionsFromFilesWithFileNameCommand command)
     {
         string addressText = command.AddressText;
         string gpsLocationsPath = command.GpsLocationsPath;
-        CancellationToken? cancellationToken = command.CancellationToken;
+        CancellationToken? cancellationToken = CancellationTokenSource?.Token;
         HttpClient httpClientPost = command.HttpClientPost;
 
         JObject jObjectKmlFileFolderLatLng = new JObject
